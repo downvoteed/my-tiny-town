@@ -1,5 +1,7 @@
 target_sources(MyTinyTown PRIVATE 
 "ui/application.cc"
+"ui/imgui-layer.cc"
+"ui/windows/demo-window.cc"
 #"camera/camera.cc"
 #"renderer/renderer.cc"
 #"textures/textures.cc"

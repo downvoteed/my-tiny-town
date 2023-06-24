@@ -1,6 +1,11 @@
 #include "application.hh"
 #include "GLFW/glfw3.h"
 
+
+
+/**
+ * @brief Initiliase GLFW and create a window
+ */
 Application::Application()
 {
 	// Initialise GLFW
@@ -37,6 +42,7 @@ Application::Application()
 	glViewport(0, 0, width, height);
 }
 
+
 bool Application::shouldClose() const
 {
 	return glfwWindowShouldClose(this->window);
@@ -52,21 +58,46 @@ void Application::pollEvents() const
 	glfwPollEvents();
 }
 
+/**
+ * @brief Get the window
+ * @return The window
+ */
+GLFWwindow* Application::getWindow() const
+{
+	return this->window;
+}
+
+/**
+ * @brief Set the key callback function
+ * @param callback The callback function
+ */
 void Application::setKeyCallback(GLFWkeyfun callback) const
 {
 	glfwSetKeyCallback(this->window, callback);
 }
 
+/**
+ * @brief Set the mouse button callback function
+ * @param callback The callback function
+ */
 void Application::setMouseButtonCallback(GLFWmousebuttonfun callback) const
 {
 	glfwSetMouseButtonCallback(this->window, callback);
 }
 
+/**
+* @brief Set the cursor position callback function
+* @param callback The callback function
+*/
 void Application::setCursorPosCallback(GLFWcursorposfun callback) const
 {
 	glfwSetCursorPosCallback(this->window, callback);
 }
 
+/**
+ * @brief Set the scroll callback function
+ * @param callback The callback function
+ */
 void Application::setScrollCallback(GLFWscrollfun callback) const
 {
 	glfwSetScrollCallback(this->window, callback);

@@ -8,12 +8,12 @@ class Application : public Singleton<Application>
 {
 	friend class Singleton<Application>;
 public:
-	GLFWwindow* window = nullptr;
 	Application(const Application&) = delete;
 	Application& operator=(const Application&) = delete;
 	bool shouldClose() const;
 	void pollEvents() const;
 	void swapBuffers() const;
+	GLFWwindow* getWindow() const;
 	void setKeyCallback(GLFWkeyfun callback) const;
 	void setMouseButtonCallback(GLFWmousebuttonfun callback) const;
 	void setCursorPosCallback(GLFWcursorposfun callback) const;
@@ -21,4 +21,5 @@ public:
 
 private:
 	Application();
+	GLFWwindow* window = nullptr;
 };
