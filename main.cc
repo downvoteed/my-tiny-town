@@ -7,7 +7,6 @@
 
 int main()
 {
-	std::cout << "Hello World!\n";
 	Application* app = Application::instance();
 	ImGuiLayer imgui = ImGuiLayer(app->getWindow());
 	DemoWindow demo = DemoWindow();

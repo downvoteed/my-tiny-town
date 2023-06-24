@@ -1,5 +1,8 @@
 #pragma once
 
+/**
+ * @brief interface
+ */
 class Window
 {
 public:
@@ -9,5 +12,8 @@ public:
 	Window& operator=(const Window&) = delete;
 	Window(Window&&) = delete;
 
+	/**
+	 * @brief Render the designed window.
+	 */
 	virtual void render() = 0;
 };

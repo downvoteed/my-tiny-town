@@ -1,8 +1,6 @@
 #include "application.hh"
 #include "GLFW/glfw3.h"
 
-
-
 /**
  * @brief Initiliase GLFW and create a window
  */
