@@ -4,9 +4,10 @@ target_sources(MyTinyTown PRIVATE
 "ui/windows/demo-window.cc"
 "renderer/vertex-buffer.cc"
 "renderer/shader.cc"
+"textures/textures.cc"
+"renderer/index-buffer.cc"
 #"camera/camera.cc"
 #"renderer/renderer.cc"
-#"textures/textures.cc"
 )
 
 target_include_directories(MyTinyTown PRIVATE
