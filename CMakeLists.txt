@@ -13,7 +13,7 @@ endif()
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(OpenGL REQUIRED)
-# Download and install GLAD
+
 FetchContent_Declare(
         glad
         GIT_REPOSITORY https://github.com/Dav1dde/glad.git)
@@ -22,10 +22,14 @@ FetchContent_Declare(
         URL https://github.com/glfw/glfw/releases/download/3.3.8/glfw-3.3.8.zip)
 FetchContent_Declare(glm URL
         https://github.com/g-truc/glm/releases/download/0.9.9.8/glm-0.9.9.8.zip)
-
+FetchContent_Declare(
+    assimp
+    GIT_REPOSITORY https://github.com/assimp/assimp
+) 
 FetchContent_MakeAvailable(glfw3)
 FetchContent_MakeAvailable(glm)
 FetchContent_MakeAvailable(glad)
+FetchContent_MakeAvailable(assimp)
 
 set(SRC
         "main.cc"
@@ -43,7 +47,7 @@ add_executable(MyTinyTown main.cc ${SRC})
 set_target_properties(MyTinyTown PROPERTIES CXX_STANDARD 20)
 target_compile_options(MyTinyTown PRIVATE -Wall)
 
-#add_subdirectory(src)
+add_subdirectory(src)
 
 target_include_directories(MyTinyTown PRIVATE "src/"
         "common"
@@ -52,4 +56,4 @@ target_include_directories(MyTinyTown PRIVATE "src/"
         "lib/ImGuiFileDialog"
         "lib/imgui"
         )
-target_link_libraries(MyTinyTown PRIVATE glfw OpenGL::GL glm glad)
+target_link_libraries(MyTinyTown PRIVATE glfw OpenGL::GL glm glad assimp)
