@@ -3,6 +3,7 @@ target_sources(MyTinyTown PRIVATE
 "ui/imgui-layer.cc"
 "ui/windows/demo-window.cc"
 "renderer/vertex-buffer.cc"
+"renderer/shader.cc"
 #"camera/camera.cc"
 #"renderer/renderer.cc"
 #"textures/textures.cc"

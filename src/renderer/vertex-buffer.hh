@@ -9,6 +9,7 @@ public:
 	VertexBuffer(const VertexBuffer& other) = delete;
 	VertexBuffer(VertexBuffer&& other) noexcept = delete;
 	VertexBuffer& operator=(const VertexBuffer& other) = delete;
+	VertexBuffer& operator=(VertexBuffer&& other) noexcept = delete;
 
 	void bind() const;
 	void unbind() const;
