@@ -8,7 +8,9 @@ void RightPannelWindow::render()
 {
 
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(40.f / 255.f, 60.f / 255.f, 36.f / 255.f, 1.f));
-	ImGui::Begin("right pannel", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 5.0f);
+	ImGui::Begin("Model properties", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 	// remove border
 
 	{
@@ -33,4 +35,6 @@ void RightPannelWindow::render()
 	ImGui::Text("Hello from right pannel");
 	ImGui::End();
 	ImGui::PopStyleColor();
+	ImGui::PopStyleVar();
+	ImGui::PopStyleVar();
 }

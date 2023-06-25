@@ -13,7 +13,17 @@ ImGuiLayer::ImGuiLayer(GLFWwindow* window)
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	// [0] body text
 	io.Fonts->AddFontFromFileTTF("assets/fonts/ContrailOne-Regular.ttf", 14);
+	// H1 title
+	// [1]
+	io.Fonts->AddFontFromFileTTF("assets/fonts/ContrailOne-Regular.ttf", 45);
+	// H2 title
+	// [2]
+	io.Fonts->AddFontFromFileTTF("assets/fonts/ContrailOne-Regular.ttf", 35);
+	// H3 title
+	// [3]
+	io.Fonts->AddFontFromFileTTF("assets/fonts/ContrailOne-Regular.ttf", 25);
 
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();

@@ -7,6 +7,8 @@
 void LeftPannelWindow::render() 
 {
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(40.f / 255.f, 60.f / 255.f, 36.f / 255.f, 1.f));
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 5.0f);
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 	ImGui::Begin("left pannel", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 	// remove border
 
@@ -26,8 +28,13 @@ void LeftPannelWindow::render()
 	// change background color
 
 	ImGui::SetWindowPos(pos);
-	// change font
-	ImGui::Text("Hello from left pannel");
+	ImFont *font = ImGui::GetIO().Fonts->Fonts[1];
+
+	ImGui::PushFont(font);
+	ImGui::Text("MY TINY TOWN");
+	ImGui::PopFont();
 	ImGui::End();
 	ImGui::PopStyleColor();
+	ImGui::PopStyleVar();
+	ImGui::PopStyleVar();
 }
