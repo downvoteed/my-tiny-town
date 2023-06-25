@@ -1,6 +1,7 @@
 #pragma once
 #include "models/models.hh"
 #include "vertex-buffer.hh"
+#include "vertex-array.hh"
 #include "index-buffer.hh"
 #include "textures.hh"
 #include "shader.hh"
@@ -25,6 +26,7 @@ public:
 private:
 	std::unique_ptr<VertexBuffer> vb_;
 	std::unique_ptr<IndexBuffer> ib_;
+	std::unique_ptr<VertexArray> va_;
 	std::unique_ptr<Texture> texture_;
 	std::unique_ptr<Shader> shader_;
 	glm::vec3 position_;

@@ -81,6 +81,15 @@ unsigned int Shader::createShader(const std::string& vertexShader, const std::st
     glAttachShader(program, vs);
     glAttachShader(program, fs);
     glLinkProgram(program);
+    // check if link worked
+	GLint success;
+	glGetProgramiv(programID, GL_LINK_STATUS, &success);
+	if (!success) {
+		GLchar infoLog[512];
+		glGetProgramInfoLog(programID, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+	}
+
     glValidateProgram(program);
 
     glDeleteShader(vs);

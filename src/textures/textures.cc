@@ -2,6 +2,7 @@
 #include "glad/glad.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb/stb_image.h"
+#include <iostream>
 
 
 Texture::Texture(const std::string& path)
@@ -9,6 +10,11 @@ Texture::Texture(const std::string& path)
 {
     stbi_set_flip_vertically_on_load(1);
     this->buffer_ = stbi_load(path.c_str(), &this->width_, &this->height_, &this->bpp_, 4);
+
+    if (!this->buffer_)
+	{
+		std::cout << "Failed to load texture: " << path << std::endl;
+	}
 
     glGenTextures(1, &this->textureID_);
     glBindTexture(GL_TEXTURE_2D, this->textureID_);

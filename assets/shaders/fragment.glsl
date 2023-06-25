@@ -1,12 +1,15 @@
 #version 330 core
 //fragment shader
 
-in vec3 ourColor;
 in vec2 TexCoord;
 
 out vec4 color;
 
-int main()
+// Texture sampler
+uniform sampler2D textureSampler;
+
+void main()
 {
-	color = vec4(ourColor, 1.0f);
+    // Sample the color from the texture
+    color = texture(textureSampler, TexCoord);
 }

@@ -1,6 +1,6 @@
 #pragma once
 #include "vertex-buffer.hh"
-#include "VertexBufferLayout.hh"
+#include "vertex-buffer-layout.hh"
 
 class VertexArray {
 public:
