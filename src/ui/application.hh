@@ -47,6 +47,11 @@ public:
 	 */
 	int getPannelLeftWidth() const;
 
+	/**
+	 * Render interface
+	 */
+	void render() const;
+
 private:
 	Application();
 	GLFWwindow* window_ = nullptr;

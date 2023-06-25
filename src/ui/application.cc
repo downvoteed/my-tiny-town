@@ -1,5 +1,8 @@
 #include "application.hh"
 #include "GLFW/glfw3.h"
+#include "windows/demo-window.hh"
+#include "windows/left-pannel-window.hh"
+#include "windows/right-pannel-window.hh"
 
 /**
  * @brief Initiliase GLFW and create a window
@@ -109,5 +112,16 @@ void Application::setScrollCallback(GLFWscrollfun callback) const
 int Application::getPannelLeftWidth() const
 {
 	return this->pannelLeftWidth_;
+}
+
+void Application::render() const
+{
+	LeftPannelWindow leftPannelWindow;
+	RightPannelWindow rightPannelWindow;
+	DemoWindow demoWindow;
+
+	leftPannelWindow.render();
+	rightPannelWindow.render();
+	demoWindow.render();
 }
 
