@@ -11,16 +11,7 @@ class GrassPlane : public Model {
 public:
     GrassPlane(const std::string& texturePath, const glm::vec3& position, const glm::vec3& size, float rotation);
 	~GrassPlane() override = default;
-    void setPosition(const glm::vec3& position) override;
 
-    void setSize(const glm::vec3& size) override;
-
-    void setRotation(float rotation) override;
-
-    glm::vec3 getPosition() const override;
-    glm::vec3 getSize() const override;
-
-    float getRotation() const override;
     void draw() const override;
     
 private:

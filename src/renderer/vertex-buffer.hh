@@ -15,6 +15,6 @@ public:
 	void unbind() const;
 
 private:
-	unsigned int bufferID;
+	unsigned int bufferID_;
 };
 

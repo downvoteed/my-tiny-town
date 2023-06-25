@@ -19,7 +19,9 @@ Application::Application()
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
 	// Create a window
-	this->window = glfwCreateWindow(1080, 720, "MyTinyTown", NULL, NULL);
+	GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+	const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+	this->window = glfwCreateWindow(mode->width, mode->height, "My Tiny Town", NULL, NULL);
 	if (this->window == NULL) {
 		std::cerr << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
@@ -37,7 +39,7 @@ Application::Application()
 	// Set the viewport
 	int width, height;
 	glfwGetFramebufferSize(window, &width, &height);
-	glViewport(0, 0, width, height);
+	glViewport(0, 0, mode->width, mode->height);
 }
 
 

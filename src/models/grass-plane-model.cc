@@ -23,7 +23,6 @@ GrassPlane::GrassPlane(const std::string& texturePath, const glm::vec3& position
         0, 1, 3,   // first triangle
         1, 2, 3    // second triangle
     };
-
     // Create the Vertex Buffer and the Vertex Array Object
 	this->va_ = std::make_unique<VertexArray>();
 	this->va_->bind();
@@ -37,8 +36,10 @@ GrassPlane::GrassPlane(const std::string& texturePath, const glm::vec3& position
 	this->va_->addBuffer(*this->vb_, layout);
 
 
+
     // Load the texture
     this->texture_ = std::make_unique<Texture>(texturePath);
+
 
     // Create the shader
     this->shader_ = std::make_unique<Shader>("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
@@ -46,49 +47,18 @@ GrassPlane::GrassPlane(const std::string& texturePath, const glm::vec3& position
 	this->va_->unbind();
 }
 
-void GrassPlane::setPosition (const glm::vec3& position) 
-{
-	this->position_ = position;
-}
-void GrassPlane::setRotation (float rotation) 
-{
-	this->rotation_ = rotation;
-}
-
-void GrassPlane::setSize (const glm::vec3& size) 
-{
-	this->size_ = size;
-}
-
-glm::vec3 GrassPlane::getPosition () const
-{
-	return this->position_;
-}
-
-float GrassPlane::getRotation () const
-{
-	return this->rotation_;
-}
-
-glm::vec3 GrassPlane::getSize () const
-{
-	return this->size_;
-}
-
 void GrassPlane::draw () const
 {
 	// Bind the shader
 	this->shader_->bind();
 
-	// view matrix
-	glm::mat4 view = glm::mat4(1.0f); // keep the camera at the origin
-
-	// projection matrix
-	glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.f);
+	glm::mat4 view = this->getViewMatrix();
+	glm::mat4 projection = this->getProjectionMatrix();
 
 	// model matrix
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.0f)); // move the plane in front of the camera
+	model = glm::scale(model, glm::vec3(40.0f, 40.0f, 40.0f)); // Scale the plane to be 10x larger in the x and z directions
 
 	// set uniforms
 	this->shader_->setUniformMat4f("model", model);
@@ -105,9 +75,9 @@ void GrassPlane::draw () const
 	this->texture_->bind(0); // 0 is the texture unit
 
 	// Bind the vertex array object
+	this->va_->bind();
 	this->vb_->bind();
 	this->ib_->bind();
-	this->va_->bind();
 
 	// Draw the model
 	glDrawElements(GL_TRIANGLES, this->ib_->getCount(), GL_UNSIGNED_INT, nullptr);

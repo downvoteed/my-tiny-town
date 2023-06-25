@@ -92,16 +92,28 @@ unsigned int Shader::createShader(const std::string& vertexShader, const std::st
     glAttachShader(program, vs);
     glAttachShader(program, fs);
     glLinkProgram(program);
-    // check if link worked
 	GLint success;
-	glGetProgramiv(programID, GL_LINK_STATUS, &success);
+	glGetProgramiv(this->programID, GL_LINK_STATUS, &success);
 	if (!success) {
 		GLchar infoLog[512];
-		glGetProgramInfoLog(programID, 512, NULL, infoLog);
+		glGetProgramInfoLog(this->programID, 512, NULL, infoLog);
 		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
 	}
+   GLenum err;
+   while((err = glGetError()) != GL_NO_ERROR)
+   {
+       std::cout << "error: " << err << std::endl;
+   }
 
     glValidateProgram(program);
+    glGetProgramiv(this->programID, GL_VALIDATE_STATUS, &success);
+	if (!success) {
+		GLchar infoLog[512];
+		glGetProgramInfoLog(this->programID, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+	}
+    
+
 
     glDeleteShader(vs);
     glDeleteShader(fs);
