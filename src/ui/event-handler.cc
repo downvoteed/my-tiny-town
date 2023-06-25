@@ -22,7 +22,8 @@ Camera& EventHandler::getCamera() const
 
 void EventHandler::mouseCallback(GLFWwindow* window, double xpos, double ypos)
 {
-	if (!ImGui::GetIO().WantCaptureMouse)
+	if (!ImGui::GetIO().WantCaptureMouse && !ImGui::IsWindowHovered())
+
 	{
 		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 		{
@@ -34,7 +35,8 @@ void EventHandler::mouseCallback(GLFWwindow* window, double xpos, double ypos)
 
 void EventHandler::scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 {
-	if (!ImGui::GetIO().WantCaptureMouse)
+	
+	if (!ImGui::GetIO().WantCaptureMouse && !ImGui::IsWindowHovered())
 	{
 		EventHandler* handler = static_cast<EventHandler*>(glfwGetWindowUserPointer(window));
 		handler->getCamera().processMouseScroll(yoffset);

@@ -11,12 +11,14 @@
 int main()
 {
 	Application* app = Application::instance();
+	Scene scene = Scene();
+	// define callbacks before intializing ImGui
+	// https://stackoverflow.com/a/72509936
+	EventHandler eventHandler = EventHandler(app->getWindow(), scene.getCamera());
+	eventHandler.registerCallbacks();
 	ImGuiLayer imgui = ImGuiLayer(app->getWindow());
 	DemoWindow demo = DemoWindow();
 
-	Scene scene = Scene();
-	EventHandler eventHandler = EventHandler(app->getWindow(), scene.getCamera());
-	eventHandler.registerCallbacks();
 	GrassPlane grass("assets/textures/diff/grass.jpg", glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
 	scene.addModel(&grass);
@@ -24,16 +26,22 @@ int main()
 
 	while (!app->shouldClose())
 	{
-		glEnable(GL_DEPTH_TEST);
+		app->pollEvents();
 		imgui.begin();
 		demo.render();
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 		scene.draw();
 		imgui.end();
-		app->pollEvents();
 		app->swapBuffers();
+		GLenum err;
+		while ((err = glGetError()) != GL_NO_ERROR)
+		{
+			std::cout << "OpenGL error: " << err << std::endl;
+		}
 	}
+
 	glfwTerminate();
 	return 0;
 }
