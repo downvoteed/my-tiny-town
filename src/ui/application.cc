@@ -7,7 +7,8 @@
 Application::Application()
 {
 	// Initialise GLFW
-	if (!glfwInit()) {
+	if (!glfwInit()) 
+	{
 		std::cerr << "Failed to initialize GLFW" << std::endl;
 		return;
 	}
@@ -21,36 +22,38 @@ Application::Application()
 	// Create a window
 	GLFWmonitor* monitor = glfwGetPrimaryMonitor();
 	const GLFWvidmode* mode = glfwGetVideoMode(monitor);
-	this->window = glfwCreateWindow(mode->width, mode->height, "My Tiny Town", NULL, NULL);
-	if (this->window == NULL) {
+	this->window_ = glfwCreateWindow(mode->width, mode->height, "My Tiny Town", NULL, NULL);
+	if (this->window_ == NULL) 
+	{
 		std::cerr << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
 		return;
 	}
 
-	glfwMakeContextCurrent(window);
+	glfwMakeContextCurrent(window_);
 
 	// Initialise GLAD
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) 
+	{
 		std::cerr << "Failed to initialize GLAD" << std::endl;
 		return;
 	}
 
 	// Set the viewport
 	int width, height;
-	glfwGetFramebufferSize(window, &width, &height);
-	glViewport(0, 0, mode->width, mode->height);
+	glfwGetFramebufferSize(this->window_, &width, &height);
+	glViewport(this->pannelLeftWidth_, 0, mode->width, mode->height);
 }
 
 
 bool Application::shouldClose() const
 {
-	return glfwWindowShouldClose(this->window);
+	return glfwWindowShouldClose(this->window_);
 }
 
 void Application::swapBuffers() const
 {
-	glfwSwapBuffers(this->window);
+	glfwSwapBuffers(this->window_);
 }
 
 void Application::pollEvents() const
@@ -64,7 +67,7 @@ void Application::pollEvents() const
  */
 GLFWwindow* Application::getWindow() const
 {
-	return this->window;
+	return this->window_;
 }
 
 /**
@@ -73,7 +76,7 @@ GLFWwindow* Application::getWindow() const
  */
 void Application::setKeyCallback(GLFWkeyfun callback) const
 {
-	glfwSetKeyCallback(this->window, callback);
+	glfwSetKeyCallback(this->window_, callback);
 }
 
 /**
@@ -82,7 +85,7 @@ void Application::setKeyCallback(GLFWkeyfun callback) const
  */
 void Application::setMouseButtonCallback(GLFWmousebuttonfun callback) const
 {
-	glfwSetMouseButtonCallback(this->window, callback);
+	glfwSetMouseButtonCallback(this->window_, callback);
 }
 
 /**
@@ -91,7 +94,7 @@ void Application::setMouseButtonCallback(GLFWmousebuttonfun callback) const
 */
 void Application::setCursorPosCallback(GLFWcursorposfun callback) const
 {
-	glfwSetCursorPosCallback(this->window, callback);
+	glfwSetCursorPosCallback(this->window_, callback);
 }
 
 /**
@@ -100,6 +103,11 @@ void Application::setCursorPosCallback(GLFWcursorposfun callback) const
  */
 void Application::setScrollCallback(GLFWscrollfun callback) const
 {
-	glfwSetScrollCallback(this->window, callback);
+	glfwSetScrollCallback(this->window_, callback);
+}
+
+int Application::getPannelLeftWidth() const
+{
+	return this->pannelLeftWidth_;
 }
 

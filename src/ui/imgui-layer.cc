@@ -13,6 +13,7 @@ ImGuiLayer::ImGuiLayer(GLFWwindow* window)
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	io.Fonts->AddFontFromFileTTF("assets/fonts/ContrailOne-Regular.ttf", 14);
 
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();

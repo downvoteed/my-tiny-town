@@ -42,7 +42,13 @@ public:
 	 */
 	void setScrollCallback(GLFWscrollfun callback) const;
 
+	/**
+	 *  get the width of the left pannel
+	 */
+	int getPannelLeftWidth() const;
+
 private:
 	Application();
-	GLFWwindow* window = nullptr;
+	GLFWwindow* window_ = nullptr;
+	int pannelLeftWidth_ = 400;
 };

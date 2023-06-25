@@ -2,6 +2,8 @@
 #include "ui/application.hh"
 #include "ui/imgui-layer.hh"
 #include "ui/windows/demo-window.hh"
+#include "windows/left-pannel-window.hh"
+#include "windows/right-pannel-window.hh"
 #include "imgui/imgui.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
 #include "scene.hh"
@@ -18,6 +20,8 @@ int main()
 	eventHandler.registerCallbacks();
 	ImGuiLayer imgui = ImGuiLayer(app->getWindow());
 	DemoWindow demo = DemoWindow();
+	RightPannelWindow rightPannel = RightPannelWindow();
+	LeftPannelWindow leftPannel = LeftPannelWindow();
 
 	GrassPlane grass("assets/textures/diff/grass.jpg", glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
@@ -29,6 +33,8 @@ int main()
 		app->pollEvents();
 		imgui.begin();
 		demo.render();
+		leftPannel.render();
+		rightPannel.render();
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
