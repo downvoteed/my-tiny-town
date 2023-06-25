@@ -1,6 +1,9 @@
 #pragma once 
 #include "glad/glad.h"
 
+/**
+ * @brief wrapper to get the size of a type
+ */
 struct VertexBufferElement {
     unsigned int type;
     unsigned int count;

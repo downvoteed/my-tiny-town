@@ -2,15 +2,18 @@
 #include "vertex-buffer-layout.hh"
 #include <glad/glad.h>
 
-VertexArray::VertexArray() {
-    glGenVertexArrays(1, &rendererID);
+VertexArray::VertexArray() 
+{
+    glGenVertexArrays(1, &this->vaoID_);
 }
 
-VertexArray::~VertexArray() {
-    glDeleteVertexArrays(1, &rendererID);
+VertexArray::~VertexArray() 
+{
+    glDeleteVertexArrays(1, &this->vaoID_);
 }
 
-void VertexArray::addBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout) {
+void VertexArray::addBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout)
+{
     bind();
     vb.bind();
 
@@ -25,7 +28,7 @@ void VertexArray::addBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
 }
 
 void VertexArray::bind() const {
-    glBindVertexArray(rendererID);
+    glBindVertexArray(this->vaoID_);
 }
 
 void VertexArray::unbind() const {

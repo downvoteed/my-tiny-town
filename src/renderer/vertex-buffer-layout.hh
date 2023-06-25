@@ -2,7 +2,13 @@
 #include <vector>
 #include "vertex-buffer-element.hh"
 
-class VertexBufferLayout {
+
+/**
+ * @brief Vertex Layout Specification class
+ * @see https://www.khronos.org/opengl/wiki/Vertex_Specification_Best_Practices
+ */
+class VertexBufferLayout
+{
 public:
     VertexBufferLayout();
 
