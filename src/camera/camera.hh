@@ -19,7 +19,7 @@ public:
 	 * @brief returns the projection matrix
 	 */
     glm::mat4 getProjectionMatrix() const;
-    void processMouseMovement(float xoffset, float yoffset);
+    void processMouseLeftClick(float xoffset, float yoffset);
     void processMouseScroll(float yoffset);
     /**
     * @brief set aspect ratio

@@ -18,6 +18,11 @@ public:
 	*/
     void draw();
 
+    /**
+     * @brief Get the Camera object
+     */
+    Camera& getCamera();
+
 private:
     std::vector<Model*> models_;
     Camera camera_;

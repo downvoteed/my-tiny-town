@@ -30,3 +30,8 @@ void Scene::draw()
 		model->draw();
 	}
 }
+
+Camera& Scene::getCamera()
+{
+	return this->camera_;
+}

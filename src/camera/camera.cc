@@ -21,7 +21,7 @@ glm::mat4 Camera::getProjectionMatrix() const
 	return glm::perspective(glm::radians(fov_), aspect_, near_, far_);
 }
 
-void Camera::processMouseMovement(float xoffset, float yoffset) 
+void Camera::processMouseLeftClick(float xoffset, float yoffset) 
 {
 	float sensitivity = 0.1f;
 	xoffset *= sensitivity;
