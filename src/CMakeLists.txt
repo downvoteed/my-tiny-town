@@ -6,6 +6,9 @@ target_sources(MyTinyTown PRIVATE
 "renderer/shader.cc"
 "textures/textures.cc"
 "renderer/index-buffer.cc"
+"renderer/scene.cc"
+"models/grass-plane-model.cc"
+"renderer/vertex-buffer-layout.cc"
 #"camera/camera.cc"
 #"renderer/renderer.cc"
 )

@@ -23,13 +23,14 @@ FetchContent_Declare(
 FetchContent_Declare(glm URL
         https://github.com/g-truc/glm/releases/download/0.9.9.8/glm-0.9.9.8.zip)
 FetchContent_Declare(
-    assimp
-    GIT_REPOSITORY https://github.com/assimp/assimp
+    tinyobjloader
+    GIT_REPOSITORY  https://github.com/tinyobjloader/tinyobjloader 
+    GIT_TAG v1.0.6
 ) 
 FetchContent_MakeAvailable(glfw3)
 FetchContent_MakeAvailable(glm)
 FetchContent_MakeAvailable(glad)
-FetchContent_MakeAvailable(assimp)
+FetchContent_MakeAvailable(tinyobjloader)
 
 set(SRC
         "main.cc"
@@ -56,4 +57,4 @@ target_include_directories(MyTinyTown PRIVATE "src/"
         "lib/ImGuiFileDialog"
         "lib/imgui"
         )
-target_link_libraries(MyTinyTown PRIVATE glfw OpenGL::GL glm glad assimp)
+target_link_libraries(MyTinyTown PRIVATE glfw OpenGL::GL glm glad tinyobjloader)
