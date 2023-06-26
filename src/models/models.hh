@@ -1,7 +1,12 @@
 #pragma once
 #include <glm/glm.hpp>
+#include <memory>
 #include <string>
 #include "textures/textures.hh"
+#include "vertex-buffer.hh"
+#include "vertex-array.hh"
+#include "shader.hh"
+#include "index-buffer.hh"
 
 /**
  * @brief Interface for all models.
@@ -18,7 +23,10 @@ public:
 	 .
      */
     Model(const std::string& texturePath, const glm::vec3& position, const glm::vec3& size, float rotation) : 
-        texture_(texturePath), position_(position), size_(size), rotation_(rotation) {}
+        position_(position), size_(size), rotation_(rotation) 
+    {
+		this->texture_ = std::make_unique<Texture>(texturePath);
+    }
     virtual ~Model() = default;
 
     /**
@@ -96,12 +104,17 @@ public:
 	 */
     virtual void draw() const = 0;
 
-private:
-    Texture texture_;
-    glm::vec3 position_;
-    glm::vec3 size_;
+protected:
     float rotation_;
     glm::mat4 projectionMatrix_;
 	glm::mat4 viewMatrix_;
+	std::unique_ptr<VertexBuffer> vb_;
+	std::unique_ptr<IndexBuffer> ib_;
+	std::unique_ptr<VertexArray> va_;
+	std::unique_ptr<Texture> texture_;
+	std::unique_ptr<Shader> shader_;
+	glm::vec3 position_;
+	glm::vec3 size_;
+	std::string texturePath_;
 };
 

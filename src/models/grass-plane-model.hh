@@ -13,16 +13,5 @@ public:
 	~GrassPlane() override = default;
 
     void draw() const override;
-    
-private:
-	std::unique_ptr<VertexBuffer> vb_;
-	std::unique_ptr<IndexBuffer> ib_;
-	std::unique_ptr<VertexArray> va_;
-	std::unique_ptr<Texture> texture_;
-	std::unique_ptr<Shader> shader_;
-	glm::vec3 position_;
-	glm::vec3 size_;
-	float rotation_;
-	std::string texturePath_;
 };
 

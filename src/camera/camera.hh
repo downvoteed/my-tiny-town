@@ -20,6 +20,7 @@ public:
 	 */
     glm::mat4 getProjectionMatrix() const;
     void processMouseLeftClick(float xoffset, float yoffset);
+    void processMouseRightClick(float xoffset, float yoffset);
     void processMouseScroll(float yoffset);
     /**
     * @brief set aspect ratio

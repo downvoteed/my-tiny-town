@@ -1,37 +1,43 @@
-#include "grass-plane-model.hh"
-#include "vertex-buffer.hh"
-#include "vertex-buffer-layout.hh"
-#include "index-buffer.hh"
-#include "shader.hh"
-#include "glad/glad.h"
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include <memory>
+#include "town-hall-model.hh"
 #include <iostream>
+#include "utils/objloader.hh"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <vector>
 
-GrassPlane::GrassPlane(const std::string& texturePath, const glm::vec3& position, const glm::vec3& size, float rotation)
+TownHall::TownHall(const std::string& texturePath, const glm::vec3& position, const glm::vec3& size, float rotation)
     : Model(texturePath, position, size, rotation) {
     // Create the plane model
-    float vertices[] = {
-        // positions          // texture coords
-         0.5f,  0.5f, 0.0f,   1.0f, 1.0f,   // top right
-         0.5f, -0.5f, 0.0f,   1.0f, 0.0f,   // bottom right
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f,   // bottom left
-        -0.5f,  0.5f, 0.0f,   0.0f, 1.0f    // top left 
-    };
-    unsigned int indices[] = {
-        0, 1, 3,   // first triangle
-        1, 2, 3    // second triangle
-    };
+
+
+	ObjLoader objloader("assets/models/House.obj");
+	auto vertices = objloader.getVertices();
+	auto texCoords = objloader.getTexCoords();
+
+	std::vector<float> interleavedData;
+	interleavedData.reserve(vertices.size() + texCoords.size());
+
+	for (size_t i = 0; i < vertices.size() / 3; ++i) 
+	{
+		interleavedData.push_back(vertices[i].x);
+		interleavedData.push_back(vertices[i].y);
+		interleavedData.push_back(vertices[i].z);
+
+		interleavedData.push_back(texCoords[i].x);
+		interleavedData.push_back(texCoords[i].y);
+	}
+
+
     // Create the Vertex Buffer and the Vertex Array Object
 	this->va_ = std::make_unique<VertexArray>();
 	this->va_->bind();
-    this->vb_ = std::make_unique<VertexBuffer>(vertices, sizeof(vertices));
-    this->ib_ = std::make_unique<IndexBuffer>(indices, 6);
+	this->vb_ = std::make_unique<VertexBuffer>(interleavedData.data(), interleavedData.size() * sizeof(float));
+	this->ib_ = std::make_unique<IndexBuffer>(objloader.getIndices().data(), objloader.getIndices().size());
+
 
 	VertexBufferLayout layout;
     layout.push<float>(3); // Push 3 floats for position
-    layout.push<float>(2); // Push 2 floats for texture coordinates
+	layout.push<float>(2); // Push 2 floats for texture coordinates
 
 	this->va_->addBuffer(*this->vb_, layout);
 
@@ -45,7 +51,7 @@ GrassPlane::GrassPlane(const std::string& texturePath, const glm::vec3& position
 	this->va_->unbind();
 }
 
-void GrassPlane::draw () const
+void TownHall::draw () const
 {
 	// Bind the shader
 	this->shader_->bind();
@@ -56,7 +62,6 @@ void GrassPlane::draw () const
 	// model matrix
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.0f)); // move the plane in front of the camera
-	model = glm::scale(model, glm::vec3(40.0f, 40.0f, 40.0f)); // Scale the plane to be 10x larger in the x and z directions
 
 	// set uniforms
 	this->shader_->setUniformMat4f("model", model);
@@ -80,10 +85,9 @@ void GrassPlane::draw () const
 	// Draw the model
 	glDrawElements(GL_TRIANGLES, this->ib_->getCount(), GL_UNSIGNED_INT, nullptr);
 	// Check for OpenGL errors
-    GLenum err;
-    while((err = glGetError()) != GL_NO_ERROR)
-    {
-        std::cout << "OpenGL error: " << err << std::endl;
-    }
+	GLenum err;
+	while ((err = glGetError()) != GL_NO_ERROR)
+	{
+		std::cout << "OpenGL error: " << err << std::endl;
+	}
 }
-

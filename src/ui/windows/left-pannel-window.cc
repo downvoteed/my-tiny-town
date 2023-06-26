@@ -112,7 +112,7 @@ void LeftPannelWindow::render()
 		ImGui::SetCursorPosX(Application::instance()->getPannelLeftWidth() - buttonMarginLR * 2 - buttonWidth - 10);
 		auto currenPos = ImGui::GetCursorPos();
 		ImGui::SetCursorPosY(currenPos.y + 7);
-		if (ImGui::Button("Button",(ImVec2(buttonWidth, 25))))
+		if (ImGui::Button("Import",(ImVec2(buttonWidth, 25))))
 		{
 			// Handle button press
 		}

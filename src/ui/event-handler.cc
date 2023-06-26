@@ -30,6 +30,11 @@ void EventHandler::mouseCallback(GLFWwindow* window, double xpos, double ypos)
 			EventHandler* handler = static_cast<EventHandler*>(glfwGetWindowUserPointer(window));
 			handler->getCamera().processMouseLeftClick(xpos, ypos);
 		}
+		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+		{
+			EventHandler* handler = static_cast<EventHandler*>(glfwGetWindowUserPointer(window));
+			handler->getCamera().processMouseRightClick(xpos, ypos);
+		}
 	}
 }
 

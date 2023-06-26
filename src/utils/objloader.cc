@@ -1,4 +1,5 @@
 #include "objloader.hh"
+#include <iostream>
 
 #include <tiny_obj_loader.h>
 
@@ -11,7 +12,7 @@ ObjLoader::ObjLoader(const std::string& filepath)
 
     if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &err, filepath.c_str()))
     {
-        throw std::runtime_error(err);
+        std::cout << "Coud not load obj file: " << filepath << std::endl;
     }
 
     for (const auto& shape : shapes) 
@@ -28,18 +29,18 @@ ObjLoader::ObjLoader(const std::string& filepath)
 
             glm::vec2 texcoord = 
             {
-                attrib.texcoords[2 * size_t(index.texcoord_index) + 0],
-                attrib.texcoords[2 * size_t(index.texcoord_index) + 1]
+                attrib.texcoords[2 * index.texcoord_index + 0],
+                attrib.texcoords[2 * index.texcoord_index + 1]
             };
             this->texCoords_.push_back(texcoord);
 
-            glm::vec3 normal =
-            {
-                attrib.normals[3 * size_t(index.normal_index) + 0],
-                attrib.normals[3 * index.normal_index + 1],
-                attrib.normals[3 * index.normal_index + 2]
-            };
-            this->normals_.push_back(normal);
+           // glm::vec3 normal =
+           // {
+           //     attrib.normals[3 * size_t(index.normal_index) + 0],
+           //     attrib.normals[3 * size_t(index.normal_index) + 1],
+           //     attrib.normals[3 * size_t(index.normal_index) + 2]
+           // };
+           // this->normals_.push_back(normal);
 
             this->indices_.push_back(index.vertex_index);
         }
@@ -48,17 +49,17 @@ ObjLoader::ObjLoader(const std::string& filepath)
 
 std::vector<glm::vec3> ObjLoader::getVertices() const 
 {
-    this->vertices_
+    return this->vertices_;
 }
 
 std::vector<glm::vec3> ObjLoader::getNormals() const 
 {
-    this->normals_;
+    return this->normals_;
 }
 
 std::vector<glm::vec2> ObjLoader::getTexCoords() const 
 {
-    return this->texCoords_
+    return this->texCoords_;
 }
 
 std::vector<unsigned int> ObjLoader::getIndices() const 
