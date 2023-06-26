@@ -36,11 +36,12 @@ GrassPlane::GrassPlane(const std::string& texturePath, const glm::vec3& position
 	this->va_->addBuffer(*this->vb_, layout);
 
     // Load the texture
-    this->texture_ = std::make_unique<Texture>(texturePath);
+	this->armTexture_ = std::make_unique<Texture>("assets/textures/arm/grass-plane.jpg");
+	this->diffTexture_ = std::make_unique<Texture>(texturePath);
 
 
     // Create the shader
-    this->shader_ = std::make_unique<Shader>("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
+    this->shader_ = std::make_unique<Shader>("assets/shaders/vertex.glsl", "assets/shaders/grass-plane-fragment.glsl");
 
 	this->va_->unbind();
 }
@@ -55,8 +56,8 @@ void GrassPlane::draw () const
 
 	// model matrix
 	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.0f)); // move the plane in front of the camera
-	model = glm::scale(model, glm::vec3(40.0f, 40.0f, 40.0f)); // Scale the plane to be 10x larger in the x and z directions
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.0f)); 
+	model = glm::scale(model, glm::vec3(40.0f, 40.0f, 40.0f)); 
 
 	// set uniforms
 	this->shader_->setUniformMat4f("model", model);
@@ -66,12 +67,12 @@ void GrassPlane::draw () const
 	// Bind the shader
 	this->shader_->bind();
 
-	// Set the textureSampler uniform to the texture unit
-	this->shader_->setUniform1i("textureSampler", 0); // 0 is the texture unit
-
 	// Bind the texture
-	this->texture_->bind(0); // 0 is the texture unit
+	armTexture_->bind(0);
+    diffTexture_->bind(1);
 
+	shader_->setUniform1i("armTexture", 0);
+	shader_->setUniform1i("diffTexture", 1);
 	// Bind the vertex array object
 	this->va_->bind();
 	this->vb_->bind();

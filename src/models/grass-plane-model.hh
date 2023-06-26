@@ -1,8 +1,5 @@
 #pragma once
 #include "models/models.hh"
-#include "vertex-buffer.hh"
-#include "vertex-array.hh"
-#include "index-buffer.hh"
 #include "textures.hh"
 #include "shader.hh"
 #include <memory>
@@ -13,5 +10,10 @@ public:
 	~GrassPlane() override = default;
 
     void draw() const override;
+
+	std::unique_ptr<Texture> armTexture_;
+	std::unique_ptr<Texture> diffTexture_;
+	std::unique_ptr<Texture> dispTexture_;
+	std::unique_ptr<Texture> aoTexture_;
 };
 

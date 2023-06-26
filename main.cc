@@ -6,6 +6,8 @@
 #include "scene.hh"
 #include "event-handler.hh"
 #include "grass-plane-model.hh"
+#include "town-hall-model.hh"
+#include "grass-square-model.hh"
 
 int main()
 {
@@ -19,7 +21,16 @@ int main()
 
 	GrassPlane grass("assets/textures/diff/grass.jpg", glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
+
+	TownHall townHall("assets/textures/diff/Walls_Albedo.png", glm::vec3(0.0f, 0.0f, 0.0f),
+		glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
+	GrassSquare grassSquare("assets/textures/diff/grass-square-diffuse.jpg", glm::vec3(0.0f, 0.0f, 0.0f),
+		glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
+
+	
 	scene.addModel(&grass);
+	//scene.addModel(&townHall);
+	scene.addModel(&grassSquare);
 
 
 	while (!app->shouldClose())
@@ -27,6 +38,7 @@ int main()
 		app->pollEvents();
 		imgui.begin();
 		app->render();
+		glEnable(GL_DEPTH_TEST);
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
