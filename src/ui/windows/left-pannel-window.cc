@@ -1,12 +1,14 @@
 #include "left-pannel-window.hh"
 #include "imgui/imgui.h"
+#include "ImGuiFileDialog/ImGuiFileDialog.h"
 #include "application.hh"
 #include <iostream>
 #include <GLFW/glfw3.h>
 
 void LeftPannelWindow::render() 
 {
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(40.f / 255.f, 60.f / 255.f, 36.f / 255.f, 1.f));
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, Application::BACKGROUND_COLOR);
+	ImGui::PushStyleColor(ImGuiCol_Button, Application::SECONDARY_COLOR);
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 5.0f);
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 	ImGui::Begin("left pannel", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
@@ -27,13 +29,33 @@ void LeftPannelWindow::render()
 	}
 	// change background color
 
+	// open Dialog 
+	if (ImGui::Button("Open File Dialog"))
+		ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".cpp,.h,.hpp", ".");
+
+	// display
+	if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey"))
+	{
+		// action if OK
+		if (ImGuiFileDialog::Instance()->IsOk())
+		{
+			std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+			std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+			// action
+		}
+
+		// close
+		ImGuiFileDialog::Instance()->Close();
+	}
+
 	ImGui::SetWindowPos(pos);
-	ImFont *font = ImGui::GetIO().Fonts->Fonts[1];
+	ImFont* font = ImGui::GetIO().Fonts->Fonts[1];
 
 	ImGui::PushFont(font);
 	ImGui::Text("MY TINY TOWN");
 	ImGui::PopFont();
 	ImGui::End();
+	ImGui::PopStyleColor();
 	ImGui::PopStyleColor();
 	ImGui::PopStyleVar();
 	ImGui::PopStyleVar();

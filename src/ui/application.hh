@@ -2,12 +2,15 @@
 #include "utils/singleton.hh"
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
+#include "imgui/imgui.h"
 
 // Singleton Application class
 class Application : public Singleton<Application>
 {
 	friend class Singleton<Application>;
 public:
+	static const ImVec4 BACKGROUND_COLOR;
+	static const ImVec4 SECONDARY_COLOR; 
 	/**
 	 * @brief Initiliase GLFW and create a window
 	 */

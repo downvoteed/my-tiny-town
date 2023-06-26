@@ -4,6 +4,8 @@
 #include "windows/left-pannel-window.hh"
 #include "windows/right-pannel-window.hh"
 
+const ImVec4 Application::BACKGROUND_COLOR = ImVec4(40.f / 255.f, 60.f / 255.f, 36.f / 255.f, 1.f);
+const ImVec4 Application::SECONDARY_COLOR = ImVec4(48.f / 255.f, 28.f / 255.f, 20.f / 255.f, 1.f);
 /**
  * @brief Initiliase GLFW and create a window
  */
