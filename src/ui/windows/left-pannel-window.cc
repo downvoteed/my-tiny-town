@@ -1,7 +1,6 @@
 #include "left-pannel-window.hh"
 #include "imgui/imgui.h"
 #include "ImGuiFileDialog/ImGuiFileDialog.h"
-#include "windows/image-gallery-window.hh"
 #include "application.hh"
 #include <iostream>
 #include <GLFW/glfw3.h>
