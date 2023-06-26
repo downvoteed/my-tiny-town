@@ -1,6 +1,7 @@
 #include "left-pannel-window.hh"
 #include "imgui/imgui.h"
 #include "ImGuiFileDialog/ImGuiFileDialog.h"
+#include "windows/image-gallery-window.hh"
 #include "application.hh"
 #include <iostream>
 #include <GLFW/glfw3.h>
@@ -19,11 +20,13 @@ void LeftPannelWindow::render()
 	ImGui::PushStyleColor(ImGuiCol_Button, Application::SECONDARY_COLOR);
 	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Application::TERCIARY_COLOR);
 	ImGui::PushStyleColor(ImGuiCol_ButtonActive, Application::TERCIARY_COLOR);
+	ImGui::PushStyleColor(ImGuiCol_MenuBarBg, Application::SECONDARY_COLOR);
 
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 5.0f);
 	ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 8.0f);
 	ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+	ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
 
 	ImGui::Begin("left pannel", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 	// remove border
@@ -94,6 +97,36 @@ void LeftPannelWindow::render()
 		ImGui::PopFont();
 	}
 
+	// Gallery preview obj
+
+	ImGui::NewLine();
+
+	ImGui::SetCursorPosX(buttonMarginLR);
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 10));
+	ImGui::BeginChild("left pannel child", ImVec2(Application::instance()->getPannelLeftWidth() - buttonMarginLR * 2, 700),
+		true, ImGuiWindowFlags_MenuBar);
+
+	if (ImGui::BeginMenuBar())
+	{
+		ImGui::PopStyleVar();
+		ImGui::Text("Assets");
+		ImGui::SetCursorPosX(Application::instance()->getPannelLeftWidth() - buttonMarginLR * 2 - buttonWidth - 10);
+		auto currenPos = ImGui::GetCursorPos();
+		ImGui::SetCursorPosY(currenPos.y + 7);
+		if (ImGui::Button("Button",(ImVec2(buttonWidth, 25))))
+		{
+			// Handle button press
+		}
+		ImGui::EndMenuBar();
+	}
+	else
+	{
+		// to pop in any case
+		ImGui::PopStyleVar();
+	}
+
+	ImGui::EndChild();
+
 	ImGui::End();
 
 	ImGui::PopStyleColor();
@@ -102,7 +135,9 @@ void LeftPannelWindow::render()
 	ImGui::PopStyleColor();
 	ImGui::PopStyleColor();
 	ImGui::PopStyleColor();
+	ImGui::PopStyleColor();
 
+	ImGui::PopStyleVar();
 	ImGui::PopStyleVar();
 	ImGui::PopStyleVar();
 	ImGui::PopStyleVar();

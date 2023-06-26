@@ -39,10 +39,12 @@ void RightPannelWindow::render()
 	// change font
 	ImGui::Text("Hello from right pannel");
 	ImGui::End();
+
 	ImGui::PopStyleColor();
 	ImGui::PopStyleColor();
 	ImGui::PopStyleColor();
 	ImGui::PopStyleColor();
+
 	ImGui::PopStyleVar();
 	ImGui::PopStyleVar();
 }
