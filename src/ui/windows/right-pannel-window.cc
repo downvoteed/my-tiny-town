@@ -11,8 +11,10 @@ void RightPannelWindow::render()
 	ImGui::PushStyleColor(ImGuiCol_TitleBg, Application::SECONDARY_COLOR);
 	ImGui::PushStyleColor(ImGuiCol_TitleBgActive, Application::SECONDARY_COLOR);
 	ImGui::PushStyleColor(ImGuiCol_TitleBgCollapsed, Application::SECONDARY_COLOR);
+
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 5.0f);
+
 	ImGui::Begin("Model properties", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 	// remove border
 

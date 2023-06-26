@@ -14,7 +14,7 @@ ImGuiLayer::ImGuiLayer(GLFWwindow* window)
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	// [0] body text
-	io.Fonts->AddFontFromFileTTF("assets/fonts/ContrailOne-Regular.ttf", 14);
+	io.Fonts->AddFontFromFileTTF("assets/fonts/ContrailOne-Regular.ttf", 18);
 	// H1 title
 	// [1]
 	io.Fonts->AddFontFromFileTTF("assets/fonts/ContrailOne-Regular.ttf", 45);

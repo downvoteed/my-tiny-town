@@ -11,6 +11,7 @@ class Application : public Singleton<Application>
 public:
 	static const ImVec4 BACKGROUND_COLOR;
 	static const ImVec4 SECONDARY_COLOR; 
+	static const ImVec4 TERCIARY_COLOR;
 	/**
 	 * @brief Initiliase GLFW and create a window
 	 */
