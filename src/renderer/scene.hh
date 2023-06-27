@@ -2,7 +2,7 @@
 #include "models/models.hh"
 #include "camera/camera.hh"
 #include "frame-buffer.hh"
-#include <vector>
+#include <map>
 
 //TODO: add documentation
 class Scene 
@@ -13,7 +13,7 @@ public:
     * @brief Add a Moddel to the scene
     * @param model the model to add
     */
-    void addModel(Model* model);
+    void addModel(size_t id, Model* model);
     /**
     * @brief Draw all the models in the scene
 	*/
@@ -30,7 +30,7 @@ public:
     FrameBuffer& getFrameBuffer();
 
 private:
-    std::vector<Model*> models_;
+    std::map<size_t, Model*> models_;
     Camera camera_;
     FrameBuffer frameBuffer_;
 };

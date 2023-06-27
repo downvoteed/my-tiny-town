@@ -17,65 +17,61 @@ Scene::Scene() : camera_(35.0f, 800.0f / 600.0f, 0.1f, 100.0f), frameBuffer_()
 
 }
 
-void Scene::addModel(Model* model)
+void Scene::addModel(size_t id, Model* model)
 {
-	this->models_.push_back(model);
+    this->models_.insert({id, model});
 }
 
 void Scene::draw() 
 {
+    glm::mat4 view = this->camera_.getViewMatrix();
+    glm::mat4 projection = camera_.getProjectionMatrix();
 
+    if (!ImGui::GetIO().WantCaptureMouse && glfwGetMouseButton(Application::instance()->getWindow(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+    {
+        FrameBuffer& fbo = this->getFrameBuffer();
+        fbo.bind();
 
-	// if left mouse button is pressed
-	//fbo.bind();
-	glm::mat4 view = this->camera_.getViewMatrix();
-	glm::mat4 projection = camera_.getProjectionMatrix();
+        for (const auto& [_, model] : this->models_)
+        {
+            model->setProjectionMatrix(projection);
+            model->setViewMatrix(view);
+            model->draw(true);
+        }
 
+        unsigned char pixelColor[3];
+        double mouseX, mouseY;
 
-	for (Model* model : this->models_)
-	{
-		if (!ImGui::GetIO().WantCaptureMouse)
-		{
-			if (glfwGetMouseButton(Application::instance()->getWindow(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
-			{
-				FrameBuffer& fbo = this->getFrameBuffer();
-				fbo.bind();
+        glfwGetCursorPos(Application::instance()->getWindow(), &mouseX, &mouseY);
 
-				model->draw(true);
+        unsigned int viewport[4];
+        glGetIntegerv(GL_VIEWPORT, (int*)viewport);
 
-				glFinish();
+        // Convert cursor coordinates to texture coordinates
+        int textureX = static_cast<int>(mouseX);
+        int textureY = static_cast<int>(viewport[3] - mouseY);
 
-				unsigned char pixelColor[3];
-				double mouseX, mouseY;
+        std::cout << textureX << " " << textureY << std::endl;
 
-				glfwGetCursorPos(Application::instance()->getWindow(), &mouseX, &mouseY);
+        glReadPixels(textureX, textureY, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixelColor);
 
-				unsigned int viewport[4];
-				glGetIntegerv(GL_VIEWPORT, (int*)viewport);
+        glm::vec3 color = glm::vec3(pixelColor[0], pixelColor[1], pixelColor[2]);
+        std::cout << "Color: " << color.x << " " << color.y << " " << color.z << std::endl;
 
-				// Convertir les coordonnées du curseur en coordonnées de texture
-				int textureX = static_cast<int>(mouseX);
-				int textureY = static_cast<int>(viewport[3] - mouseY);
+        size_t objectID = colorToId(color);
+        std::cout << "Object ID: " << objectID << std::endl;
 
-				std::cout << textureX << " " << textureY << std::endl;
+        this->models_.at(objectID)->setSelected(true);
 
-				glReadPixels(textureX, textureY, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixelColor);
+        fbo.unbind();
+    }
 
-				glm::vec3 color = glm::vec3(pixelColor[0], pixelColor[1], pixelColor[2]);
-				std::cout << "Color: " << color.x << " " << color.y << " " << color.z << std::endl;
-
-				size_t objectID = colorToId(color);
-				std::cout << "Object ID: " << objectID << std::endl;
-				// TODO
-
-				fbo.unbind();
-			}
-		}
-		//std::cout << "Drawing model: " << model->getID() << std::endl;
-		model->setProjectionMatrix(projection);
-		model->setViewMatrix(view);
-		model->draw(false);
-	}
+    for (const auto& [_, model] : this->models_)
+    {
+        model->setProjectionMatrix(projection);
+        model->setViewMatrix(view);
+        model->draw(false);
+    }
 }
 
 Camera& Scene::getCamera()

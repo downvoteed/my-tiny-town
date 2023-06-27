@@ -28,9 +28,9 @@ int main()
 		glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
 
 	
-	scene.addModel(&grass);
+	scene.addModel(grass.getID(), &grass);
 	//scene.addModel(&townHall);
-	scene.addModel(&grassSquare);
+	scene.addModel(grassSquare.getID(), &grassSquare);
 
 
 	while (!app->shouldClose())
@@ -39,8 +39,7 @@ int main()
 		imgui.begin();
 		app->render();
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT |
-			GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
 
 		scene.draw();
