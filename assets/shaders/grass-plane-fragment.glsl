@@ -2,6 +2,8 @@
 
 in vec2 TexCoord;
 in vec3 FragPos;
+uniform vec3 objectColor;
+uniform bool isPicking;
 
 out vec4 color;
 
@@ -10,12 +12,19 @@ uniform sampler2D armTexture;
 
 void main()
 {
-    vec3 diffColor = texture(diffTexture, TexCoord).rgb;
-    float ao = texture(armTexture, TexCoord).r;
-    float roughness = texture(armTexture, TexCoord).g;
-    float metallic = texture(armTexture, TexCoord).b;
+    if (isPicking)
+        color = vec4(objectColor, 1.0);
+    else
+    {
 
-    vec3 finalColor = ao * diffColor;
+		vec3 diffColor = texture(diffTexture, TexCoord).rgb;
+		float ao = texture(armTexture, TexCoord).r;
+		float roughness = texture(armTexture, TexCoord).g;
+		float metallic = texture(armTexture, TexCoord).b;
 
-    color = vec4(finalColor, 1.0);
+		vec3 finalColor = ao * diffColor;
+
+		color = vec4(finalColor, 1.0);
+    }
+
 }

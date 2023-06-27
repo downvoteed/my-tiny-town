@@ -2,6 +2,7 @@ target_sources(MyTinyTown PRIVATE
 "textures/textures.cc"
 "camera/camera.cc"
 "utils/objloader.cc"
+"utils/utils.cc"
 #"renderer/renderer.cc"
 )
 

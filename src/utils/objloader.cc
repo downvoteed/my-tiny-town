@@ -34,12 +34,12 @@ ObjLoader::ObjLoader(const std::string& filepath)
             };
             this->texCoords_.push_back(texcoord);
 
-           // glm::vec3 normal =
-           // {
-           //     attrib.normals[3 * size_t(index.normal_index) + 0],
-           //     attrib.normals[3 * size_t(index.normal_index) + 1],
-           //     attrib.normals[3 * size_t(index.normal_index) + 2]
-           // };
+           glm::vec3 normal =
+           {
+               attrib.normals[3 * size_t(index.normal_index) + 0],
+               attrib.normals[3 * size_t(index.normal_index) + 1],
+               attrib.normals[3 * size_t(index.normal_index) + 2]
+           };
            // this->normals_.push_back(normal);
 
             this->indices_.push_back(index.vertex_index);

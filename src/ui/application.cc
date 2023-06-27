@@ -13,7 +13,7 @@ const ImVec4 Application::TERCIARY_COLOR = ImVec4(97.f / 255.f, 53.f / 255.f, 36
 Application::Application()
 {
 	// Initialise GLFW
-	if (!glfwInit()) 
+	if (!glfwInit())
 	{
 		std::cerr << "Failed to initialize GLFW" << std::endl;
 		return;
@@ -29,7 +29,7 @@ Application::Application()
 	GLFWmonitor* monitor = glfwGetPrimaryMonitor();
 	const GLFWvidmode* mode = glfwGetVideoMode(monitor);
 	this->window_ = glfwCreateWindow(mode->width, mode->height, "My Tiny Town", NULL, NULL);
-	if (this->window_ == NULL) 
+	if (this->window_ == NULL)
 	{
 		std::cerr << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
@@ -39,7 +39,7 @@ Application::Application()
 	glfwMakeContextCurrent(window_);
 
 	// Initialise GLAD
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) 
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
 		std::cerr << "Failed to initialize GLAD" << std::endl;
 		return;
@@ -48,7 +48,9 @@ Application::Application()
 	// Set the viewport
 	int width, height;
 	glfwGetFramebufferSize(this->window_, &width, &height);
-	glViewport(this->pannelLeftWidth_, 0, mode->width, mode->height);
+	std::cout << "viewport: width " << width - this->pannelLeftWidth_ << "x" << height << std::endl;
+	std::cout << "viewport height: " << height << std::endl;
+	glViewport(this->pannelLeftWidth_, 0, mode->width - this->pannelLeftWidth_, mode->height);
 }
 
 

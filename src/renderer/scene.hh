@@ -1,6 +1,7 @@
 #pragma once
 #include "models/models.hh"
 #include "camera/camera.hh"
+#include "frame-buffer.hh"
 #include <vector>
 
 //TODO: add documentation
@@ -23,7 +24,13 @@ public:
      */
     Camera& getCamera();
 
+    /**
+	 * @brief Get the Frame Buffer object
+	 */
+    FrameBuffer& getFrameBuffer();
+
 private:
     std::vector<Model*> models_;
     Camera camera_;
+    FrameBuffer frameBuffer_;
 };

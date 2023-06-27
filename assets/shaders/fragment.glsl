@@ -3,13 +3,17 @@
 
 in vec2 TexCoord;
 
+uniform vec3 objectColor;
+uniform bool isPicking;
 out vec4 color;
 
-// Texture sampler
 uniform sampler2D textureSampler;
 
 void main()
 {
-    // Sample the color from the texture
-    color = texture(textureSampler, TexCoord);
+    if (isPicking)
+        color = vec4(objectColor, 1.0);
+    else
+		color = texture(textureSampler, TexCoord);
+
 }

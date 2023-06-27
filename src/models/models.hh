@@ -14,6 +14,7 @@
 class Model 
 {
 public:
+    static size_t current_ID;
     /**
      * @brief Construct a new Model object. 	
 	 * @param texturePath 
@@ -26,6 +27,7 @@ public:
         position_(position), size_(size), rotation_(rotation) 
     {
 		this->texture_ = std::make_unique<Texture>(texturePath);
+        this->ID_ = current_ID++;
     }
     virtual ~Model() = default;
 
@@ -104,7 +106,16 @@ public:
 	 */
     virtual void draw() const = 0;
 
+    /**
+     *  @brief return object ID.
+     */
+    virtual size_t getID() const
+    {
+        return this->ID_;
+    }
+
 protected:
+    size_t ID_;
     float rotation_;
     glm::mat4 projectionMatrix_;
 	glm::mat4 viewMatrix_;

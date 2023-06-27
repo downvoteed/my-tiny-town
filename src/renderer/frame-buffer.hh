@@ -6,6 +6,10 @@ class FrameBuffer
 public:
     FrameBuffer();
     ~FrameBuffer();
+	FrameBuffer(const FrameBuffer&) = delete;
+	FrameBuffer& operator=(const FrameBuffer&) = delete;
+	FrameBuffer(FrameBuffer&&) = delete;
+    FrameBuffer& operator=(FrameBuffer&&) = delete;
 
     void bind() const;
     void unbind() const;

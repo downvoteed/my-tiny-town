@@ -35,6 +35,10 @@ public:
 	 */
 	void setUniform1f(const std::string& name, float value);
 	/**
+	 * @brief Sets the vec3 uniform with the given name to the given values.
+	 */
+	void setUniform3f(const std::string& name, float v0, float v1, float v2);
+	/**
 	 * @brief Sets the vec4 uniform with the given name to the given values.
 	 */
 	void setUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
