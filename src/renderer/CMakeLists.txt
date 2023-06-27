@@ -5,4 +5,5 @@ target_sources(MyTinyTown PRIVATE
 "shader.cc"
 "index-buffer.cc"
 "scene.cc"
+"frame-buffer.cc"
 )
