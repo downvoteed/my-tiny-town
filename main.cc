@@ -16,7 +16,7 @@ int main()
 	// define callbacks before intializing ImGui
 	// https://stackoverflow.com/a/72509936
 	EventHandler eventHandler = EventHandler(app->getWindow(), scene.getCamera());
-	eventHandler.registerCallbacks();
+//	eventHandler.registerCallbacks();
 	ImGuiLayer imgui = ImGuiLayer(app->getWindow());
 
 	GrassPlane grass("assets/textures/diff/grass.jpg", glm::vec3(0.0f, 0.0f, 0.0f),
@@ -38,9 +38,10 @@ int main()
 		app->pollEvents();
 		imgui.begin();
 		app->render();
-		glEnable(GL_DEPTH_TEST);
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT |
+			GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_DEPTH_TEST);
 
 		scene.draw();
 		imgui.end();
