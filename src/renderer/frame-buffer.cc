@@ -28,9 +28,11 @@ FrameBuffer::FrameBuffer()
     int width, height;
 	GL_CALL(glfwGetFramebufferSize(window, &width, &height));
 
-    std::cout << "width : " << width - Application::instance()->getPannelLeftWidth() << std::endl;
-    std::cout << "height : " << height << std::endl;
-    GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width - Application::instance()->getPannelLeftWidth(), height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL));
+	GLint viewport[4];
+	glGetIntegerv(GL_VIEWPORT, viewport);
+    std::cout << "viewport : " << viewport[0] << " " << viewport[1] << " " << viewport[2] << " " << viewport[3] << std::endl;
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, viewport[2], viewport[3], 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+
     GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
     GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 

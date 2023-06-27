@@ -15,5 +15,5 @@ int colorToId(const glm::vec3& color)
     int g = static_cast<int>(color.g * 255);
     int b = static_cast<int>(color.b * 255);
 
-    return (r << 0) | (g << 8) | (b << 16);
+    return ((r << 0) | (g << 8) | (b << 16)) / 255;
 }

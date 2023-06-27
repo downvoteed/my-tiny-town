@@ -3,6 +3,7 @@
 #include "utils/objloader.hh"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "utils/utils.hh"
 #include <vector>
 
 GrassSquare::GrassSquare(const std::string& texturePath, const glm::vec3& position, const glm::vec3& size, float rotation)
@@ -51,7 +52,7 @@ GrassSquare::GrassSquare(const std::string& texturePath, const glm::vec3& positi
 	this->va_->unbind();
 }
 
-void GrassSquare::draw () const
+void GrassSquare::draw(bool isPicking) const
 {
 	// Bind the shader
 	this->shader_->bind();
@@ -84,8 +85,20 @@ void GrassSquare::draw () const
 	this->vb_->bind();
 	this->ib_->bind();
 
+	// generator unique color from ID for FBO object picking
+	glm::vec3 uniqueColor = idToColor(this->getID()); 
+	this->shader_->setUniform3f("objectColor", uniqueColor.r, uniqueColor.g, uniqueColor.b);
+	this->shader_->setUniform1i("isPicking", 1);
+	if (isPicking)
+		this->shader_->setUniform1i("isPicking", 1);
+	else
+		this->shader_->setUniform1i("isPicking", 0);
+
 	// Draw the model
 	glDrawElements(GL_TRIANGLES, this->ib_->getCount(), GL_UNSIGNED_INT, nullptr);
+
+	this->shader_->setUniform1i("isPicking", 0);
+
 	// Check for OpenGL errors
 	GLenum err;
 	while ((err = glGetError()) != GL_NO_ERROR)

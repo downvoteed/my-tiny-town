@@ -7,5 +7,5 @@ public:
 	TownHall(const std::string& texturePath, const glm::vec3& position, const glm::vec3& size, float rotation);
 	~TownHall() = default;
 
-	void draw() const override;
+	void draw(bool isPicking) const override;
 };

@@ -27,7 +27,7 @@ public:
         position_(position), size_(size), rotation_(rotation) 
     {
 		this->texture_ = std::make_unique<Texture>(texturePath);
-        this->ID_ = current_ID++;
+        this->ID_ = ++current_ID;
     }
     virtual ~Model() = default;
 
@@ -104,7 +104,7 @@ public:
     /**
 	 * @brief draw the model.
 	 */
-    virtual void draw() const = 0;
+    virtual void draw(bool isPicking) const = 0;
 
     /**
      *  @brief return object ID.
@@ -114,7 +114,18 @@ public:
         return this->ID_;
     }
 
+    virtual bool isSelected() const
+    {
+        return this->isSelected_;
+    }
+
+    virtual void setToSelected()
+	{
+		this->isSelected_ = true;
+	}
+
 protected:
+    bool isSelected_ = false;
     size_t ID_;
     float rotation_;
     glm::mat4 projectionMatrix_;

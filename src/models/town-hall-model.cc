@@ -52,7 +52,7 @@ TownHall::TownHall(const std::string& texturePath, const glm::vec3& position, co
 	this->va_->unbind();
 }
 
-void TownHall::draw () const
+void TownHall::draw(bool isPicking) const
 {
 	// Bind the shader
 	this->shader_->bind();
@@ -86,7 +86,11 @@ void TownHall::draw () const
 	// generator unique color from ID for FBO object picking
 	glm::vec3 uniqueColor = idToColor(this->getID()); 
 	this->shader_->setUniform3f("objectColor", uniqueColor.r, uniqueColor.g, uniqueColor.b);
-	this->shader_->setUniform1i("isPicking", 1);
+
+	if (isPicking)
+		this->shader_->setUniform1i("isPicking", 1);
+	else
+		this->shader_->setUniform1i("isPicking", 0);
 
 	// Draw the model
 	glDrawElements(GL_TRIANGLES, this->ib_->getCount(), GL_UNSIGNED_INT, nullptr);

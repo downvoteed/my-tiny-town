@@ -14,9 +14,8 @@ void main()
 {
     if (isPicking)
         color = vec4(objectColor, 1.0);
-    else
-    {
-
+	else
+	{
 		vec3 diffColor = texture(diffTexture, TexCoord).rgb;
 		float ao = texture(armTexture, TexCoord).r;
 		float roughness = texture(armTexture, TexCoord).g;
@@ -25,6 +24,6 @@ void main()
 		vec3 finalColor = ao * diffColor;
 
 		color = vec4(finalColor, 1.0);
-    }
+	}
 
 }
