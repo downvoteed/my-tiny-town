@@ -10,6 +10,8 @@ const short buttonMarginTB = 20;
 const short buttonWidth = 70;
 const short buttonHeight = 40;
 
+LeftPannelWindow::LeftPannelWindow(Scene& scene) : Window(scene) {}
+
 void LeftPannelWindow::render() 
 {
 	//

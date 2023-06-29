@@ -9,6 +9,7 @@ class Scene
 {
 public:
     Scene();
+    Scene (const Scene&) = default;
     /**
     * @brief Add a Moddel to the scene
     * @param model the model to add
@@ -29,8 +30,20 @@ public:
 	 */
     FrameBuffer& getFrameBuffer();
 
+    /**
+     * @brief Set the selected model
+     */
+    void setSelectedModel(size_t id);
+
+    /**
+     * @brief Get the selected model
+	 */
+    Model* getSelectedModel();
+
+
 private:
     std::map<size_t, Model*> models_;
+    Model *selectedModel_ = nullptr;
     Camera camera_;
     FrameBuffer frameBuffer_;
 };

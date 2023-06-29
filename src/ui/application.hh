@@ -3,6 +3,7 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include "imgui/imgui.h"
+#include "scene.hh"
 
 // Singleton Application class
 class Application : public Singleton<Application>
@@ -54,7 +55,7 @@ public:
 	/**
 	 * Render interface
 	 */
-	void render() const;
+	void render(Scene& scene) const;
 
 	int getInitialViewportWidth() const;
 	int getInitialViewportHeight() const;

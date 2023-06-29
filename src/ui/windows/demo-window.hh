@@ -7,7 +7,7 @@
 class DemoWindow : public Window
 {
 public:
-	DemoWindow() = default;
+	DemoWindow(Scene& scene);
 	/**
 	 * @brief the designed window.
 	 */

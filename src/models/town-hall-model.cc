@@ -6,8 +6,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <vector>
 
-TownHall::TownHall(const std::string& texturePath, const glm::vec3& position, const glm::vec3& size, float rotation)
-    : Model(texturePath, position, size, rotation) {
+TownHall::TownHall(std::string name, const std::string& texturePath, const glm::vec3& position, const glm::vec3& size, float rotation)
+    : Model(name, texturePath, position, size, rotation) {
     // Create the plane model
 
 
@@ -51,7 +51,7 @@ TownHall::TownHall(const std::string& texturePath, const glm::vec3& position, co
 	this->va_->unbind();
 }
 
-void TownHall::draw(bool isPicking) const
+void TownHall::draw(bool isPicking) 
 {
 	// Bind the shader
 	this->shader_->bind();
@@ -60,11 +60,11 @@ void TownHall::draw(bool isPicking) const
 	glm::mat4 projection = this->getProjectionMatrix();
 
 	// model matrix
-	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.0f)); // move the plane in front of the camera
+	this->modelMatrix_  = glm::mat4(1.0f); // identity matrix
+	this->modelMatrix_ = glm::translate(this->modelMatrix_, glm::vec3(0.0f, 0.0f, -3.0f)); // move the plane in front of the camera
 
 	// set uniforms
-	this->shader_->setUniformMat4f("model", model);
+	this->shader_->setUniformMat4f("model", this->modelMatrix_);
 	this->shader_->setUniformMat4f("view", view);
 	this->shader_->setUniformMat4f("projection", projection);
 

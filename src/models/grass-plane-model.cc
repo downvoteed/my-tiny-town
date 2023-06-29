@@ -20,8 +20,8 @@
     } while (0)
 
 
-GrassPlane::GrassPlane(const std::string& texturePath, const glm::vec3& position, const glm::vec3& size, float rotation)
-    : Model(texturePath, position, size, rotation) {
+GrassPlane::GrassPlane(std::string name, const std::string& texturePath, const glm::vec3& position, const glm::vec3& size, float rotation)
+    : Model(name, texturePath, position, size, rotation) {
     // Create the plane model
     float vertices[] = {
         // positions          // texture coords
@@ -57,7 +57,7 @@ GrassPlane::GrassPlane(const std::string& texturePath, const glm::vec3& position
 	this->va_->unbind();
 }
 
-void GrassPlane::draw(bool isPicking) const
+void GrassPlane::draw(bool isPicking) 
 {
 	// Bind the shader
 	this->shader_->bind();
@@ -66,12 +66,12 @@ void GrassPlane::draw(bool isPicking) const
 	glm::mat4 projection = this->getProjectionMatrix();
 
 	// model matrix
-	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.0f)); 
-	model = glm::scale(model, glm::vec3(40.0f, 40.0f, 40.0f)); 
+	this->modelMatrix_ = glm::mat4(1.0f);
+	this->modelMatrix_ = glm::translate(this->modelMatrix_, glm::vec3(0.0f, 0.0f, -3.0f)); 
+	this->modelMatrix_ = glm::scale(this->modelMatrix_, glm::vec3(40.0f, 40.0f, 40.0f)); 
 
 	// set uniforms
-	this->shader_->setUniformMat4f("model", model);
+	this->shader_->setUniformMat4f("model", this->modelMatrix_);
 	this->shader_->setUniformMat4f("view", view);
 	this->shader_->setUniformMat4f("projection", projection);
 

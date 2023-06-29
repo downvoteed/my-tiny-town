@@ -5,7 +5,7 @@
 class LeftPannelWindow : public Window 
 {
 public:
-	LeftPannelWindow() = default;
+	LeftPannelWindow(Scene& scene);
 	~LeftPannelWindow() = default;
 	void render() override;
 };

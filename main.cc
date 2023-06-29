@@ -19,12 +19,12 @@ int main()
 	eventHandler.registerCallbacks();
 	ImGuiLayer imgui = ImGuiLayer(app->getWindow());
 
-	GrassPlane grass("assets/textures/diff/grass.jpg", glm::vec3(0.0f, 0.0f, 0.0f),
+	GrassPlane grass("Grass plane", "assets/textures/diff/grass.jpg", glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
 
 //	TownHall townHall("assets/textures/diff/Walls_Albedo.png", glm::vec3(0.0f, 0.0f, 0.0f),
 //		glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
-	GrassSquare grassSquare("assets/textures/diff/grass-square-diffuse.jpg", glm::vec3(0.0f, 0.0f, 0.0f),
+	GrassSquare grassSquare("Grass block", "assets/textures/diff/grass-square-diffuse.jpg", glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
 
 	
@@ -37,7 +37,7 @@ int main()
 	{
 		app->pollEvents();
 		imgui.begin();
-		app->render();
+		app->render(scene);
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 

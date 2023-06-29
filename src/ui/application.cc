@@ -51,7 +51,7 @@ Application::Application()
 	glfwGetFramebufferSize(this->window_, &width, &height);
 	std::cout << "viewport: width " << width - this->pannelLeftWidth_ << "x" << height << std::endl;
 	std::cout << "viewport height: " << height << std::endl;
-	glViewport(this->pannelLeftWidth_, 0, mode->width - this->pannelLeftWidth_, mode->height);
+	glViewport(this->pannelLeftWidth_, 0, width - this->pannelLeftWidth_, height);
 
 	unsigned int viewports[4];
 	this->initialViewportWidth_ = viewports[2] = width;
@@ -124,11 +124,11 @@ int Application::getPannelLeftWidth() const
 	return this->pannelLeftWidth_;
 }
 
-void Application::render() const
+void Application::render(Scene& scene) const
 {
-	LeftPannelWindow leftPannelWindow;
-	RightPannelWindow rightPannelWindow;
-	DemoWindow demoWindow;
+	LeftPannelWindow leftPannelWindow(scene);
+	RightPannelWindow rightPannelWindow(scene);
+	DemoWindow demoWindow(scene);
 
 	leftPannelWindow.render();
 	rightPannelWindow.render();

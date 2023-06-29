@@ -15,8 +15,8 @@
         } \
     } while (0)
 
-GrassSquare::GrassSquare(const std::string& texturePath, const glm::vec3& position, const glm::vec3& size, float rotation)
-    : Model(texturePath, position, size, rotation) {
+GrassSquare::GrassSquare(std::string name, const std::string& texturePath, const glm::vec3& position, const glm::vec3& size, float rotation)
+    : Model(name, texturePath, position, size, rotation) {
     // Create the plane model
 
 
@@ -61,7 +61,7 @@ GrassSquare::GrassSquare(const std::string& texturePath, const glm::vec3& positi
 
 }
 
-void GrassSquare::draw(bool isPicking) const
+void GrassSquare::draw(bool isPicking) 
 {
 	// Bind the shader
 	this->shader_->bind();

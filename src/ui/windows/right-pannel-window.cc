@@ -4,8 +4,13 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
 
+RightPannelWindow::RightPannelWindow(Scene& scene) : Window(scene) { }
+
 void RightPannelWindow::render() 
 {
+
+	if (!this->scene.getSelectedModel())
+		return;
 
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(40.f / 255.f, 60.f / 255.f, 36.f / 255.f, 1.f));
 	ImGui::PushStyleColor(ImGuiCol_TitleBg, Application::SECONDARY_COLOR);
@@ -37,7 +42,24 @@ void RightPannelWindow::render()
 	}
 
 	// change font
-	ImGui::Text("Hello from right pannel");
+	std::string name = "No model selected";
+	std::string textureName = "No model selected";
+	float posX = 0, posY = 0, posZ = 0;
+	if (this->scene.getSelectedModel())
+	{
+		Model* model = this->scene.getSelectedModel();
+		name = model->getName().c_str();
+		posX = model->getPosition().x;
+		posY = model->getPosition().y;
+		posZ = model->getPosition().z;
+		textureName = model->getTextureName();
+		
+	}
+
+	ImGui::Text("Name: %s" , name.c_str());
+	ImGui::Text("Pos: (x: %.2f, y: %.2f, z: %.2f)", posX, posY, posZ);
+	ImGui::Text("Scale: 0");
+	ImGui::Text("Texture: %s", textureName.c_str());
 	ImGui::End();
 
 	ImGui::PopStyleColor();

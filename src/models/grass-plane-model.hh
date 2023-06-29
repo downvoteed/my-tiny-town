@@ -6,10 +6,10 @@
 
 class GrassPlane : public Model {
 public:
-    GrassPlane(const std::string& texturePath, const glm::vec3& position, const glm::vec3& size, float rotation);
+	GrassPlane(std::string name, const std::string& texturePath, const glm::vec3& position, const glm::vec3& size, float rotation);
 	~GrassPlane() override = default;
 
-    void draw(bool isPicking) const override;
+    void draw(bool isPicking) override;
 
 	std::unique_ptr<Texture> armTexture_;
 	std::unique_ptr<Texture> diffTexture_;

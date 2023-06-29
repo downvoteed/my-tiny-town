@@ -34,10 +34,12 @@ public:
 	 * @param rotation 
 	 .
      */
-    Model(const std::string& texturePath, const glm::vec3& position, const glm::vec3& size, float rotation) : 
-        position_(position), size_(size), rotation_(rotation) 
+    Model(std::string name, const std::string& texturePath, const glm::vec3& position, const glm::vec3& size, float rotation) : 
+        name_(name), position_(position), size_(size), rotation_(rotation) 
     {
 		this->texture_ = std::make_unique<Texture>(texturePath);
+		// get file name without extension
+		this->textureName_ = texturePath.substr(texturePath.find_last_of("/\\") + 1);
 		this->outlineShader_ = std::make_unique<Shader>("assets/shaders/outline-vertex.glsl", "assets/shaders/outline-fragment.glsl");
         this->ID_ = ++current_ID;
     }
@@ -69,7 +71,7 @@ public:
      */
     virtual glm::vec3 getPosition() const
     {
-        return this->position_;
+        return this->modelMatrix_[3];
     }
     /**
      * @brief set the projection matrix of the model.
@@ -116,7 +118,7 @@ public:
     /**
 	 * @brief draw the model.
 	 */
-    virtual void draw(bool isPicking) const = 0;
+    virtual void draw(bool isPicking) = 0;
 
     /**
      *  @brief return object ID.
@@ -176,13 +178,13 @@ public:
 
 
 
-		glm::mat4 model = glm::mat4(1.0f);
+		this->modelMatrix_ = glm::mat4(1.0f);
 		glm::mat4 view = this->getViewMatrix();
 		glm::mat4 projection = this->getProjectionMatrix();
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.0f)); // move the plane in front of the camera
-		model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f)); // scale the plane
+		this->modelMatrix_ = glm::translate(this->modelMatrix_, glm::vec3(0.0f, 0.0f, -3.0f)); // move the plane in front of the camera
+		this->modelMatrix_ = glm::scale(this->modelMatrix_, glm::vec3(0.01f, 0.01f, 0.01f)); // scale the plane
 
-		outlineShader_->setUniformMat4f("model", model);
+		outlineShader_->setUniformMat4f("model", this->modelMatrix_);
 		outlineShader_->setUniformMat4f("view", view);
 		outlineShader_->setUniformMat4f("projection", projection);
 		outlineShader_->setUniform1f("outlineThickness", 1);
@@ -206,12 +208,25 @@ public:
 
 	}
 
+	/**
+	 * @brief get the name of the model.
+	 */
+
+	const std::string& getName()
+	{
+		return this->name_;
+	}
+
+	const std::string& getTextureName()
+	{
+		return this->textureName_;
+	}
+
 protected:
-	bool isSelected_ = false;
-	size_t ID_;
 	float rotation_;
 	glm::mat4 projectionMatrix_;
 	glm::mat4 viewMatrix_;
+	glm::mat4 modelMatrix_;
 	std::unique_ptr<VertexBuffer> vb_;
 	std::unique_ptr<IndexBuffer> ib_;
 	std::unique_ptr<VertexArray> va_;
@@ -220,6 +235,12 @@ protected:
 	std::unique_ptr<Shader> outlineShader_;
 	glm::vec3 position_;
 	glm::vec3 size_;
+
+private:
+	std::string name_;
+	std::string textureName_;
 	std::string texturePath_;
+	bool isSelected_ = false;
+	size_t ID_;
 };
 

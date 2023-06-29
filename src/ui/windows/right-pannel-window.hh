@@ -5,7 +5,7 @@
 class RightPannelWindow : public Window 
 {
 public:
-	RightPannelWindow() = default;
+	RightPannelWindow(Scene& scene);
 	~RightPannelWindow() = default;
 	void render() override;
 };

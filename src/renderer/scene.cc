@@ -67,18 +67,25 @@ void Scene::draw()
 		size_t objectID = colorToId(color);
 		std::cout << "Object ID: " << objectID << std::endl;
 
-
-		auto model = this->models_.at(objectID);
-		bool isAlreadySelected = model->isSelected();
 		for (const auto& [_, tempModel] : this->models_)
-			tempModel->setSelected(false);
-
-
-		if (objectID != 1 && models_.find(objectID) != models_.end())
 		{
-			if (!isAlreadySelected)
+			tempModel->setSelected(false);
+			if (models_.find(objectID) != models_.end())
+				this->setSelectedModel(objectID);
+		}
+		if (models_.find(objectID) != models_.end())
+		{
+			auto model = this->models_.at(objectID);
+			bool isAlreadySelected = model->isSelected();
+
+			if (!isAlreadySelected && objectID != 1)
 				model->setSelected(true);
 		}
+		else
+		{
+			this->setSelectedModel(0);
+		}
+
 
 		fbo.unbind();
 	}
@@ -95,9 +102,6 @@ void Scene::draw()
 			model->draw(false);
 	}
 	mouseButtonPressed = mouseButtonCurrentlyPressed;
-
-
-
 }
 
 Camera& Scene::getCamera()
@@ -108,4 +112,17 @@ Camera& Scene::getCamera()
 FrameBuffer& Scene::getFrameBuffer()
 {
 	return this->frameBuffer_;
+}
+
+void Scene::setSelectedModel(const size_t id)
+{
+	if (id == 0)
+		this->selectedModel_ = nullptr;
+	else
+		this->selectedModel_ = this->models_.at(id);
+}
+
+Model* Scene::getSelectedModel() 
+{
+    return this->selectedModel_;
 }
