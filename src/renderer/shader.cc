@@ -5,6 +5,16 @@
 #include <glm/glm.hpp>
 #include "glad/glad.h"
 
+#define GL_CALL(x) \
+    do { \
+        x; \
+        GLenum error = glGetError(); \
+        if (error != GL_NO_ERROR) { \
+            std::cerr << "OpenGL error " << error << " at " << __FILE__ << ":" << __LINE__ << " - for " << #x << std::endl; \
+        } \
+    } while (0)
+
+
 Shader::Shader(const std::string& vertexShaderPath, const std::string& fragmentShaderPath) 
 {
     std::string vertexShader = loadShader(vertexShaderPath);
@@ -14,17 +24,17 @@ Shader::Shader(const std::string& vertexShaderPath, const std::string& fragmentS
 
 Shader::~Shader() 
 {
-    glDeleteProgram(this->programID);
+    GL_CALL(glDeleteProgram(this->programID));
 }
 
 void Shader::bind() const
 {
-    glUseProgram(this->programID);
+    GL_CALL(glUseProgram(this->programID));
 }
 
 void Shader::unbind() const 
 {
-    glUseProgram(0);
+    GL_CALL(glUseProgram(0));
 }
 
 void Shader::setUniform1i(const std::string& name, int value)
@@ -67,8 +77,8 @@ unsigned int Shader::compileShader(unsigned int type, const std::string& source)
 {
     unsigned int id = glCreateShader(type);
     const char* src = source.c_str();
-    glShaderSource(id, 1, &src, nullptr);
-    glCompileShader(id);
+	GL_CALL(glShaderSource(id, 1, &src, nullptr));
+    GL_CALL(glCompileShader(id));
 
     int result;
     glGetShaderiv(id, GL_COMPILE_STATUS, &result);
@@ -80,7 +90,7 @@ unsigned int Shader::compileShader(unsigned int type, const std::string& source)
         glGetShaderInfoLog(id, length, &length, message);
         std::cout << "Failed to compile " << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << " shader!" << std::endl;
         std::cout << message << std::endl;
-        glDeleteShader(id);
+        GL_CALL(glDeleteShader(id));
         return 0;
     }
 
@@ -93,9 +103,9 @@ unsigned int Shader::createShader(const std::string& vertexShader, const std::st
     unsigned int vs = compileShader(GL_VERTEX_SHADER, vertexShader);
     unsigned int fs = compileShader(GL_FRAGMENT_SHADER, fragmentShader);
 
-    glAttachShader(program, vs);
-    glAttachShader(program, fs);
-    glLinkProgram(program);
+   GL_CALL(glAttachShader(program, vs));
+   GL_CALL(glAttachShader(program, fs));
+   GL_CALL(glLinkProgram(program));
 	GLint success;
 	glGetProgramiv(this->programID, GL_LINK_STATUS, &success);
 	if (!success) {
@@ -103,11 +113,6 @@ unsigned int Shader::createShader(const std::string& vertexShader, const std::st
 		glGetProgramInfoLog(this->programID, 512, NULL, infoLog);
 		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
 	}
-   GLenum err;
-   while((err = glGetError()) != GL_NO_ERROR)
-   {
-       std::cout << "error: " << err << std::endl;
-   }
 
     glValidateProgram(program);
     glGetProgramiv(this->programID, GL_VALIDATE_STATUS, &success);
@@ -116,12 +121,6 @@ unsigned int Shader::createShader(const std::string& vertexShader, const std::st
 		glGetProgramInfoLog(this->programID, 512, NULL, infoLog);
 		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
 	}
-    
-
-
-    glDeleteShader(vs);
-    glDeleteShader(fs);
-
     return program;
 }
 

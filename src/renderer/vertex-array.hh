@@ -13,6 +13,10 @@ public:
 	 */
     VertexArray();
     ~VertexArray();
+	VertexArray(const VertexArray&) = delete;
+	VertexArray& operator=(const VertexArray&) = delete;
+	VertexArray(VertexArray&&) = delete;
+	VertexArray& operator=(VertexArray&&) = delete;
 
     /**
     * @brief Add a Vertex Buffer to the Vertex Array

@@ -22,8 +22,8 @@ int main()
 	GrassPlane grass("assets/textures/diff/grass.jpg", glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
 
-	TownHall townHall("assets/textures/diff/Walls_Albedo.png", glm::vec3(0.0f, 0.0f, 0.0f),
-		glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
+//	TownHall townHall("assets/textures/diff/Walls_Albedo.png", glm::vec3(0.0f, 0.0f, 0.0f),
+//		glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
 	GrassSquare grassSquare("assets/textures/diff/grass-square-diffuse.jpg", glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
 
@@ -40,16 +40,10 @@ int main()
 		app->render();
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glEnable(GL_DEPTH_TEST);
 
 		scene.draw();
 		imgui.end();
 		app->swapBuffers();
-		GLenum err;
-		while ((err = glGetError()) != GL_NO_ERROR)
-		{
-			std::cout << "OpenGL error: " << err << std::endl;
-		}
 	}
 
 	glfwTerminate();

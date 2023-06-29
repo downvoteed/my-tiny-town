@@ -62,7 +62,13 @@ void Scene::draw()
         size_t objectID = colorToId(color);
         std::cout << "Object ID: " << objectID << std::endl;
 
-        if (models_.find(objectID) != models_.end())
+        for (const auto& [_, model] : this->models_)
+		{
+            model->setSelected(false);
+		}
+
+        // first object is grassPlane
+        if (objectID != 1  && models_.find(objectID) != models_.end())
 			this->models_.at(objectID)->setSelected(true);
 
         fbo.unbind();
@@ -72,7 +78,14 @@ void Scene::draw()
     {
         model->setProjectionMatrix(projection);
         model->setViewMatrix(view);
-        model->draw(false);
+        if (model->isSelected())
+        {
+            model->drawStencil();
+            model->draw(false);
+            model->drawOutline();
+        }
+        else
+            model->draw(false);
     }
 }
 

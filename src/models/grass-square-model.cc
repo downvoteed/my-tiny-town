@@ -6,6 +6,15 @@
 #include "utils/utils.hh"
 #include <vector>
 
+#define GL_CALL(x) \
+    do { \
+        x; \
+        GLenum error = glGetError(); \
+        if (error != GL_NO_ERROR) { \
+            std::cerr << "OpenGL error " << error << " at " << __FILE__ << ":" << __LINE__ << " - for " << #x << std::endl; \
+        } \
+    } while (0)
+
 GrassSquare::GrassSquare(const std::string& texturePath, const glm::vec3& position, const glm::vec3& size, float rotation)
     : Model(texturePath, position, size, rotation) {
     // Create the plane model
@@ -35,7 +44,6 @@ GrassSquare::GrassSquare(const std::string& texturePath, const glm::vec3& positi
 	this->vb_ = std::make_unique<VertexBuffer>(interleavedData.data(), interleavedData.size() * sizeof(float));
 	this->ib_ = std::make_unique<IndexBuffer>(objloader.getIndices().data(), objloader.getIndices().size());
 
-
 	VertexBufferLayout layout;
     layout.push<float>(3); // Push 3 floats for position
 	layout.push<float>(2); // Push 2 floats for texture coordinates
@@ -50,6 +58,7 @@ GrassSquare::GrassSquare(const std::string& texturePath, const glm::vec3& positi
     this->shader_ = std::make_unique<Shader>("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
 
 	this->va_->unbind();
+
 }
 
 void GrassSquare::draw(bool isPicking) const
@@ -70,9 +79,6 @@ void GrassSquare::draw(bool isPicking) const
 	this->shader_->setUniformMat4f("model", model);
 	this->shader_->setUniformMat4f("view", view);
 	this->shader_->setUniformMat4f("projection", projection);
-
-	// Bind the shader
-	this->shader_->bind();
 
 	// Set the textureSampler uniform to the texture unit
 	this->shader_->setUniform1i("textureSampler", 0); // 0 is the texture unit
@@ -95,14 +101,14 @@ void GrassSquare::draw(bool isPicking) const
 		this->shader_->setUniform1i("isPicking", 0);
 
 	// Draw the model
-	glDrawElements(GL_TRIANGLES, this->ib_->getCount(), GL_UNSIGNED_INT, nullptr);
+	GL_CALL(glDrawElements(GL_TRIANGLES, this->ib_->getCount(), GL_UNSIGNED_INT, nullptr));
 
 	this->shader_->setUniform1i("isPicking", 0);
 
-	// Check for OpenGL errors
-	GLenum err;
-	while ((err = glGetError()) != GL_NO_ERROR)
-	{
-		std::cout << "OpenGL error: " << err << std::endl;
-	}
+
+	this->va_->unbind();
+	this->vb_->unbind();
+	this->ib_->unbind();
+
+	this->shader_->unbind();
 }

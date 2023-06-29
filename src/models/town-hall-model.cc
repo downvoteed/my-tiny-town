@@ -45,7 +45,6 @@ TownHall::TownHall(const std::string& texturePath, const glm::vec3& position, co
     // Load the texture
     this->texture_ = std::make_unique<Texture>(texturePath);
 
-
     // Create the shader
     this->shader_ = std::make_unique<Shader>("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
 
@@ -68,9 +67,6 @@ void TownHall::draw(bool isPicking) const
 	this->shader_->setUniformMat4f("model", model);
 	this->shader_->setUniformMat4f("view", view);
 	this->shader_->setUniformMat4f("projection", projection);
-
-	// Bind the shader
-	this->shader_->bind();
 
 	// Set the textureSampler uniform to the texture unit
 	this->shader_->setUniform1i("textureSampler", 0); // 0 is the texture unit
@@ -97,10 +93,5 @@ void TownHall::draw(bool isPicking) const
 
 	this->shader_->setUniform1i("isPicking", 0);
 
-	// Check for OpenGL errors
-	GLenum err;
-	while ((err = glGetError()) != GL_NO_ERROR)
-	{
-		std::cout << "OpenGL error: " << err << std::endl;
-	}
+	this->shader_->unbind();
 }
