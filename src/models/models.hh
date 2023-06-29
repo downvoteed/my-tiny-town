@@ -119,9 +119,9 @@ public:
         return this->isSelected_;
     }
 
-    virtual void setToSelected()
+    virtual void setSelected(bool b)
 	{
-		this->isSelected_ = true;
+		this->isSelected_ = b;
 	}
 
 protected:

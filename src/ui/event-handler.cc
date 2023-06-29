@@ -10,8 +10,10 @@ EventHandler::EventHandler(GLFWwindow* window, Camera& camera) : window_(window)
 
 void EventHandler::registerCallbacks()
 {
-	glfwSetScrollCallback(this->window_, EventHandler::scrollCallback);
-	glfwSetCursorPosCallback(this->window_, EventHandler::mouseCallback);
+//	glfwSetScrollCallback(this->window_, EventHandler::scrollCallback);
+//	glfwSetCursorPosCallback(this->window_, EventHandler::mouseCallback);
+	glfwSetFramebufferSizeCallback(this->window_, EventHandler::framebuffer_size_callback);
+	glfwSetWindowSizeCallback(this->window_, EventHandler::framebuffer_size_callback);
 }
 
 Camera& EventHandler::getCamera() const
@@ -47,3 +49,7 @@ void EventHandler::scrollCallback(GLFWwindow* window, double xoffset, double yof
 	}
 }
 
+void EventHandler::framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+	glViewport(Application::instance()->getPannelLeftWidth(), 0, width - Application::instance()->getPannelLeftWidth(), height);
+}

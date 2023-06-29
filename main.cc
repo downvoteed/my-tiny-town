@@ -16,7 +16,7 @@ int main()
 	// define callbacks before intializing ImGui
 	// https://stackoverflow.com/a/72509936
 	EventHandler eventHandler = EventHandler(app->getWindow(), scene.getCamera());
-//	eventHandler.registerCallbacks();
+	eventHandler.registerCallbacks();
 	ImGuiLayer imgui = ImGuiLayer(app->getWindow());
 
 	GrassPlane grass("assets/textures/diff/grass.jpg", glm::vec3(0.0f, 0.0f, 0.0f),

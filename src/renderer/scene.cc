@@ -44,12 +44,13 @@ void Scene::draw()
 
         glfwGetCursorPos(Application::instance()->getWindow(), &mouseX, &mouseY);
 
-        unsigned int viewport[4];
-        glGetIntegerv(GL_VIEWPORT, (int*)viewport);
+		int currentWidth, currentHeight;
+		glfwGetFramebufferSize(Application::instance()->getWindow(), &currentWidth, &currentHeight);
 
-        // Convert cursor coordinates to texture coordinates
-        int textureX = static_cast<int>(mouseX);
-        int textureY = static_cast<int>(viewport[3] - mouseY);
+		glViewport(Application::instance()->getPannelLeftWidth(), 0, currentWidth - Application::instance()->getPannelLeftWidth(), currentHeight);
+
+		int textureX = static_cast<int>(mouseX);
+		int textureY = static_cast<int>((currentHeight - mouseY));
 
         std::cout << textureX << " " << textureY << std::endl;
 
@@ -61,7 +62,8 @@ void Scene::draw()
         size_t objectID = colorToId(color);
         std::cout << "Object ID: " << objectID << std::endl;
 
-        this->models_.at(objectID)->setSelected(true);
+        if (models_.find(objectID) != models_.end())
+			this->models_.at(objectID)->setSelected(true);
 
         fbo.unbind();
     }

@@ -51,6 +51,10 @@ Application::Application()
 	std::cout << "viewport: width " << width - this->pannelLeftWidth_ << "x" << height << std::endl;
 	std::cout << "viewport height: " << height << std::endl;
 	glViewport(this->pannelLeftWidth_, 0, mode->width - this->pannelLeftWidth_, mode->height);
+
+	unsigned int viewports[4];
+	this->initialViewportWidth_ = viewports[2] = width;
+	this->initialViewportHeight_ = viewports[3] = height;
 }
 
 
@@ -128,5 +132,15 @@ void Application::render() const
 	leftPannelWindow.render();
 	rightPannelWindow.render();
 	demoWindow.render();
+}
+
+int Application::getInitialViewportWidth() const
+{
+	return this->initialViewportWidth_;
+}
+
+int Application::getInitialViewportHeight() const
+{
+	return this->initialViewportHeight_;
 }
 

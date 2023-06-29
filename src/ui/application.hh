@@ -56,8 +56,13 @@ public:
 	 */
 	void render() const;
 
+	int getInitialViewportWidth() const;
+	int getInitialViewportHeight() const;
+
 private:
 	Application();
 	GLFWwindow* window_ = nullptr;
 	int pannelLeftWidth_ = 400;
+	int initialViewportWidth_;
+	int initialViewportHeight_;
 };

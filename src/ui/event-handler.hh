@@ -1,6 +1,6 @@
 #pragma once
-#include <glfw/glfw3.h>
 #include "camera/camera.hh"
+#include "application.hh"
 
 
 /**
@@ -33,6 +33,8 @@ public:
      *  @brief gets the camera object.
      */
     Camera& getCamera() const;
+
+    static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 private:
     Camera& camera_;
