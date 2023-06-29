@@ -136,11 +136,12 @@ public:
 		this->isSelected_ = b;
 	}
 
-    virtual void drawStencil()
-    {
-		this->outlineShader_->bind();
-
+	virtual void drawStencil()
+	{
 		if (!this->isSelected_) { return; }
+
+		this->shader_->bind();
+
 		GL_CALL(glEnable(GL_STENCIL_TEST));
 		GL_CALL(glStencilFunc(GL_ALWAYS, 1, 0xFF));
 		GL_CALL(glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE)); // Les fragments qui passent le test de profondeur remplacent la valeur du tampon de stencil
@@ -148,17 +149,21 @@ public:
 
 		GL_CALL(glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE));
 
-        this->outlineShader_->unbind();
-    }
-
-    virtual void drawOutline()
-    {
-        if (!this->isSelected_) { return; }
-
-        this->outlineShader_->bind();
-		// Disable writing to the color buffer
+		// Draw the object using the normal shader
+		this->draw(false);
 
 		GL_CALL(glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE));
+
+		GL_CALL(glDisable(GL_STENCIL_TEST));
+
+		this->shader_->unbind();
+	}
+	virtual void drawOutline()
+	{
+		if (!this->isSelected_) { return; }
+
+		this->outlineShader_->bind();
+		// Disable writing to the color buffer
 
 		// Enable stencil testing
 		glEnable(GL_STENCIL_TEST);
@@ -171,8 +176,8 @@ public:
 
 
 
-        glm::mat4 model = glm::mat4(1.0f);
-        glm::mat4 view = this->getViewMatrix();
+		glm::mat4 model = glm::mat4(1.0f);
+		glm::mat4 view = this->getViewMatrix();
 		glm::mat4 projection = this->getProjectionMatrix();
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.0f)); // move the plane in front of the camera
 		model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f)); // scale the plane
@@ -180,7 +185,7 @@ public:
 		outlineShader_->setUniformMat4f("model", model);
 		outlineShader_->setUniformMat4f("view", view);
 		outlineShader_->setUniformMat4f("projection", projection);
-        outlineShader_->setUniform1f("outlineThickness", 3);
+		outlineShader_->setUniform1f("outlineThickness", 1);
 
 		// Bind the vertex array object
 		this->va_->bind();
@@ -193,19 +198,19 @@ public:
 
 		glDisable(GL_STENCIL_TEST);
 
-        this->va_->unbind();
-        this->vb_->unbind();
-        this->ib_->unbind();
+		this->va_->unbind();
+		this->vb_->unbind();
+		this->ib_->unbind();
 
 		this->outlineShader_->unbind();
-        
-    }
+
+	}
 
 protected:
-    bool isSelected_ = false;
-    size_t ID_;
-    float rotation_;
-    glm::mat4 projectionMatrix_;
+	bool isSelected_ = false;
+	size_t ID_;
+	float rotation_;
+	glm::mat4 projectionMatrix_;
 	glm::mat4 viewMatrix_;
 	std::unique_ptr<VertexBuffer> vb_;
 	std::unique_ptr<IndexBuffer> ib_;

@@ -12,4 +12,5 @@ void main()
 {
     vec3 pos = aPos + aNormal * outlineThickness;
     gl_Position = projection * view * model * vec4(pos, 1.0);
+
 }
