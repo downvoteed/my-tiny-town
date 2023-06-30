@@ -2,6 +2,7 @@
 #include "imgui/imgui.h"
 #include "ImGuiFileDialog/ImGuiFileDialog.h"
 #include "application.hh"
+#include "grass-square-model.hh"
 #include "stb/stb_image.h"
 #include <iostream>
 
@@ -18,8 +19,10 @@ const short buttonMarginLR = 35;
 const short buttonMarginTB = 20;
 const short buttonWidth = 70;
 const short buttonHeight = 40;
-const short imageWidth = 150;
-const short imageHeight = 150;
+const short imageWidth = 145;
+const short imageHeight = 145;
+
+Model* previousModel = nullptr;
 
 LeftPannelWindow::LeftPannelWindow(Scene& scene) : Window(scene) 
 {
@@ -159,16 +162,32 @@ void LeftPannelWindow::render()
 		ImVec2 imageSize = ImVec2(imageWidth, imageHeight);
 
 		GL_CALL(glBindTexture(GL_TEXTURE_2D, this->texture_));
-    ImGui::Image((void*)(intptr_t)this->texture_, imageSize, ImVec2(0, 1), ImVec2(1, 0));
+		if (ImGui::ImageButton((void*)(intptr_t)this->texture_, imageSize, ImVec2(0, 1), ImVec2(1, 0)))
+		{
+			//auto grassSquare = std::make_unique<GrassSquare>("Grass block", "assets/textures/diff/grass-square-diffuse.jpg", glm::vec3(0.0f, 0.0f, 0.0f),
+			//	glm::vec3(0.01f, 0.01f, 0.01f), 0.0f);
+			// get mouse location
+
+			float x = 0.0f , y = 0.0f;
+			if (previousModel != nullptr)
+			{
+				x = previousModel->getPosition().x + 0.5f;
+				y = previousModel->getPosition().y + 0.5f;
+			}
+
+			auto grassSquare = new GrassSquare("Grass block", "assets/textures/diff/grass-square-diffuse.jpg", glm::vec3(x, y, -3.0f),
+				glm::vec3(0.01f, 0.01f, 0.01f), 0.0f);
+			grassSquare->setSelected(true);
+			previousModel = grassSquare;
+			scene.addModel(grassSquare->getID(), grassSquare);
+		}
+
+		ImGui::SameLine();
+		if (ImGui::ImageButton((void*)(intptr_t)this->texture_, imageSize, ImVec2(0, 1), ImVec2(1, 0)));
+			// TODO : draw
+
     GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
 		//border
-		ImDrawList* drawList = ImGui::GetWindowDrawList();
-		float borderRadius = 10.0f; 
-		ImVec4 borderColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f); 
-		drawList->AddRect(imagePos, ImVec2(imagePos.x + imageSize.x, imagePos.y + imageSize.y),
-			ImGui::ColorConvertFloat4ToU32(borderColor), borderRadius);
-
-
 	}
 	else
 	{

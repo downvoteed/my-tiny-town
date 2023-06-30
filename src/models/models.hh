@@ -42,7 +42,7 @@ public:
 		this->textureName_ = texturePath.substr(texturePath.find_last_of("/\\") + 1);
 		this->outlineShader_ = std::make_unique<Shader>("assets/shaders/outline-vertex.glsl", "assets/shaders/outline-fragment.glsl");
 		this->modelMatrix_ = glm::mat4(1.0f);
-		this->modelMatrix_ = glm::translate(this->modelMatrix_, glm::vec3(0.0f, 0.0f, -3.0f));
+		this->modelMatrix_ = glm::translate(this->modelMatrix_, position);
 		this->modelMatrix_ = glm::scale(this->modelMatrix_, size); // scale the plane
 		//this->modelMatrix_ = glm::mat4(1.0f);
 		//this->modelMatrix_ = glm::translate(this->modelMatrix_, position);
