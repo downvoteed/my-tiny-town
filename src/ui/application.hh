@@ -4,6 +4,10 @@
 #include "GLFW/glfw3.h"
 #include "imgui/imgui.h"
 #include "scene.hh"
+#include <memory>
+#include "windows/left-pannel-window.hh"
+#include "windows/right-pannel-window.hh"
+#include "windows/demo-window.hh"
 
 // Singleton Application class
 class Application : public Singleton<Application>
@@ -60,10 +64,15 @@ public:
 	int getInitialViewportWidth() const;
 	int getInitialViewportHeight() const;
 
+	void init(Scene& scene);
+
 private:
 	Application();
 	GLFWwindow* window_ = nullptr;
 	int pannelLeftWidth_ = 400;
 	int initialViewportWidth_;
 	int initialViewportHeight_;
+	std::unique_ptr<LeftPannelWindow> leftPannelWindow_;
+	std::unique_ptr<RightPannelWindow> rightPannelWindow_;
+	std::unique_ptr<DemoWindow> demoWindow_;
 };

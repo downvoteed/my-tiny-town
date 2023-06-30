@@ -34,6 +34,9 @@ int main()
 	//scene.addModel(&townHall);
 	scene.addModel(grassSquare.getID(), &grassSquare);
 
+	// init interface
+	Application::instance()->init(scene);
+
 
 	while (!app->shouldClose())
 	{

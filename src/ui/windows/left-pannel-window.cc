@@ -4,7 +4,6 @@
 #include "application.hh"
 #include "stb/stb_image.h"
 #include <iostream>
-#include <GLFW/glfw3.h>
 
 #define GL_CALL(x) \
     do { \
@@ -22,7 +21,28 @@ const short buttonHeight = 40;
 const short imageWidth = 150;
 const short imageHeight = 150;
 
-LeftPannelWindow::LeftPannelWindow(Scene& scene) : Window(scene) {}
+LeftPannelWindow::LeftPannelWindow(Scene& scene) : Window(scene) 
+{
+	this->data_ = stbi_load("assets/gallery/grass-block.png", &this->width_, &this->height_, &this->channels_, 4);
+
+	// flip image
+	if (this->data_ == nullptr) 
+		std::cerr << "Failed to load image" << std::endl;
+
+	GL_CALL(glGenTextures(1, &this->texture_));
+    GL_CALL(glBindTexture(GL_TEXTURE_2D, this->texture_));
+    GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+    GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+    GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this->width_, this->height_, 0, GL_RGBA, GL_UNSIGNED_BYTE, this->data_));
+    GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
+
+}
+
+LeftPannelWindow::~LeftPannelWindow() 
+{
+	GL_CALL(glDeleteTextures(1, &this->texture_));
+	stbi_image_free(this->data_);
+}
 
 void LeftPannelWindow::render() 
 {
@@ -135,33 +155,19 @@ void LeftPannelWindow::render()
 
 		ImVec2 imagePos = ImGui::GetCursorScreenPos();
 
-		int width, height, channels;
-		unsigned char* data = stbi_load("assets/gallery/grass-block.png", &width, &height, &channels, 4);
-		// flip image
-		if (data == nullptr) {
-			std::cerr << "Failed to load image" << std::endl;
-		}
-		GLuint texture;
-		GL_CALL(glGenTextures(1, &texture));
-		GL_CALL(glBindTexture(GL_TEXTURE_2D, texture));
-		GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-		GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-		GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data));
-		GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
 
 		ImVec2 imageSize = ImVec2(imageWidth, imageHeight);
 
-		ImGui::Image((void*)(intptr_t)texture, imageSize, ImVec2(0, 1), ImVec2(1, 0));
-
+		GL_CALL(glBindTexture(GL_TEXTURE_2D, this->texture_));
+    ImGui::Image((void*)(intptr_t)this->texture_, imageSize, ImVec2(0, 1), ImVec2(1, 0));
+    GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
 		//border
 		ImDrawList* drawList = ImGui::GetWindowDrawList();
-
 		float borderRadius = 10.0f; 
 		ImVec4 borderColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f); 
 		drawList->AddRect(imagePos, ImVec2(imagePos.x + imageSize.x, imagePos.y + imageSize.y),
 			ImGui::ColorConvertFloat4ToU32(borderColor), borderRadius);
 
-		stbi_image_free(data);
 
 	}
 	else

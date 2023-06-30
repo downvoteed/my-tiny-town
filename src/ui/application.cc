@@ -126,13 +126,9 @@ int Application::getPannelLeftWidth() const
 
 void Application::render(Scene& scene) const
 {
-	LeftPannelWindow leftPannelWindow(scene);
-	RightPannelWindow rightPannelWindow(scene);
-	DemoWindow demoWindow(scene);
-
-	leftPannelWindow.render();
-	rightPannelWindow.render();
-	demoWindow.render();
+	this->leftPannelWindow_->render();
+	this->rightPannelWindow_->render();
+	this->demoWindow_->render();
 }
 
 int Application::getInitialViewportWidth() const
@@ -143,5 +139,12 @@ int Application::getInitialViewportWidth() const
 int Application::getInitialViewportHeight() const
 {
 	return this->initialViewportHeight_;
+}
+
+void Application::init(Scene& scene) 
+{
+	this->leftPannelWindow_ = std::make_unique<LeftPannelWindow>(scene);
+	this->rightPannelWindow_ = std::make_unique<RightPannelWindow>(scene);
+	this->demoWindow_ = std::make_unique<DemoWindow>(scene);
 }
 
