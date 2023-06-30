@@ -22,22 +22,27 @@ GrassSquare::GrassSquare(std::string name, const std::string& texturePath, const
 	ObjLoader objloader("assets/models/grass-square.obj");
 	auto vertices = objloader.getVertices();
 	auto texCoords = objloader.getTexCoords();
+	auto normals = objloader.getNormals();
 
 	std::vector<float> interleavedData;
-	interleavedData.reserve(vertices.size() * 5); // x,y,z,u,v for each vertex
+	interleavedData.reserve(vertices.size() * 8); // x,y,z,nx,ny,nz,u,v for each vertex
 
-	for (size_t i = 0; i < vertices.size(); ++i)
-	{
-		// vertex coordinates
-		interleavedData.push_back(vertices[i].x);
-		interleavedData.push_back(vertices[i].y);
-		interleavedData.push_back(vertices[i].z);
+for (size_t i = 0; i < vertices.size(); ++i)
+{
+    // vertex coordinates
+    interleavedData.push_back(vertices[i].x);
+    interleavedData.push_back(vertices[i].y);
+    interleavedData.push_back(vertices[i].z);
 
-		// texture coordinates
-		interleavedData.push_back(texCoords[i].x);
-		interleavedData.push_back(texCoords[i].y);
-	}
+    // texture coordinates
+    interleavedData.push_back(texCoords[i].x);
+    interleavedData.push_back(texCoords[i].y);
 
+    // normal coordinates
+    interleavedData.push_back(normals[i].x);
+    interleavedData.push_back(normals[i].y);
+    interleavedData.push_back(normals[i].z);
+}
     // Create the Vertex Buffer and the Vertex Array Object
 	this->va_ = std::make_unique<VertexArray>();
 	this->va_->bind();
@@ -47,6 +52,8 @@ GrassSquare::GrassSquare(std::string name, const std::string& texturePath, const
 	VertexBufferLayout layout;
     layout.push<float>(3); // Push 3 floats for position
 	layout.push<float>(2); // Push 2 floats for texture coordinates
+	layout.push<float>(3); // Push 3 floats for normal
+
 
 	this->va_->addBuffer(*this->vb_, layout);
 

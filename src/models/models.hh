@@ -8,6 +8,7 @@
 #include "vertex-array.hh"
 #include "shader.hh"
 #include "index-buffer.hh"
+#include "objloader.hh"
 #include <iostream>
 
 #define GL_CALL(x) \
@@ -150,57 +151,65 @@ public:
 		this->shader_->bind();
 
 		GL_CALL(glEnable(GL_STENCIL_TEST));
-		GL_CALL(glStencilFunc(GL_ALWAYS, 1, 0xFF));
-		GL_CALL(glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE)); // Les fragments qui passent le test de profondeur remplacent la valeur du tampon de stencil
-		GL_CALL(glStencilMask(0xFF)); // Active l'écriture dans le tampon de stencil
+		// Tous les fragments doivent passer le test de stencil
+		GL_CALL(glStencilFunc(GL_ALWAYS, 1, 0xFF)); 
+		// Les fragments qui passent le test de profondeur remplacent la valeur du  stencil buffer
+		GL_CALL(glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE)); 
+		// Active l'écriture dans le stencil
+		GL_CALL(glStencilMask(0xFF)); 
+		// Désactive l'écriture de couleur
+		GL_CALL(glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE)); 
 
-		GL_CALL(glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE));
-
-		// Dessiner l'objet en utilisant le shader normal
 		this->draw(false);
 
-		GL_CALL(glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE));
-
-		GL_CALL(glDisable(GL_STENCIL_TEST));
+		// Réactive l'écriture de couleur
+		GL_CALL(glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE)); 
 
 		this->shader_->unbind();
 	}
 
 	virtual void drawOutline()
-{
-	if (!this->isSelected_) { return; }
+	{
+		if (!this->isSelected_) { return; }
 
-	this->outlineShader_->bind();
+		this->outlineShader_->bind();
 
-	GL_CALL(glEnable(GL_STENCIL_TEST));
-	GL_CALL(glStencilFunc(GL_NOTEQUAL, 0, 0xFF));
-	GL_CALL(glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP)); // Conserver la valeur du tampon de stencil
+		GL_CALL(glEnable(GL_STENCIL_TEST));
+		// Le test de stencil passe si la valeur dans le stencil est différente de 1
+		GL_CALL(glStencilFunc(GL_NOTEQUAL, 1, 0xFF)); 
+		// Conserve la valeur du stencil buffer
+		GL_CALL(glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP)); 
+		// Désactive l'écriture du stencil byuffer
+		GL_CALL(glStencilMask(0x00)); 	
+		// Désactive le test de profondeur pour éviter que le contour ne soit recouvert par d'autres objets
+		GL_CALL(glDisable(GL_DEPTH_TEST)); 
 
-	glm::mat4 view = this->getViewMatrix();
-	glm::mat4 projection = this->getProjectionMatrix();
+		glm::mat4 view = this->getViewMatrix();
+		glm::mat4 projection = this->getProjectionMatrix();
 
-	this->outlineShader_->setUniformMat4f("model", this->modelMatrix_);
-	this->outlineShader_->setUniformMat4f("view", view);
-	this->outlineShader_->setUniformMat4f("projection", projection);
-	this->outlineShader_->setUniform1f("outlineThickness", 1.0f);
+		this->outlineShader_->setUniformMat4f("model", this->modelMatrix_);
+		this->outlineShader_->setUniformMat4f("view", view);
+		this->outlineShader_->setUniformMat4f("projection", projection);
+		this->outlineShader_->setUniform1f("outlineThickness", 5.0f);
 
-	this->va_->bind();
-	this->vb_->bind();
-	this->ib_->bind();
+		this->va_->bind();
+		this->vb_->bind();
+		this->ib_->bind();
 
-	GL_CALL(glDrawElements(GL_TRIANGLES, this->ib_->getCount(), GL_UNSIGNED_INT, nullptr));
+		GL_CALL(glDrawElements(GL_TRIANGLES, this->ib_->getCount(), GL_UNSIGNED_INT, nullptr));
 
-	GL_CALL(glDisable(GL_STENCIL_TEST));
+		// Réactive le test de profondeur après le dessin
+		GL_CALL(glEnable(GL_DEPTH_TEST)); 
+		// Réactive l'écriture dans le stencil après le dessin
+		GL_CALL(glStencilMask(0xFF)); 
+		GL_CALL(glDisable(GL_STENCIL_TEST)); 
 
-	this->va_->unbind();
-	this->vb_->unbind();
-	this->ib_->unbind();
+		this->va_->unbind();
+		this->vb_->unbind();
+		this->ib_->unbind();
 
-	this->outlineShader_->unbind();
-}
-
-
-
+		this->outlineShader_->unbind();
+	}
 
 
 	/**
