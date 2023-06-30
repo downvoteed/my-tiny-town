@@ -17,15 +17,17 @@ int main()
 	// https://stackoverflow.com/a/72509936
 	EventHandler eventHandler = EventHandler(app->getWindow(), scene.getCamera());
 	eventHandler.registerCallbacks();
+	glfwSetWindowUserPointer(app->getWindow(), &scene);
+	glfwSetCursorPosCallback(app->getWindow(), cursor_position_callback);
 	ImGuiLayer imgui = ImGuiLayer(app->getWindow());
 
-	GrassPlane grass("Grass plane", "assets/textures/diff/grass.jpg", glm::vec3(0.0f, 0.0f, 0.0f),
-		glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
+	GrassPlane grass("Grass plane", "assets/textures/diff/grass.jpg", glm::vec3(0.0f, 0.0f, -3.0f),
+		glm::vec3(40.f, 40.f, 40.f), 0.0f);
 
 //	TownHall townHall("assets/textures/diff/Walls_Albedo.png", glm::vec3(0.0f, 0.0f, 0.0f),
 //		glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
 	GrassSquare grassSquare("Grass block", "assets/textures/diff/grass-square-diffuse.jpg", glm::vec3(0.0f, 0.0f, 0.0f),
-		glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
+		glm::vec3(0.01f, 0.01f, 0.01f), 0.0f);
 
 	
 	scene.addModel(grass.getID(), &grass);

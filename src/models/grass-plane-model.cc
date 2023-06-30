@@ -23,6 +23,7 @@
 GrassPlane::GrassPlane(std::string name, const std::string& texturePath, const glm::vec3& position, const glm::vec3& size, float rotation)
     : Model(name, texturePath, position, size, rotation) {
     // Create the plane model
+
     float vertices[] = {
         // positions          // texture coords
          0.5f,  0.5f, 0.0f,   1.0f, 1.0f,   // top right
@@ -66,10 +67,6 @@ void GrassPlane::draw(bool isPicking)
 	glm::mat4 projection = this->getProjectionMatrix();
 
 	// model matrix
-	this->modelMatrix_ = glm::mat4(1.0f);
-	this->modelMatrix_ = glm::translate(this->modelMatrix_, glm::vec3(0.0f, 0.0f, -3.0f)); 
-	this->modelMatrix_ = glm::scale(this->modelMatrix_, glm::vec3(40.0f, 40.0f, 40.0f)); 
-
 	// set uniforms
 	this->shader_->setUniformMat4f("model", this->modelMatrix_);
 	this->shader_->setUniformMat4f("view", view);

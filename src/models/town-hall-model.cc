@@ -59,10 +59,6 @@ void TownHall::draw(bool isPicking)
 	glm::mat4 view = this->getViewMatrix();
 	glm::mat4 projection = this->getProjectionMatrix();
 
-	// model matrix
-	this->modelMatrix_  = glm::mat4(1.0f); // identity matrix
-	this->modelMatrix_ = glm::translate(this->modelMatrix_, glm::vec3(0.0f, 0.0f, -3.0f)); // move the plane in front of the camera
-
 	// set uniforms
 	this->shader_->setUniformMat4f("model", this->modelMatrix_);
 	this->shader_->setUniformMat4f("view", view);

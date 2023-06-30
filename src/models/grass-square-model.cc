@@ -19,7 +19,6 @@ GrassSquare::GrassSquare(std::string name, const std::string& texturePath, const
     : Model(name, texturePath, position, size, rotation) {
     // Create the plane model
 
-
 	ObjLoader objloader("assets/models/grass-square.obj");
 	auto vertices = objloader.getVertices();
 	auto texCoords = objloader.getTexCoords();
@@ -69,14 +68,8 @@ void GrassSquare::draw(bool isPicking)
 	glm::mat4 view = this->getViewMatrix();
 	glm::mat4 projection = this->getProjectionMatrix();
 
-	// model matrix
-	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.0f)); // move the plane in front of the camera
-	model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f)); // scale the plane
-
-
 	// set uniforms
-	this->shader_->setUniformMat4f("model", model);
+	this->shader_->setUniformMat4f("model", this->modelMatrix_);
 	this->shader_->setUniformMat4f("view", view);
 	this->shader_->setUniformMat4f("projection", projection);
 

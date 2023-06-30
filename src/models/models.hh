@@ -41,6 +41,11 @@ public:
 		// get file name without extension
 		this->textureName_ = texturePath.substr(texturePath.find_last_of("/\\") + 1);
 		this->outlineShader_ = std::make_unique<Shader>("assets/shaders/outline-vertex.glsl", "assets/shaders/outline-fragment.glsl");
+		this->modelMatrix_ = glm::mat4(1.0f);
+		this->modelMatrix_ = glm::translate(this->modelMatrix_, glm::vec3(0.0f, 0.0f, -3.0f));
+		this->modelMatrix_ = glm::scale(this->modelMatrix_, size); // scale the plane
+		//this->modelMatrix_ = glm::mat4(1.0f);
+		//this->modelMatrix_ = glm::translate(this->modelMatrix_, position);
         this->ID_ = ++current_ID;
     }
     virtual ~Model() = default;
@@ -50,7 +55,7 @@ public:
      */
     virtual void setPosition(const glm::vec3& position)
     {
-        this->position_ = position;
+        this->modelMatrix_[3] = glm::vec4(position, 1.0f);
     }
     /**
 	 * @brief set the size of the model.
@@ -176,13 +181,8 @@ public:
 		// Disable writing to the stencil buffer
 		GL_CALL(glStencilMask(0x00));
 
-
-
-		this->modelMatrix_ = glm::mat4(1.0f);
 		glm::mat4 view = this->getViewMatrix();
 		glm::mat4 projection = this->getProjectionMatrix();
-		this->modelMatrix_ = glm::translate(this->modelMatrix_, glm::vec3(0.0f, 0.0f, -3.0f)); // move the plane in front of the camera
-		this->modelMatrix_ = glm::scale(this->modelMatrix_, glm::vec3(0.01f, 0.01f, 0.01f)); // scale the plane
 
 		outlineShader_->setUniformMat4f("model", this->modelMatrix_);
 		outlineShader_->setUniformMat4f("view", view);

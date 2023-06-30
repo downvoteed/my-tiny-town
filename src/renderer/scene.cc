@@ -126,3 +126,40 @@ Model* Scene::getSelectedModel()
 {
     return this->selectedModel_;
 }
+void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    static Model* lastSelectedModel = nullptr;
+    static double lastX = 0.0;
+    static double lastY = 0.0;
+
+    Scene* scene = static_cast<Scene*>(glfwGetWindowUserPointer(window));
+    Model* selectedModel = scene->getSelectedModel();
+
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+    {
+        if (selectedModel != lastSelectedModel)
+        {
+            lastX = xpos;
+            lastY = ypos;
+            lastSelectedModel = selectedModel;
+        }
+
+		if (selectedModel == nullptr) { return;  }
+
+        double dx = xpos - lastX;
+        double dy = ypos - lastY;
+
+        glm::vec3 position = selectedModel->getPosition();
+        position.x -= dx * 0.01f; 
+        position.y += dy * 0.1f;
+        selectedModel->setPosition(position);
+
+        lastX = xpos;
+        lastY = ypos;
+    }
+    else
+    {
+        lastSelectedModel = nullptr;
+    }
+}
+

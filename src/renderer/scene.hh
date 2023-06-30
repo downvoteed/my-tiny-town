@@ -3,6 +3,7 @@
 #include "camera/camera.hh"
 #include "frame-buffer.hh"
 #include <map>
+#include <GLFW/glfw3.h>
 
 //TODO: add documentation
 class Scene 
@@ -41,9 +42,12 @@ public:
     Model* getSelectedModel();
 
 
+
 private:
     std::map<size_t, Model*> models_;
     Model *selectedModel_ = nullptr;
     Camera camera_;
     FrameBuffer frameBuffer_;
 };
+
+void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
