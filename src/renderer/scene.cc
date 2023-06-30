@@ -135,7 +135,7 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
     Scene* scene = static_cast<Scene*>(glfwGetWindowUserPointer(window));
     Model* selectedModel = scene->getSelectedModel();
 
-    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+    if (!ImGui::GetIO().WantCaptureMouse && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
     {
         if (selectedModel != lastSelectedModel)
         {
