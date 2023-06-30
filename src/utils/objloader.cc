@@ -1,68 +1,79 @@
 #include "objloader.hh"
 #include <iostream>
 
-#include <tiny_obj_loader.h>
-
-ObjLoader::ObjLoader(const std::string& filepath) 
+void ObjLoader::processNode(aiNode* node, const aiScene* scene)
 {
-    tinyobj::attrib_t attrib;
-    std::vector<tinyobj::shape_t> shapes;
-    std::vector<tinyobj::material_t> materials;
-    std::string err;
-
-    if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &err, filepath.c_str()))
+    // Process all the node's meshes
+    for(unsigned int i = 0; i < node->mNumMeshes; i++)
     {
-        std::cout << "Coud not load obj file: " << filepath << std::endl;
+        aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+        processMesh(mesh, scene);
     }
-
-    for (const auto& shape : shapes) 
+    // Then do the same for each of its children
+    for(unsigned int i = 0; i < node->mNumChildren; i++)
     {
-        for (const auto& index : shape.mesh.indices) 
-        {
-            glm::vec3 vertex = 
-            {
-                attrib.vertices[3 * size_t(index.vertex_index) + 0],
-                attrib.vertices[3 * size_t(index.vertex_index) + 1],
-                attrib.vertices[3 * size_t(index.vertex_index) + 2]
-            };
-            this->vertices_.push_back(vertex);
-
-            glm::vec2 texcoord = 
-            {
-                attrib.texcoords[2 * index.texcoord_index + 0],
-                attrib.texcoords[2 * index.texcoord_index + 1]
-            };
-            this->texCoords_.push_back(texcoord);
-
-           glm::vec3 normal =
-           {
-               attrib.normals[3 * size_t(index.normal_index) + 0],
-               attrib.normals[3 * size_t(index.normal_index) + 1],
-               attrib.normals[3 * size_t(index.normal_index) + 2]
-           };
-           // this->normals_.push_back(normal);
-
-            this->indices_.push_back(index.vertex_index);
-        }
+        processNode(node->mChildren[i], scene);
     }
 }
 
-std::vector<glm::vec3> ObjLoader::getVertices() const 
+void ObjLoader::processMesh(aiMesh* mesh, const aiScene* scene)
+{
+    for(unsigned int i = 0; i < mesh->mNumVertices; i++)
+    {
+        aiVector3D pos = mesh->mVertices[i];
+        vertices_.push_back(glm::vec3(pos.x, pos.y, pos.z));
+
+        if(mesh->HasTextureCoords(0)) // does the mesh contain texture coordinates?
+        {
+            aiVector3D UVW = mesh->mTextureCoords[0][i]; // assume each mesh only has one set of texture coords
+            texCoords_.push_back(glm::vec2(UVW.x, UVW.y));
+        }
+
+        if(mesh->HasNormals())
+        {
+            aiVector3D n = mesh->mNormals[i];
+            normals_.push_back(glm::vec3(n.x, n.y, n.z));
+        }
+    }
+
+    for(unsigned int i = 0; i < mesh->mNumFaces; i++)
+    {
+        aiFace face = mesh->mFaces[i];
+        for(unsigned int j = 0; j < face.mNumIndices; j++)
+            indices_.push_back(face.mIndices[j]);
+    }
+}
+
+ObjLoader::ObjLoader(const std::string& filepath)
+{
+    Assimp::Importer importer;
+    const aiScene* scene = importer.ReadFile(filepath, aiProcess_Triangulate | aiProcess_FlipUVs);
+
+    if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) 
+    {
+        std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
+        return;
+    }
+
+    processNode(scene->mRootNode, scene);
+}
+
+std::vector<glm::vec3> ObjLoader::getVertices() const
 {
     return this->vertices_;
 }
 
-std::vector<glm::vec3> ObjLoader::getNormals() const 
+std::vector<glm::vec3> ObjLoader::getNormals() const
 {
     return this->normals_;
 }
 
-std::vector<glm::vec2> ObjLoader::getTexCoords() const 
+std::vector<glm::vec2> ObjLoader::getTexCoords() const
 {
     return this->texCoords_;
 }
 
-std::vector<unsigned int> ObjLoader::getIndices() const 
+std::vector<unsigned int> ObjLoader::getIndices() const
 {
     return this->indices_;
 }

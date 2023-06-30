@@ -24,18 +24,19 @@ GrassSquare::GrassSquare(std::string name, const std::string& texturePath, const
 	auto texCoords = objloader.getTexCoords();
 
 	std::vector<float> interleavedData;
-	interleavedData.reserve(vertices.size() + texCoords.size());
+	interleavedData.reserve(vertices.size() * 5); // x,y,z,u,v for each vertex
 
-	for (size_t i = 0; i < vertices.size() / 3; ++i) 
+	for (size_t i = 0; i < vertices.size(); ++i)
 	{
+		// vertex coordinates
 		interleavedData.push_back(vertices[i].x);
 		interleavedData.push_back(vertices[i].y);
 		interleavedData.push_back(vertices[i].z);
 
+		// texture coordinates
 		interleavedData.push_back(texCoords[i].x);
 		interleavedData.push_back(texCoords[i].y);
 	}
-
 
     // Create the Vertex Buffer and the Vertex Array Object
 	this->va_ = std::make_unique<VertexArray>();

@@ -24,14 +24,14 @@ int main()
 	GrassPlane grass("Grass plane", "assets/textures/diff/grass.jpg", glm::vec3(0.0f, 0.0f, -3.0f),
 		glm::vec3(40.f, 40.f, 40.f), 0.0f);
 
-//	TownHall townHall("assets/textures/diff/Walls_Albedo.png", glm::vec3(0.0f, 0.0f, 0.0f),
-//		glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
+	TownHall townHall("Town Hall","assets/textures/diff/b.jpg", glm::vec3(12.0f, -8.0f, 6.0f),
+		glm::vec3(0.005f, 0.005f, 0.005f), 0.0f);
 	GrassSquare grassSquare("Grass block", "assets/textures/diff/grass-square-diffuse.jpg", glm::vec3(0.0f, 0.0f, -3.0f),
 		glm::vec3(0.01f, 0.01f, 0.01f), 0.0f);
 
 	
 	scene.addModel(grass.getID(), &grass);
-	//scene.addModel(&townHall);
+	scene.addModel(townHall.getID(), & townHall);
 	scene.addModel(grassSquare.getID(), &grassSquare);
 
 	// init interface
@@ -43,6 +43,7 @@ int main()
 		app->pollEvents();
 		imgui.begin();
 		app->render(scene);
+		glEnable(GL_DEPTH_TEST);
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 

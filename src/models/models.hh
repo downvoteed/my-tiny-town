@@ -22,21 +22,21 @@
 /**
  * @brief Interface for all models.
  */
-class Model 
+class Model
 {
 public:
-    static size_t current_ID;
-    /**
-     * @brief Construct a new Model object. 	
-	 * @param texturePath 
-	 * @param position 
-	 * @param size 
-	 * @param rotation 
+	static size_t current_ID;
+	/**
+	 * @brief Construct a new Model object.
+	 * @param texturePath
+	 * @param position
+	 * @param size
+	 * @param rotation
 	 .
-     */
-    Model(std::string name, const std::string& texturePath, const glm::vec3& position, const glm::vec3& size, float rotation) : 
-        name_(name), position_(position), size_(size), rotation_(rotation) 
-    {
+	 */
+	Model(std::string name, const std::string& texturePath, const glm::vec3& position, const glm::vec3& size, float rotation) :
+		name_(name), position_(position), size_(size), rotation_(rotation)
+	{
 		this->texture_ = std::make_unique<Texture>(texturePath);
 		// get file name without extension
 		this->textureName_ = texturePath.substr(texturePath.find_last_of("/\\") + 1);
@@ -46,99 +46,99 @@ public:
 		this->modelMatrix_ = glm::scale(this->modelMatrix_, size); // scale the plane
 		//this->modelMatrix_ = glm::mat4(1.0f);
 		//this->modelMatrix_ = glm::translate(this->modelMatrix_, position);
-        this->ID_ = ++current_ID;
-    }
-    virtual ~Model() = default;
+		this->ID_ = ++current_ID;
+	}
+	virtual ~Model() = default;
 
-    /**
-     * @brief set the position of the model.
-     */
-    virtual void setPosition(const glm::vec3& position)
-    {
-        this->modelMatrix_[3] = glm::vec4(position, 1.0f);
-    }
-    /**
+	/**
+	 * @brief set the position of the model.
+	 */
+	virtual void setPosition(const glm::vec3& position)
+	{
+		this->modelMatrix_[3] = glm::vec4(position, 1.0f);
+	}
+	/**
 	 * @brief set the size of the model.
 	 */
-    virtual void setSize(const glm::vec3& size)
-    {
-        this->size_ = size;
-    }
-    /**
-     * @brief set the rotation of the model.
-     */
-    virtual void setRotation(const float rotation)
-    {
-        this->rotation_ = rotation;
-    }
-    /**
-     * @brief get the position of the model.
-     */
-    virtual glm::vec3 getPosition() const
-    {
-        return this->modelMatrix_[3];
-    }
-    /**
-     * @brief set the projection matrix of the model.
-     */
-    virtual void setProjectionMatrix(const glm::mat4& projectionMatrix)
-    {
-        this->projectionMatrix_ = projectionMatrix;
-    }
-    /**
+	virtual void setSize(const glm::vec3& size)
+	{
+		this->size_ = size;
+	}
+	/**
+	 * @brief set the rotation of the model.
+	 */
+	virtual void setRotation(const float rotation)
+	{
+		this->rotation_ = rotation;
+	}
+	/**
+	 * @brief get the position of the model.
+	 */
+	virtual glm::vec3 getPosition() const
+	{
+		return this->modelMatrix_[3];
+	}
+	/**
+	 * @brief set the projection matrix of the model.
+	 */
+	virtual void setProjectionMatrix(const glm::mat4& projectionMatrix)
+	{
+		this->projectionMatrix_ = projectionMatrix;
+	}
+	/**
 	 * @brief set the view matrix of the model.
 	 */
-    virtual void setViewMatrix(const glm::mat4& viewMatrix)
-    {
-        this->viewMatrix_ = viewMatrix;
-    }
-    /**
+	virtual void setViewMatrix(const glm::mat4& viewMatrix)
+	{
+		this->viewMatrix_ = viewMatrix;
+	}
+	/**
 	 * @brief get the size of the model.
 	 */
-    virtual glm::vec3 getSize()
-    {
-        return this->size_;
-    }
-    /**
+	virtual glm::vec3 getSize()
+	{
+		return this->size_;
+	}
+	/**
 	 * @brief get the rotation of the model.
 	 */
-    virtual float getRotation() const
-    {
-        return this->rotation_;
-    }
-    /**
-     * @brief get projection matrix of the model.
-     */
-    virtual glm::mat4 getProjectionMatrix() const
+	virtual float getRotation() const
+	{
+		return this->rotation_;
+	}
+	/**
+	 * @brief get projection matrix of the model.
+	 */
+	virtual glm::mat4 getProjectionMatrix() const
 	{
 		return this->projectionMatrix_;
 	}
-    /**
+	/**
 	 * @brief get view matrix of the model.
 	 */
 	virtual glm::mat4 getViewMatrix() const
 	{
 		return this->viewMatrix_;
 	}
-    /**
+	/**
 	 * @brief draw the model.
 	 */
-    virtual void draw(bool isPicking) = 0;
+	virtual void draw(bool isPicking) = 0;
 
-    /**
-     *  @brief return object ID.
-     */
-    virtual size_t getID() const
-    {
-        return this->ID_;
-    }
+	/**
+	 *  @brief return object ID.
+	 */
+	virtual size_t getID() const
+	{
+		return this->ID_;
+	}
 
-    virtual bool isSelected() const
-    {
-        return this->isSelected_;
-    }
+	virtual bool isSelected() const
+	{
+		return this->isSelected_;
+	}
 
-    virtual void setSelected(bool b)
+	virtual void setSelected(bool b)
 	{
 		this->isSelected_ = b;
 	}
@@ -156,7 +156,7 @@ public:
 
 		GL_CALL(glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE));
 
-		// Draw the object using the normal shader
+		// Dessiner l'objet en utilisant le shader normal
 		this->draw(false);
 
 		GL_CALL(glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE));
@@ -165,48 +165,43 @@ public:
 
 		this->shader_->unbind();
 	}
+
 	virtual void drawOutline()
-	{
-		if (!this->isSelected_) { return; }
+{
+	if (!this->isSelected_) { return; }
 
-		this->outlineShader_->bind();
-		// Disable writing to the color buffer
+	this->outlineShader_->bind();
 
-		// Enable stencil testing
-		glEnable(GL_STENCIL_TEST);
+	GL_CALL(glEnable(GL_STENCIL_TEST));
+	GL_CALL(glStencilFunc(GL_NOTEQUAL, 0, 0xFF));
+	GL_CALL(glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP)); // Conserver la valeur du tampon de stencil
 
-		// Configure the stencil test to pass only when the stencil value is 1
-		GL_CALL(glStencilFunc(GL_EQUAL, 1, 0xFF));
+	glm::mat4 view = this->getViewMatrix();
+	glm::mat4 projection = this->getProjectionMatrix();
 
-		// Disable writing to the stencil buffer
-		GL_CALL(glStencilMask(0x00));
+	this->outlineShader_->setUniformMat4f("model", this->modelMatrix_);
+	this->outlineShader_->setUniformMat4f("view", view);
+	this->outlineShader_->setUniformMat4f("projection", projection);
+	this->outlineShader_->setUniform1f("outlineThickness", 1.0f);
 
-		glm::mat4 view = this->getViewMatrix();
-		glm::mat4 projection = this->getProjectionMatrix();
+	this->va_->bind();
+	this->vb_->bind();
+	this->ib_->bind();
 
-		outlineShader_->setUniformMat4f("model", this->modelMatrix_);
-		outlineShader_->setUniformMat4f("view", view);
-		outlineShader_->setUniformMat4f("projection", projection);
-		outlineShader_->setUniform1f("outlineThickness", 1);
+	GL_CALL(glDrawElements(GL_TRIANGLES, this->ib_->getCount(), GL_UNSIGNED_INT, nullptr));
 
-		// Bind the vertex array object
-		this->va_->bind();
-		this->vb_->bind();
-		this->ib_->bind();
+	GL_CALL(glDisable(GL_STENCIL_TEST));
 
-		GL_CALL(glDrawElements(GL_TRIANGLES, this->ib_->getCount(), GL_UNSIGNED_INT, nullptr));
+	this->va_->unbind();
+	this->vb_->unbind();
+	this->ib_->unbind();
 
-		GL_CALL(glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE));
+	this->outlineShader_->unbind();
+}
 
-		glDisable(GL_STENCIL_TEST);
 
-		this->va_->unbind();
-		this->vb_->unbind();
-		this->ib_->unbind();
 
-		this->outlineShader_->unbind();
 
-	}
 
 	/**
 	 * @brief get the name of the model.

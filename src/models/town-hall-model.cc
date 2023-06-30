@@ -10,24 +10,26 @@ TownHall::TownHall(std::string name, const std::string& texturePath, const glm::
     : Model(name, texturePath, position, size, rotation) {
     // Create the plane model
 
+	this->modelMatrix_ = glm::rotate(this->modelMatrix_, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
-	ObjLoader objloader("assets/models/House.obj");
+	ObjLoader objloader("assets/models/b.obj");
 	auto vertices = objloader.getVertices();
 	auto texCoords = objloader.getTexCoords();
 
 	std::vector<float> interleavedData;
-	interleavedData.reserve(vertices.size() + texCoords.size());
+	interleavedData.reserve(vertices.size() * 5); // x,y,z,u,v for each vertex
 
-	for (size_t i = 0; i < vertices.size() / 3; ++i) 
+	for (size_t i = 0; i < vertices.size(); ++i)
 	{
+		// vertex coordinates
 		interleavedData.push_back(vertices[i].x);
 		interleavedData.push_back(vertices[i].y);
 		interleavedData.push_back(vertices[i].z);
 
+		// texture coordinates
 		interleavedData.push_back(texCoords[i].x);
 		interleavedData.push_back(texCoords[i].y);
 	}
-
 
     // Create the Vertex Buffer and the Vertex Array Object
 	this->va_ = std::make_unique<VertexArray>();
