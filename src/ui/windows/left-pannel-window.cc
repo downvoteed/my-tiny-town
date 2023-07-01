@@ -3,6 +3,7 @@
 #include "ImGuiFileDialog/ImGuiFileDialog.h"
 #include "application.hh"
 #include "grass-square-model.hh"
+#include "road-square-model.hh"
 #include "stb/stb_image.h"
 #include <iostream>
 
@@ -26,26 +27,62 @@ Model* previousModel = nullptr;
 
 LeftPannelWindow::LeftPannelWindow(Scene& scene) : Window(scene) 
 {
-	this->data_ = stbi_load("assets/gallery/grass-block.png", &this->width_, &this->height_, &this->channels_, 4);
+	unsigned char* data;
+    GLuint texture;
+    int width, height, channels;
 
-	// flip image
-	if (this->data_ == nullptr) 
-		std::cerr << "Failed to load image" << std::endl;
+    data = stbi_load("assets/gallery/grass-block.png", &width, &height, &channels, 4);
+    if (data == nullptr) 
+        std::cerr << "Failed to load image" << std::endl;
 
-	GL_CALL(glGenTextures(1, &this->texture_));
-    GL_CALL(glBindTexture(GL_TEXTURE_2D, this->texture_));
+    GL_CALL(glGenTextures(1, &texture));
+    GL_CALL(glBindTexture(GL_TEXTURE_2D, texture));
     GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
     GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-    GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this->width_, this->height_, 0, GL_RGBA, GL_UNSIGNED_BYTE, this->data_));
+    GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data));
     GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
 
+	stbi_image_free(data);
+
+	GalleryItem item;
+	item.texture = texture;
+	item.createModel = [](float x, float y) {
+		return new GrassSquare("Grass block", "assets/models/grass-square.obj",
+			"assets/textures/diff/grass-square-diffuse.jpg", glm::vec3(x, y, -3.0f),
+			glm::vec3(0.01f, 0.01f, 0.01f), 0.0f);
+	};
+	galleryItems_.push_back(item);
+
+	data = stbi_load("assets/gallery/road-block.png", &width, &height, &channels, 4);
+	if (data == nullptr)
+		std::cerr << "Failed to load image" << std::endl;
+
+	GL_CALL(glGenTextures(1, &texture));
+	GL_CALL(glBindTexture(GL_TEXTURE_2D, texture));
+	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+	GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data));
+	GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
+
+	stbi_image_free(data);
+
+	item;
+	item.texture = texture;
+	item.createModel = [](float x, float y) {
+		return new 	RoadSquare("Road block", "assets/models/road.obj", "assets/textures/diff/road-texture.png",
+		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.3f, 0.5f, 0.5f), 0.0f);
+	};
+	galleryItems_.push_back(item);
 }
 
-LeftPannelWindow::~LeftPannelWindow() 
+LeftPannelWindow::~LeftPannelWindow()
 {
-	GL_CALL(glDeleteTextures(1, &this->texture_));
-	stbi_image_free(this->data_);
+	for (auto& item : galleryItems_)
+	{
+		GL_CALL(glDeleteTextures(1, &item.texture));
+	}
 }
+
 
 void LeftPannelWindow::render() 
 {
@@ -161,34 +198,34 @@ void LeftPannelWindow::render()
 
 		ImVec2 imageSize = ImVec2(imageWidth, imageHeight);
 
-		GL_CALL(glBindTexture(GL_TEXTURE_2D, this->texture_));
-		if (ImGui::ImageButton((void*)(intptr_t)this->texture_, imageSize, ImVec2(0, 1), ImVec2(1, 0)))
+		int elementsPerRow = 2;
+		int count = 0;
+		float x = 0.0f, y = 0.0f;
+		if (previousModel != nullptr)
 		{
-			//auto grassSquare = std::make_unique<GrassSquare>("Grass block", "assets/textures/diff/grass-square-diffuse.jpg", glm::vec3(0.0f, 0.0f, 0.0f),
-			//	glm::vec3(0.01f, 0.01f, 0.01f), 0.0f);
-			// get mouse location
-
-			float x = 0.0f , y = 0.0f;
-			if (previousModel != nullptr)
-			{
-				x = previousModel->getPosition().x + 0.5f;
-				y = previousModel->getPosition().y + 0.5f;
-			}
-
-			auto grassSquare = new GrassSquare("Grass block","assets/models/grass-square.obj" ,
-		"assets/textures/diff/grass-square-diffuse.jpg", glm::vec3(x, y, -3.0f),
-		glm::vec3(0.01f, 0.01f, 0.01f), 0.0f);
-
-			grassSquare->setSelected(true);
-			previousModel = grassSquare;
-			scene.addModel(grassSquare->getID(), grassSquare);
+			x = previousModel->getPosition().x + 0.5f;
+			y = previousModel->getPosition().y + 0.5f;
 		}
 
-		ImGui::SameLine();
-		if (ImGui::ImageButton((void*)(intptr_t)this->texture_, imageSize, ImVec2(0, 1), ImVec2(1, 0)));
-			// TODO : draw
+		for (auto& item : galleryItems_)
+		{
+			if ( count % elementsPerRow != 0)
+				ImGui::SameLine();
 
-    GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
+			GL_CALL(glBindTexture(GL_TEXTURE_2D, item.texture));
+			if (ImGui::ImageButton((void*)(intptr_t)item.texture, imageSize, ImVec2(0, 1), ImVec2(1, 0)))
+			{
+				Model* model = item.createModel(x, y);
+
+				model->setSelected(true);
+				previousModel = model;
+				scene.addModel(model->getID(), model);
+			}
+
+			GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
+			count++;
+		}
+
 		//border
 	}
 	else

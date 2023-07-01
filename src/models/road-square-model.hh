@@ -1,12 +1,12 @@
 #pragma once
 #include "models.hh"
 
-class TownHall : public Model
+class RoadSquare : public Model
 {
 public:
-	TownHall(std::string name, const std::string& modelPath, const std::string& texturePath,
+	RoadSquare(std::string name, const std::string& modelPath, const std::string& texturePath,
 		const glm::vec3& position, const glm::vec3& size, float rotation);
-	~TownHall() = default;
+	~RoadSquare() = default;
 
 	void draw(bool isPicking) override;
 };

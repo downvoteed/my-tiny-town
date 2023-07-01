@@ -6,8 +6,9 @@
 #include "scene.hh"
 #include "event-handler.hh"
 #include "grass-plane-model.hh"
-#include "town-hall-model.hh"
+#include "building-model.hh"
 #include "grass-square-model.hh"
+#include "road-square-model.hh"
 
 int main()
 {
@@ -24,17 +25,21 @@ int main()
 	GrassPlane grass("Grass plane", glm::vec3(0.0f, 0.0f, -3.0f),
 		glm::vec3(40.f, 40.f, 40.f), 0.0f);
 
-	TownHall townHall("Town Hall", "assets/models/b.obj", "assets/textures/diff/b.jpg", glm::vec3(-0.20, -8.0f, 3.0f),
+	Building townHall("Town Hall", "assets/models/b.obj", "assets/textures/diff/b.jpg", glm::vec3(-0.20, -8.0f, 3.0f),
 		glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
 
 	GrassSquare grassSquare("Grass block","assets/models/grass-square.obj" ,
 		"assets/textures/diff/grass-square-diffuse.jpg", glm::vec3(0.0f, 0.0f, -3.0f),
 		glm::vec3(0.01f, 0.01f, 0.01f), 0.0f);
 
+	RoadSquare roadSquare("Road block", "assets/models/road.obj", "assets/textures/diff/road-texture.png",
+		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.3f, 0.5f, 0.5f), 0.0f);
+
 	
 	scene.addModel(grass.getID(), &grass);
 	scene.addModel(townHall.getID(), & townHall);
 	scene.addModel(grassSquare.getID(), &grassSquare);
+	scene.addModel(roadSquare.getID(), &roadSquare);
 
 	// init interface
 	Application::instance()->init(scene);

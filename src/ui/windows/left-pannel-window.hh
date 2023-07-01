@@ -2,6 +2,8 @@
 
 #include "window.hh"
 #include <GLFW/glfw3.h>
+#include "gallery-item.hh"
+#include <vector>
 
 class LeftPannelWindow : public Window 
 {
@@ -15,9 +17,8 @@ public:
 	void render() override;
 
 private:
-	unsigned char* data_;
+	std::vector<GalleryItem> galleryItems_;
 	int width_;
 	int height_;
 	int channels_;
-	GLuint texture_;
 };
