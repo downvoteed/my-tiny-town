@@ -20,11 +20,10 @@
     } while (0)
 
 
-GrassPlane::GrassPlane(std::string name, const std::string& texturePath, const glm::vec3& position, const glm::vec3& size, float rotation)
-    : Model(name, texturePath, position, size, rotation) {
-    // Create the plane model
-
-    float vertices[] = {
+GrassPlane::GrassPlane(std::string name, const glm::vec3& position, const glm::vec3& size, float rotation)
+    : Model(name, position, size, rotation)
+{
+	float vertices[] = {
         // positions          // texture coords
          0.5f,  0.5f, 0.0f,   1.0f, 1.0f,   // top right
          0.5f, -0.5f, 0.0f,   1.0f, 0.0f,   // bottom right
@@ -49,7 +48,7 @@ GrassPlane::GrassPlane(std::string name, const std::string& texturePath, const g
 
     // Load the texture
 	this->armTexture_ = std::make_unique<Texture>("assets/textures/arm/grass-plane.jpg");
-	this->diffTexture_ = std::make_unique<Texture>(texturePath);
+	this->diffTexture_ = std::make_unique<Texture>("assets/textures/diff/grass.jpg");
 
 
     // Create the shader
@@ -57,6 +56,7 @@ GrassPlane::GrassPlane(std::string name, const std::string& texturePath, const g
 
 	this->va_->unbind();
 }
+
 
 void GrassPlane::draw(bool isPicking) 
 {

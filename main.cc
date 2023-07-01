@@ -21,12 +21,14 @@ int main()
 	glfwSetCursorPosCallback(app->getWindow(), cursor_position_callback);
 	ImGuiLayer imgui = ImGuiLayer(app->getWindow());
 
-	GrassPlane grass("Grass plane", "assets/textures/diff/grass.jpg", glm::vec3(0.0f, 0.0f, -3.0f),
+	GrassPlane grass("Grass plane", glm::vec3(0.0f, 0.0f, -3.0f),
 		glm::vec3(40.f, 40.f, 40.f), 0.0f);
 
-	TownHall townHall("Town Hall","assets/textures/diff/b.jpg", glm::vec3(12.0f, -8.0f, 6.0f),
-		glm::vec3(0.005f, 0.005f, 0.005f), 0.0f);
-	GrassSquare grassSquare("Grass block", "assets/textures/diff/grass-square-diffuse.jpg", glm::vec3(0.0f, 0.0f, -3.0f),
+	TownHall townHall("Town Hall", "assets/models/b.obj", "assets/textures/diff/b.jpg", glm::vec3(-0.20, -8.0f, 3.0f),
+		glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
+
+	GrassSquare grassSquare("Grass block","assets/models/grass-square.obj" ,
+		"assets/textures/diff/grass-square-diffuse.jpg", glm::vec3(0.0f, 0.0f, -3.0f),
 		glm::vec3(0.01f, 0.01f, 0.01f), 0.0f);
 
 	
@@ -44,7 +46,6 @@ int main()
 		imgui.begin();
 		app->render(scene);
 		glEnable(GL_DEPTH_TEST);
-		glDisable(GL_CULL_FACE);
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 

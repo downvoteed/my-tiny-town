@@ -28,8 +28,8 @@ void Scene::draw()
 {
 	glm::mat4 view = this->camera_.getViewMatrix();
 	glm::mat4 projection = camera_.getProjectionMatrix();
-	
-    bool mouseButtonCurrentlyPressed = glfwGetMouseButton(Application::instance()->getWindow(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
+
+	bool mouseButtonCurrentlyPressed = glfwGetMouseButton(Application::instance()->getWindow(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
 
 	if (!ImGui::GetIO().WantCaptureMouse && mouseButtonCurrentlyPressed && !mouseButtonPressed)
 	{
@@ -96,6 +96,7 @@ void Scene::draw()
 		if (model->isSelected())
 		{
 			model->drawStencil();
+			model->draw(false);
 			model->drawOutline();
 		}
 		else
@@ -122,44 +123,44 @@ void Scene::setSelectedModel(const size_t id)
 		this->selectedModel_ = this->models_.at(id);
 }
 
-Model* Scene::getSelectedModel() 
+Model* Scene::getSelectedModel()
 {
-    return this->selectedModel_;
+	return this->selectedModel_;
 }
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 {
-    static Model* lastSelectedModel = nullptr;
-    static double lastX = 0.0;
-    static double lastY = 0.0;
+	static Model* lastSelectedModel = nullptr;
+	static double lastX = 0.0;
+	static double lastY = 0.0;
 
-    Scene* scene = static_cast<Scene*>(glfwGetWindowUserPointer(window));
-    Model* selectedModel = scene->getSelectedModel();
+	Scene* scene = static_cast<Scene*>(glfwGetWindowUserPointer(window));
+	Model* selectedModel = scene->getSelectedModel();
 
-    if (!ImGui::GetIO().WantCaptureMouse && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
-    {
-        if (selectedModel != lastSelectedModel)
-        {
-            lastX = xpos;
-            lastY = ypos;
-            lastSelectedModel = selectedModel;
-        }
+	if (!ImGui::GetIO().WantCaptureMouse && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+	{
+		if (selectedModel != lastSelectedModel)
+		{
+			lastX = xpos;
+			lastY = ypos;
+			lastSelectedModel = selectedModel;
+		}
 
-		if (selectedModel == nullptr) { return;  }
+		if (selectedModel == nullptr) { return; }
 
-        double dx = xpos - lastX;
-        double dy = ypos - lastY;
+		double dx = xpos - lastX;
+		double dy = ypos - lastY;
 
-        glm::vec3 position = selectedModel->getPosition();
-        position.x -= dx * 0.01f; 
-        position.y += dy * 0.1f;
-        selectedModel->setPosition(position);
+		glm::vec3 position = selectedModel->getPosition();
+		position.x -= dx * 0.01f;
+		position.y += dy * 0.1f;
+		selectedModel->setPosition(position);
 
-        lastX = xpos;
-        lastY = ypos;
-    }
-    else
-    {
-        lastSelectedModel = nullptr;
-    }
+		lastX = xpos;
+		lastY = ypos;
+	}
+	else
+	{
+		lastSelectedModel = nullptr;
+	}
 }
 

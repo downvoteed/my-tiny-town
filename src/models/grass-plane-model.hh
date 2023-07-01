@@ -6,7 +6,7 @@
 
 class GrassPlane : public Model {
 public:
-	GrassPlane(std::string name, const std::string& texturePath, const glm::vec3& position, const glm::vec3& size, float rotation);
+	GrassPlane(std::string name, const glm::vec3& position, const glm::vec3& size, float rotation);
 	~GrassPlane() override = default;
 
     void draw(bool isPicking) override;

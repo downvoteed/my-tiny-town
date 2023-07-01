@@ -175,8 +175,10 @@ void LeftPannelWindow::render()
 				y = previousModel->getPosition().y + 0.5f;
 			}
 
-			auto grassSquare = new GrassSquare("Grass block", "assets/textures/diff/grass-square-diffuse.jpg", glm::vec3(x, y, -3.0f),
-				glm::vec3(0.01f, 0.01f, 0.01f), 0.0f);
+			auto grassSquare = new GrassSquare("Grass block","assets/models/grass-square.obj" ,
+		"assets/textures/diff/grass-square-diffuse.jpg", glm::vec3(x, y, -3.0f),
+		glm::vec3(0.01f, 0.01f, 0.01f), 0.0f);
+
 			grassSquare->setSelected(true);
 			previousModel = grassSquare;
 			scene.addModel(grassSquare->getID(), grassSquare);
