@@ -10,8 +10,8 @@ EventHandler::EventHandler(GLFWwindow* window, Camera& camera) : window_(window)
 
 void EventHandler::registerCallbacks()
 {
-//	glfwSetScrollCallback(this->window_, EventHandler::scrollCallback);
-//	glfwSetCursorPosCallback(this->window_, EventHandler::mouseCallback);
+	//glfwSetScrollCallback(this->window_, EventHandler::scrollCallback);
+	//glfwSetCursorPosCallback(this->window_, EventHandler::mouseCallback);
 	glfwSetFramebufferSizeCallback(this->window_, EventHandler::framebuffer_size_callback);
 	glfwSetWindowSizeCallback(this->window_, EventHandler::framebuffer_size_callback);
 }
@@ -31,23 +31,13 @@ void EventHandler::mouseCallback(GLFWwindow* window, double xpos, double ypos)
 			EventHandler* handler = static_cast<EventHandler*>(glfwGetWindowUserPointer(window));
 			handler->getCamera().processMouseLeftClick(xpos, ypos);
 		}
-		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
-		{
-			EventHandler* handler = static_cast<EventHandler*>(glfwGetWindowUserPointer(window));
-			handler->getCamera().processMouseRightClick(xpos, ypos);
-		}
 	}
 }
 
 void EventHandler::scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 {
-	
-	if (!ImGui::GetIO().WantCaptureMouse)
-	{
-		EventHandler* handler = static_cast<EventHandler*>(glfwGetWindowUserPointer(window));
-		handler->getCamera().processMouseScroll(yoffset);
-	}
 }
+	
 
 void EventHandler::framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {

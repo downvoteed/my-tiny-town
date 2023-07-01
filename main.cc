@@ -9,6 +9,7 @@
 #include "building-model.hh"
 #include "grass-square-model.hh"
 #include "road-square-model.hh"
+#include "street-lamp-model.hh"
 
 int main()
 {
@@ -20,10 +21,11 @@ int main()
 	eventHandler.registerCallbacks();
 	glfwSetWindowUserPointer(app->getWindow(), &scene);
 	glfwSetCursorPosCallback(app->getWindow(), cursor_position_callback);
+    glfwSetScrollCallback(app->getWindow(), scroll_callback);
 	ImGuiLayer imgui = ImGuiLayer(app->getWindow());
 
 	GrassPlane grass("Grass plane", glm::vec3(0.0f, 0.0f, -3.0f),
-		glm::vec3(40.f, 40.f, 40.f), 0.0f);
+		glm::vec3(60.f, 80.f, 40.f), 0.0f);
 
 	Building townHall("Town Hall", "assets/models/b.obj", "assets/textures/diff/b.jpg", glm::vec3(-0.20, -8.0f, 3.0f),
 		glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
@@ -35,11 +37,15 @@ int main()
 	RoadSquare roadSquare("Road block", "assets/models/road.obj", "assets/textures/diff/road-texture.png",
 		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.3f, 0.5f, 0.5f), 0.0f);
 
+	StreetLamp streetLamp("Street Lamp", "assets/models/Lamp.obj", "assets/textures/diff/street-lamp-diff.png",
+		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.1f, 0.1f, 0.1f), 0.0f);
+
 	
 	scene.addModel(grass.getID(), &grass);
 	scene.addModel(townHall.getID(), & townHall);
 	scene.addModel(grassSquare.getID(), &grassSquare);
 	scene.addModel(roadSquare.getID(), &roadSquare);
+	scene.addModel(streetLamp.getID(), &streetLamp);
 
 	// init interface
 	Application::instance()->init(scene);

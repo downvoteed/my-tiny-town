@@ -73,8 +73,8 @@ void GrassPlane::draw(bool isPicking)
 	this->shader_->setUniformMat4f("projection", projection);
 
 	// Bind the texture
-	armTexture_->bind(0);
-    diffTexture_->bind(1);
+	this->armTexture_->bind(0);
+    this->diffTexture_->bind(1);
 
 	shader_->setUniform1i("armTexture", 0);
 	shader_->setUniform1i("diffTexture", 1);
@@ -97,6 +97,8 @@ void GrassPlane::draw(bool isPicking)
 
 	this->shader_->setUniform1i("isPicking", 0);
 
+	this->armTexture_->unbind();
+	this->diffTexture_->unbind();
 	this->shader_->unbind();
 	this->va_->unbind();
 	this->vb_->unbind();

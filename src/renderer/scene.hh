@@ -41,6 +41,7 @@ public:
 	 */
     Model* getSelectedModel();
 
+    void processScroll(double xoffset, double yoffset);
 
 
 private:
@@ -48,6 +49,8 @@ private:
     Model *selectedModel_ = nullptr;
     Camera camera_;
     FrameBuffer frameBuffer_;
+
 };
 
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);

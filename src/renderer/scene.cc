@@ -9,15 +9,12 @@
 
 static bool mouseButtonPressed = false;
 
-Scene::Scene() : camera_(35.0f, 800.0f / 600.0f, 0.1f, 100.0f), frameBuffer_()
+Scene::Scene() : camera_(35.0f, 1280.0f / 780.0f, 0.1f, 1000.0f), frameBuffer_()
 {
-	this->camera_.setPosition(glm::vec3(0.0f, 10.0f, 0.0f));
-
-	this->camera_.setPitch(-90.0f);
-	this->camera_.setYaw(-90.0f);
-	this->camera_.setPosition(glm::vec3(0.0f, 20.0f, 0.0f));
-
+	camera_.setYaw(-90.0f);
+    camera_.setPitch(-90.f); // Make the camera look straight ahead
 }
+
 
 void Scene::addModel(size_t id, Model* model)
 {
@@ -86,9 +83,10 @@ void Scene::draw()
 			this->setSelectedModel(0);
 		}
 
-
 		fbo.unbind();
 	}
+
+
 	for (const auto& [_, model] : this->models_)
 	{
 		model->setProjectionMatrix(projection);
@@ -127,6 +125,14 @@ Model* Scene::getSelectedModel()
 {
 	return this->selectedModel_;
 }
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) 
+{
+	// Get the user pointer and assume it is a Scene instance
+	Scene* scene = static_cast<Scene*>(glfwGetWindowUserPointer(window));
+
+	// Call the member function
+	scene->processScroll(xoffset, yoffset);
+}
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 {
 	static Model* lastSelectedModel = nullptr;
@@ -162,5 +168,12 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 	{
 		lastSelectedModel = nullptr;
 	}
+}
+
+
+void Scene::processScroll(double xoffset, double yoffset) 
+{
+	// handle scroll event...
+	camera_.processMouseScroll(yoffset);
 }
 

@@ -20,24 +20,31 @@ public:
 	 */
     glm::mat4 getProjectionMatrix() const;
     void processMouseLeftClick(float xoffset, float yoffset);
-    void processMouseRightClick(float xoffset, float yoffset);
     void processMouseScroll(float yoffset);
     /**
     * @brief set aspect ratio
 	*/
     void setAspectRatio(const float aspect);
     /**
+     * @brief set camera pitch angle
+     */
+    void setPitch(float pitch);
+    /**
+	 * @brief set camera yaw angle
+	 */
+    void setYaw(float yaw);
+    /**
     * @brief set camera position
     */
     void setPosition(const glm::vec3& position);
     /**
-    * @brief set camera pitch. Vertical angle.
-	*/
-    void setPitch(float pitch);
-	/**
-    * @brief set camera yaw. Horizontal angle.
-    */  
-    void setYaw(const float yaw);
+     *  @brief get camera position
+     */
+    glm::vec3 getPosition() const;
+    /**
+	 * @brief get camera front vector
+	 */
+    glm::vec3 getFront() const;
 
 private:
     void updateCameraVectors();
@@ -45,6 +52,8 @@ private:
     glm::vec3 position_;
     glm::vec3 front_;
     glm::vec3 up_;
+    glm::vec3 right_;
+    glm::vec3 worldUp_ = glm::vec3(0.0f, 1.0f, 0.0f);
     float fov_;
     float aspect_;
     float near_;
