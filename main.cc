@@ -10,6 +10,7 @@
 #include "grass-square-model.hh"
 #include "road-square-model.hh"
 #include "street-lamp-model.hh"
+#include "skybox.hh"
 
 int main()
 {
@@ -27,7 +28,7 @@ int main()
 	GrassPlane grass("Grass plane", glm::vec3(0.0f, 0.0f, -3.0f),
 		glm::vec3(40.f, 40.f, 40.f), 90.0f);
 
-	Building townHall("Building", "assets/models/b.obj", "assets/textures/diff/b.jpg", glm::vec3(-0.20, 0.0f, 3.0f),
+	Building building("Building", "assets/models/b.obj", "assets/textures/diff/b.jpg", glm::vec3(-0.20, 0.0f, 3.0f),
 		glm::vec3(0.002f, 0.002f, 0.002f), 90.0f);
 
 	GrassSquare grassSquare("Grass block","assets/models/grass-square.obj" ,
@@ -40,9 +41,10 @@ int main()
 	StreetLamp streetLamp("Street Lamp", "assets/models/Lamp.obj", "assets/textures/diff/street-lamp-diff.png",
 		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.1f, 0.1f, 0.1f), -90.0f);
 
+
 	
 	scene.addModel(grass.getID(), &grass);
-	scene.addModel(townHall.getID(), & townHall);
+	scene.addModel(building.getID(), &building);
 	scene.addModel(grassSquare.getID(), &grassSquare);
 	scene.addModel(roadSquare.getID(), &roadSquare);
 	scene.addModel(streetLamp.getID(), &streetLamp);

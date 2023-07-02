@@ -4,6 +4,7 @@
 #include "frame-buffer.hh"
 #include <map>
 #include <GLFW/glfw3.h>
+#include "skybox.hh"
 
 //TODO: add documentation
 class Scene 
@@ -51,6 +52,7 @@ private:
     Model *selectedModel_ = nullptr;
     Camera camera_;
     FrameBuffer frameBuffer_;
+    std::unique_ptr<SkyboxSunset> skybox_;
 
 };
 

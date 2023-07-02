@@ -95,8 +95,8 @@ LeftPannelWindow::LeftPannelWindow(Scene& scene) : Window(scene)
 	item;
 	item.texture = texture;
 	item.createModel = [](float x, float y) {
-		return new Building("Building", "assets/models/b.obj", "assets/textures/diff/b.jpg", glm::vec3(x, 3.0f, y),
-			glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
+		return new Building("Building", "assets/models/b.obj", "assets/textures/diff/b.jpg", glm::vec3(x, 0.0f, y),
+			glm::vec3(0.002f, 0.002f, 0.002f), 90.0f);
 	};
 	galleryItems_.push_back(item);
 }

@@ -3,6 +3,7 @@
 #include "windows/demo-window.hh"
 #include "windows/left-pannel-window.hh"
 #include "windows/right-pannel-window.hh"
+#include "stb/stb_image.h"
 
 const ImVec4 Application::BACKGROUND_COLOR = ImVec4(40.f / 255.f, 60.f / 255.f, 36.f / 255.f, 1.f);
 const ImVec4 Application::SECONDARY_COLOR = ImVec4(48.f / 255.f, 28.f / 255.f, 20.f / 255.f, 1.f);
@@ -56,6 +57,11 @@ Application::Application()
 	unsigned int viewports[4];
 	this->initialViewportWidth_ = viewports[2] = width;
 	this->initialViewportHeight_ = viewports[3] = height;
+
+	GLFWimage images[1];
+	images[0].pixels = stbi_load("assets/icon.png", &images[0].width, &images[0].height, 0, 4); //rgba channels 
+	glfwSetWindowIcon(this->window_, 1, images);
+	stbi_image_free(images[0].pixels);
 }
 
 

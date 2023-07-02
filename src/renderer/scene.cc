@@ -13,6 +13,8 @@ Scene::Scene() : camera_(35.0f, 1280.0f / 780.0f, 0.1f, 1000.0f), frameBuffer_()
 {
 	camera_.setYaw(-90.0f);
 	camera_.setPitch(0.f); // Make the camera look straight ahead
+
+	 this->skybox_ = std::make_unique<SkyboxSunset>("assets/textures/skyboxes/skybox_cubemap.png");
 }
 
 
@@ -23,8 +25,12 @@ void Scene::addModel(size_t id, Model* model)
 
 void Scene::draw()
 {
+
 	glm::mat4 view = this->camera_.getViewMatrix();
 	glm::mat4 projection = camera_.getProjectionMatrix();
+
+	skybox_->setProjection(projection);
+	skybox_->setView(view);
 
 	bool mouseButtonCurrentlyPressed = glfwGetMouseButton(Application::instance()->getWindow(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
 
@@ -38,7 +44,6 @@ void Scene::draw()
 			model->setProjectionMatrix(projection);
 			model->setViewMatrix(view);
 			model->draw(true);
-
 		}
 
 		unsigned char pixelColor[3];
@@ -89,6 +94,7 @@ void Scene::draw()
 	}
 
 
+	this->skybox_->Draw();
 	for (const auto& [_, model] : this->models_)
 	{
 		model->setProjectionMatrix(projection);
