@@ -105,3 +105,8 @@ void GrassPlane::draw(bool isPicking)
 	this->ib_->unbind();
 }
 
+void GrassPlane::rotate(float angle, const glm::vec3& axis)
+{
+	glm::vec3 newAxis = glm::vec3(axis.x, axis.z, axis.y);
+	this->modelMatrix_ = glm::rotate(this->modelMatrix_, angle, newAxis);
+}

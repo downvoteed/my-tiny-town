@@ -11,6 +11,8 @@ public:
 
     void draw(bool isPicking) override;
 
+	void rotate(float angle, const glm::vec3& axis) override;
+
 	std::unique_ptr<Texture> armTexture_;
 	std::unique_ptr<Texture> diffTexture_;
 	std::unique_ptr<Texture> dispTexture_;

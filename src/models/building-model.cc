@@ -60,3 +60,9 @@ void Building::draw(bool isPicking)
 
 	this->shader_->unbind();
 }
+
+void Building::rotate(float angle, const glm::vec3& axis) 
+{
+	glm::vec3 newAxis = glm::vec3(axis.x, axis.y, axis.z);
+	this->modelMatrix_ = glm::rotate(this->modelMatrix_, angle, newAxis);
+}

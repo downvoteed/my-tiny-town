@@ -292,7 +292,7 @@ private:
 		this->modelMatrix_ = glm::mat4(1.0f);
 		this->modelMatrix_ = glm::translate(this->modelMatrix_, position);
 		this->modelMatrix_ = glm::scale(this->modelMatrix_, size); // scale the plane
-		this->modelMatrix_ = glm::rotate(this->modelMatrix_, glm::radians(this->rotation_), glm::vec3(0.0f, 0.0f, 1.0f));
+		this->modelMatrix_ = glm::rotate(this->modelMatrix_, glm::radians(this->rotation_), glm::vec3(1.0f, 0.0f, 0.0f));
 		this->ID_ = ++current_ID;
 	}
 

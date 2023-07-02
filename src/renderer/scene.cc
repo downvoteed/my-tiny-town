@@ -12,7 +12,7 @@ static bool mouseButtonPressed = false;
 Scene::Scene() : camera_(35.0f, 1280.0f / 780.0f, 0.1f, 1000.0f), frameBuffer_()
 {
 	camera_.setYaw(-90.0f);
-	camera_.setPitch(-90.f); // Make the camera look straight ahead
+	camera_.setPitch(0.f); // Make the camera look straight ahead
 }
 
 
@@ -135,6 +135,9 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 	// Call the member function
 	scene->processScroll(xoffset, yoffset);
 }
+
+
+
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 {
 	static Model* lastSelectedModel = nullptr;
@@ -146,6 +149,9 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 
 	double dx = xpos - lastX;
 	double dy = ypos - lastY;
+
+	float xoffset = xpos - lastX;
+	float yoffset = lastY - ypos; // reversed since y-coordinates range from bottom to top
 
 	lastX = xpos;
 	lastY = ypos;
@@ -163,21 +169,38 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 			float sensitivity = 0.04f;
 
 			glm::vec3 position = scene->getCamera().getPosition();
-			position.x += dx * sensitivity;
-			position.y -= dy * sensitivity; // Note: Minus sign because y-coordinates go from bottom to top
+			position.x -= dx * sensitivity;
+			position.z -= dy * sensitivity; // Note: Minus sign because y-coordinates go from bottom to top
 			scene->getCamera().setPosition(position);
 
 			return;
 		}
 
 		glm::vec3 position = selectedModel->getPosition();
-		position.x -= dx * 0.06f;
-		position.y += dy * 0.4f;
+		position.x += dx * 0.06f;
+		position.z += dy * 0.4f;
 		selectedModel->setPosition(position);
 	}
 	else if (!ImGui::GetIO().WantCaptureMouse && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 	{
-		scene->getCamera().rotate(dx, dy);
+		float yaw = scene->getCamera().getYaw();
+		float pitch = scene->getCamera().getPitch();
+
+		float sensitivity = 0.1f;
+		xoffset *= sensitivity;
+		yoffset *= sensitivity;
+
+		yaw += xoffset;
+		pitch += yoffset;
+
+		if (pitch > 89.0f)
+			pitch = 89.0f;
+		if (pitch < -89.0f)
+			pitch = -89.0f;
+
+		scene->getCamera().setYaw(yaw);
+		scene->getCamera().setPitch(pitch);
+
 	}
 	else
 	{
@@ -185,9 +208,16 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 	}
 }
 
+
+
+
 void Scene::processScroll(double xoffset, double yoffset)
 {
 	// handle scroll event...
 	camera_.processMouseScroll(yoffset);
 }
 
+std::map<size_t, Model*>& Scene::getModels() 
+{
+	return this->models_;
+}

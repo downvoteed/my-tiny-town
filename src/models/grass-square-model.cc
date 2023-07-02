@@ -72,3 +72,9 @@ void GrassSquare::draw(bool isPicking)
 
 	this->shader_->unbind();
 }
+
+void GrassSquare::rotate(float angle, const glm::vec3& axis)
+{
+	glm::vec3 newAxis = glm::vec3(axis.x, axis.z, axis.y);
+	this->modelMatrix_ = glm::rotate(this->modelMatrix_, angle, newAxis);
+}

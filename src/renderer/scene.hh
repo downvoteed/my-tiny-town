@@ -43,6 +43,8 @@ public:
 
     void processScroll(double xoffset, double yoffset);
 
+    std::map<size_t, Model*>& getModels();
+
 
 private:
     std::map<size_t, Model*> models_;

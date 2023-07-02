@@ -46,6 +46,9 @@ public:
 	 */
     glm::vec3 getFront() const;
 
+    float getYaw() const;
+    float getPitch() const;
+
     void rotate(float dx, float dy);
 
 	glm::vec3 rotation = glm::vec3(0.0f, 0.0f, 0.0f);

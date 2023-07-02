@@ -8,5 +8,7 @@ public:
 		const glm::vec3& position, const glm::vec3& size, float rotation);
 	~GrassSquare() = default;
 
+	void rotate(float angle, const glm::vec3& axis) override;
+
 	void draw(bool isPicking) override;
 };
