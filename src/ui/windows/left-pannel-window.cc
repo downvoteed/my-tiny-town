@@ -4,6 +4,7 @@
 #include "application.hh"
 #include "grass-square-model.hh"
 #include "road-square-model.hh"
+#include "building-model.hh"
 #include "stb/stb_image.h"
 #include <iostream>
 
@@ -31,6 +32,7 @@ LeftPannelWindow::LeftPannelWindow(Scene& scene) : Window(scene)
     GLuint texture;
     int width, height, channels;
 
+	// grass block
     data = stbi_load("assets/gallery/grass-block.png", &width, &height, &channels, 4);
     if (data == nullptr) 
         std::cerr << "Failed to load image" << std::endl;
@@ -53,6 +55,7 @@ LeftPannelWindow::LeftPannelWindow(Scene& scene) : Window(scene)
 	};
 	galleryItems_.push_back(item);
 
+	// road block
 	data = stbi_load("assets/gallery/road-block.png", &width, &height, &channels, 4);
 	if (data == nullptr)
 		std::cerr << "Failed to load image" << std::endl;
@@ -70,7 +73,30 @@ LeftPannelWindow::LeftPannelWindow(Scene& scene) : Window(scene)
 	item.texture = texture;
 	item.createModel = [](float x, float y) {
 		return new 	RoadSquare("Road block", "assets/models/road.obj", "assets/textures/diff/road-texture.png",
-		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.3f, 0.5f, 0.5f), 0.0f);
+		glm::vec3(x, y, -3.0f), glm::vec3(0.3f, 0.5f, 0.5f), 0.0f);
+	};
+	galleryItems_.push_back(item);
+
+	// Building
+
+	data = stbi_load("assets/gallery/building.png", &width, &height, &channels, 4);
+	if (data == nullptr)
+		std::cerr << "Failed to load image" << std::endl;
+
+	GL_CALL(glGenTextures(1, &texture));
+	GL_CALL(glBindTexture(GL_TEXTURE_2D, texture));
+	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+	GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data));
+	GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
+
+	stbi_image_free(data);
+
+	item;
+	item.texture = texture;
+	item.createModel = [](float x, float y) {
+		return new Building("Building", "assets/models/b.obj", "assets/textures/diff/b.jpg", glm::vec3(x, y, 3.0f),
+			glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
 	};
 	galleryItems_.push_back(item);
 }

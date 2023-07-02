@@ -1,6 +1,7 @@
 #include "camera/camera.hh"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <iostream>
 
 Camera::Camera(float fov, float aspect, float near, float far)
         : position_(0.0f, 80.0f, 3.0f),
@@ -86,4 +87,30 @@ glm::vec3 Camera::getFront() const
 	return front_;
 }
 
+
+
+void Camera::rotate(float dx, float dy) 
+{
+    float rotationAngle = 0.1f * dx;
+
+    // Translate the camera position relative to the pivot point
+    glm::vec3 translation = position_ - pivotPoint;
+    glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), translation);
+
+    // Rotate the translation matrix around the y-axis
+    glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+
+    // Apply the rotation to the translation matrix
+    glm::mat4 transformedTranslationMatrix = rotationMatrix * translationMatrix;
+
+	position_ = glm::vec3(transformedTranslationMatrix[3]) + pivotPoint;
+
+
+
+    // Update the camera position
+
+    // Update camera direction and right vector
+    updateCameraVectors();
+
+}
 

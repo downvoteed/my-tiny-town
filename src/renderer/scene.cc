@@ -12,7 +12,7 @@ static bool mouseButtonPressed = false;
 Scene::Scene() : camera_(35.0f, 1280.0f / 780.0f, 0.1f, 1000.0f), frameBuffer_()
 {
 	camera_.setYaw(-90.0f);
-    camera_.setPitch(-90.f); // Make the camera look straight ahead
+	camera_.setPitch(-90.f); // Make the camera look straight ahead
 }
 
 
@@ -82,6 +82,8 @@ void Scene::draw()
 		{
 			this->setSelectedModel(0);
 		}
+		if (objectID == 1)
+			this->setSelectedModel(0);
 
 		fbo.unbind();
 	}
@@ -125,7 +127,7 @@ Model* Scene::getSelectedModel()
 {
 	return this->selectedModel_;
 }
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) 
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	// Get the user pointer and assume it is a Scene instance
 	Scene* scene = static_cast<Scene*>(glfwGetWindowUserPointer(window));
@@ -136,33 +138,46 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 {
 	static Model* lastSelectedModel = nullptr;
-	static double lastX = 0.0;
-	static double lastY = 0.0;
+	static double lastX = xpos;
+	static double lastY = ypos;
 
 	Scene* scene = static_cast<Scene*>(glfwGetWindowUserPointer(window));
 	Model* selectedModel = scene->getSelectedModel();
+
+	double dx = xpos - lastX;
+	double dy = ypos - lastY;
+
+	lastX = xpos;
+	lastY = ypos;
 
 	if (!ImGui::GetIO().WantCaptureMouse && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 	{
 		if (selectedModel != lastSelectedModel)
 		{
-			lastX = xpos;
-			lastY = ypos;
 			lastSelectedModel = selectedModel;
 		}
 
-		if (selectedModel == nullptr) { return; }
+		if (selectedModel == nullptr)
+		{
+			// Sensitivity factor for the mouse movement
+			float sensitivity = 0.04f;
 
-		double dx = xpos - lastX;
-		double dy = ypos - lastY;
+			glm::vec3 position = scene->getCamera().getPosition();
+			position.x += dx * sensitivity;
+			position.y -= dy * sensitivity; // Note: Minus sign because y-coordinates go from bottom to top
+			scene->getCamera().setPosition(position);
+
+			return;
+		}
 
 		glm::vec3 position = selectedModel->getPosition();
-		position.x -= dx * 0.01f;
-		position.y += dy * 0.1f;
+		position.x -= dx * 0.06f;
+		position.y += dy * 0.4f;
 		selectedModel->setPosition(position);
-
-		lastX = xpos;
-		lastY = ypos;
+	}
+	else if (!ImGui::GetIO().WantCaptureMouse && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+	{
+		scene->getCamera().rotate(dx, dy);
 	}
 	else
 	{
@@ -170,8 +185,7 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 	}
 }
 
-
-void Scene::processScroll(double xoffset, double yoffset) 
+void Scene::processScroll(double xoffset, double yoffset)
 {
 	// handle scroll event...
 	camera_.processMouseScroll(yoffset);

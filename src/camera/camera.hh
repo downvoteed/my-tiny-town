@@ -46,6 +46,11 @@ public:
 	 */
     glm::vec3 getFront() const;
 
+    void rotate(float dx, float dy);
+
+	glm::vec3 rotation = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::vec3 pivotPoint = glm::vec3(0.0f, 0.0f, 0.0f);
+
 private:
     void updateCameraVectors();
 
@@ -54,6 +59,8 @@ private:
     glm::vec3 up_;
     glm::vec3 right_;
     glm::vec3 worldUp_ = glm::vec3(0.0f, 1.0f, 0.0f);
+    glm::vec3 direction_ = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::mat4 viewMatrix;
     float fov_;
     float aspect_;
     float near_;
