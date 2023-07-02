@@ -147,8 +147,8 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 	Scene* scene = static_cast<Scene*>(glfwGetWindowUserPointer(window));
 	Model* selectedModel = scene->getSelectedModel();
 
-	double dx = xpos - lastX;
-	double dy = ypos - lastY;
+	float dx = xpos - lastX;
+	float dy = ypos - lastY;
 
 	float xoffset = xpos - lastX;
 	float yoffset = lastY - ypos; // reversed since y-coordinates range from bottom to top
@@ -163,23 +163,23 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 			lastSelectedModel = selectedModel;
 		}
 
+		glm::vec3 forward = scene->getCamera().getFront();
+		glm::vec3 right = scene->getCamera().getRight();
+
+
 		if (selectedModel == nullptr)
 		{
 			// Sensitivity factor for the mouse movement
 			float sensitivity = 0.04f;
 
-			glm::vec3 position = scene->getCamera().getPosition();
-			position.x -= dx * sensitivity;
-			position.z -= dy * sensitivity; // Note: Minus sign because y-coordinates go from bottom to top
-			scene->getCamera().setPosition(position);
+			// Movement along camera's own axes
+			scene->getCamera().move(-dx * sensitivity * right + dy * sensitivity * forward);
 
 			return;
 		}
 
-		glm::vec3 position = selectedModel->getPosition();
-		position.x += dx * 0.06f;
-		position.z += dy * 0.4f;
-		selectedModel->setPosition(position);
+		glm::vec3 offset = dx * 0.06f * right - dy * 0.4f * forward;
+		selectedModel->setPosition(selectedModel->getPosition() + offset);
 	}
 	else if (!ImGui::GetIO().WantCaptureMouse && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 	{

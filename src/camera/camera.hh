@@ -48,11 +48,14 @@ public:
 
     float getYaw() const;
     float getPitch() const;
+    glm::vec3 getRight() const;
 
     void rotate(float dx, float dy);
 
 	glm::vec3 rotation = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::vec3 pivotPoint = glm::vec3(0.0f, 0.0f, 0.0f);
+
+    void move(const glm::vec3& offset);
 
 private:
     void updateCameraVectors();

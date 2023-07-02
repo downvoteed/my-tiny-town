@@ -4,7 +4,7 @@
 #include <iostream>
 
 Camera::Camera(float fov, float aspect, float near, float far)
-        : position_(0.0f, 3.0f, 80.0f),
+        : position_(0.0f, 10.0f, 80.0f),
           front_(0.0f, 0.0f, -1.0f),
           up_(0.0f, 1.0f, 0.0f),
           right_(1.0f, 0.0f, 0.0f), // new
@@ -85,21 +85,32 @@ void Camera::setPosition(const glm::vec3& position)
 
 glm::vec3 Camera::getPosition() const
 {
-	return position_;
+	return this->position_;
 }
 
 glm::vec3 Camera::getFront() const
 {
-	return front_;
+	return this->front_;
+}
+
+glm::vec3 Camera::getRight () const
+{
+	return this->right_;
 }
 
 float Camera::getPitch() const
 {
-	return pitch_;
+	return this->pitch_;
 }
 
 float Camera::getYaw() const
 {
 	return yaw_;
 }
+
+void Camera::move(const glm::vec3& offset)
+{
+    position_ += offset;
+}
+
 
