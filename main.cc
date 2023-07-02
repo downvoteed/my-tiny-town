@@ -28,14 +28,14 @@ int main()
 		glm::vec3(60.f, 80.f, 40.f), 0.0f);
 
 	Building townHall("Town Hall", "assets/models/b.obj", "assets/textures/diff/b.jpg", glm::vec3(-0.20, -8.0f, 3.0f),
-		glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
+		glm::vec3(0.002f, 0.002f, 0.002f), 90.0f);
 
 	GrassSquare grassSquare("Grass block","assets/models/grass-square.obj" ,
 		"assets/textures/diff/grass-square-diffuse.jpg", glm::vec3(0.0f, 0.0f, -3.0f),
 		glm::vec3(0.01f, 0.01f, 0.01f), 0.0f);
 
 	RoadSquare roadSquare("Road block", "assets/models/road.obj", "assets/textures/diff/road-texture.png",
-		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.3f, 0.5f, 0.5f), 0.0f);
+		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.3f, 0.5f, 0.5f), 90.0f);
 
 	StreetLamp streetLamp("Street Lamp", "assets/models/Lamp.obj", "assets/textures/diff/street-lamp-diff.png",
 		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.1f, 0.1f, 0.1f), 0.0f);
