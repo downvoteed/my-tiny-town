@@ -50,8 +50,8 @@ LeftPannelWindow::LeftPannelWindow(Scene& scene) : Window(scene)
 	item.texture = texture;
 	item.createModel = [](float x, float y) {
 		return new GrassSquare("Grass block", "assets/models/grass-square.obj",
-			"assets/textures/diff/grass-square-diffuse.jpg", glm::vec3(x, y, -3.0f),
-			glm::vec3(0.01f, 0.01f, 0.01f), 0.0f);
+			"assets/textures/diff/grass-square-diffuse.jpg", glm::vec3(x, 0.f, y),
+			glm::vec3(0.01f, 0.01f, 0.01f), -90.0f);
 	};
 	galleryItems_.push_back(item);
 
@@ -72,8 +72,8 @@ LeftPannelWindow::LeftPannelWindow(Scene& scene) : Window(scene)
 	item;
 	item.texture = texture;
 	item.createModel = [](float x, float y) {
-		return new 	RoadSquare("Road block", "assets/models/road.obj", "assets/textures/diff/road-texture.png",
-		glm::vec3(x, y, -3.0f), glm::vec3(0.3f, 0.5f, 0.5f), 0.0f);
+		return new RoadSquare("Road block", "assets/models/road.obj", "assets/textures/diff/road-texture.png",
+			glm::vec3(x, 0.f, y), glm::vec3(0.3f, 0.5f, 0.5f), -90.0f);
 	};
 	galleryItems_.push_back(item);
 
@@ -95,7 +95,7 @@ LeftPannelWindow::LeftPannelWindow(Scene& scene) : Window(scene)
 	item;
 	item.texture = texture;
 	item.createModel = [](float x, float y) {
-		return new Building("Building", "assets/models/b.obj", "assets/textures/diff/b.jpg", glm::vec3(x, y, 3.0f),
+		return new Building("Building", "assets/models/b.obj", "assets/textures/diff/b.jpg", glm::vec3(x, 3.0f, y),
 			glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
 	};
 	galleryItems_.push_back(item);

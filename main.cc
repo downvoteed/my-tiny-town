@@ -27,7 +27,7 @@ int main()
 	GrassPlane grass("Grass plane", glm::vec3(0.0f, 0.0f, -3.0f),
 		glm::vec3(60.f, 80.f, 40.f), 90.0f);
 
-	Building townHall("Town Hall", "assets/models/b.obj", "assets/textures/diff/b.jpg", glm::vec3(-0.20, 0.0f, 3.0f),
+	Building townHall("Building", "assets/models/b.obj", "assets/textures/diff/b.jpg", glm::vec3(-0.20, 0.0f, 3.0f),
 		glm::vec3(0.002f, 0.002f, 0.002f), 90.0f);
 
 	GrassSquare grassSquare("Grass block","assets/models/grass-square.obj" ,
