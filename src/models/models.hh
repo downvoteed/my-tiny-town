@@ -107,10 +107,13 @@ public:
 	/**
 	 * @brief set the size of the model.
 	 */
-	virtual void setSize(const glm::vec3& size)
+	virtual void setSize(const glm::vec3& newSize)
 	{
-		this->size_ = size;
+		glm::vec3 scaleFactor = newSize / this->size_;
+		this->size_ = newSize;
+		this->modelMatrix_ = glm::scale(this->modelMatrix_, scaleFactor);
 	}
+
 	/**
 	 * @brief set the rotation of the model.
 	 */
@@ -209,47 +212,47 @@ public:
 		this->shader_->unbind();
 	}
 	virtual void drawOutline()
-{
-    if (!this->isSelected_) { return; }
+	{
+		if (!this->isSelected_) { return; }
 
-    this->outlineShader_->bind();
+		this->outlineShader_->bind();
 
-    GL_CALL(glEnable(GL_STENCIL_TEST));
-    GL_CALL(glStencilFunc(GL_NOTEQUAL, 1, 0xFF));
-    GL_CALL(glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP));
-    GL_CALL(glStencilMask(0x00));
-    GL_CALL(glDisable(GL_DEPTH_TEST));
+		GL_CALL(glEnable(GL_STENCIL_TEST));
+		GL_CALL(glStencilFunc(GL_NOTEQUAL, 1, 0xFF));
+		GL_CALL(glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP));
+		GL_CALL(glStencilMask(0x00));
+		GL_CALL(glDisable(GL_DEPTH_TEST));
 
-    glm::mat4 view = this->getViewMatrix();
-    glm::mat4 projection = this->getProjectionMatrix();
+		glm::mat4 view = this->getViewMatrix();
+		glm::mat4 projection = this->getProjectionMatrix();
 
-    this->outlineShader_->setUniformMat4f("model", this->modelMatrix_);
-    this->outlineShader_->setUniformMat4f("view", view);
-    this->outlineShader_->setUniformMat4f("projection", projection);
+		this->outlineShader_->setUniformMat4f("model", this->modelMatrix_);
+		this->outlineShader_->setUniformMat4f("view", view);
+		this->outlineShader_->setUniformMat4f("projection", projection);
 
-    // Calculer l'échelle à partir de la matrice de modèle
-    glm::vec3 scale = glm::vec3(glm::length(this->modelMatrix_[0]), glm::length(this->modelMatrix_[1]), glm::length(this->modelMatrix_[2]));
+		// Calculer l'échelle à partir de la matrice de modèle
+		glm::vec3 scale = glm::vec3(glm::length(this->modelMatrix_[0]), glm::length(this->modelMatrix_[1]), glm::length(this->modelMatrix_[2]));
 
-    // Utiliser l'échelle pour ajuster l'épaisseur du contour
-    float outlineThickness = 0.1 / glm::length(scale);
-    this->outlineShader_->setUniform1f("outlineThickness", outlineThickness);
+		// Utiliser l'échelle pour ajuster l'épaisseur du contour
+		float outlineThickness = 0.1 / glm::length(scale);
+		this->outlineShader_->setUniform1f("outlineThickness", outlineThickness);
 
-    this->va_->bind();
-    this->vb_->bind();
-    this->ib_->bind();
+		this->va_->bind();
+		this->vb_->bind();
+		this->ib_->bind();
 
-    GL_CALL(glDrawElements(GL_TRIANGLES, this->ib_->getCount(), GL_UNSIGNED_INT, nullptr));
+		GL_CALL(glDrawElements(GL_TRIANGLES, this->ib_->getCount(), GL_UNSIGNED_INT, nullptr));
 
-    GL_CALL(glEnable(GL_DEPTH_TEST));
-    GL_CALL(glStencilMask(0xFF));
-    GL_CALL(glDisable(GL_STENCIL_TEST));
+		GL_CALL(glEnable(GL_DEPTH_TEST));
+		GL_CALL(glStencilMask(0xFF));
+		GL_CALL(glDisable(GL_STENCIL_TEST));
 
-    this->va_->unbind();
-    this->vb_->unbind();
-    this->ib_->unbind();
+		this->va_->unbind();
+		this->vb_->unbind();
+		this->ib_->unbind();
 
-    this->outlineShader_->unbind();
-}
+		this->outlineShader_->unbind();
+	}
 
 
 	/**
@@ -266,6 +269,11 @@ public:
 		return this->textureName_;
 	}
 
+	const glm::vec3& getInitialSize()
+	{
+		return this->initialSize_;
+	}
+
 protected:
 	float rotation_;
 	glm::mat4 projectionMatrix_;
@@ -279,6 +287,7 @@ protected:
 	std::unique_ptr<Shader> outlineShader_;
 	glm::vec3 position_;
 	glm::vec3 size_;
+	glm::vec3 initialSize_;
 	glm::vec3 vertices_;
 	std::string textureName_;
 	glm::vec3 textCoords_;
@@ -293,6 +302,7 @@ private:
 		this->modelMatrix_ = glm::translate(this->modelMatrix_, position);
 		this->modelMatrix_ = glm::scale(this->modelMatrix_, size); // scale the plane
 		this->modelMatrix_ = glm::rotate(this->modelMatrix_, glm::radians(this->rotation_), glm::vec3(1.0f, 0.0f, 0.0f));
+		this->initialSize_ = size;
 		this->ID_ = ++current_ID;
 	}
 
