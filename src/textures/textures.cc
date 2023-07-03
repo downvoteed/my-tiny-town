@@ -28,7 +28,7 @@ Texture::Texture(const std::string& path)
     GL_CALL(glGenTextures(1, &this->textureID_));
     GL_CALL(glBindTexture(GL_TEXTURE_2D, this->textureID_));
 
-    GL_CALL(glGenerateMipmap(GL_TEXTURE_2D));
+    //GL_CALL(glGenerateMipmap(GL_TEXTURE_2D));
     GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
     GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));

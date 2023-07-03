@@ -11,6 +11,8 @@
 #include "grass-square-model.hh"
 #include "road-square-model.hh"
 #include "big-building-model.hh"
+#include "bush-model.hh"
+#include "cottage-model.hh"
 #include "lilas-building-model.hh"
 #include "street-lamp-model.hh"
 #include "company-model .hh"
@@ -67,6 +69,12 @@ int main()
 	Skyscraper skyscraper("Skyscraper", "assets/models/skyscraper.obj", "assets/textures/diff/skyscraper-diff.jpg",
 		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
 
+	Cottage cottage("Cottage", "assets/models/cottage.obj", "assets/textures/diff/cottage-diff.png",
+		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.03f, 0.03f, 0.03f), 0.0f);
+
+	Bush bush("Bush", "assets/models/bush.obj", "assets/textures/diff/bush-diff.png",
+		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
+
 	
 	scene.addModel(grass.getID(), &grass);
 	//scene.addModel(building.getID(), &building);
@@ -79,7 +87,8 @@ int main()
 	scene.addModel(officeBuilding.getID(), &officeBuilding);
 	scene.addModel(bigBuilding.getID(), &bigBuilding);
 	scene.addModel(skyscraper.getID(), &skyscraper);
-
+	scene.addModel(cottage.getID(), &cottage);
+	scene.addModel(bush.getID(), &bush);
 
 	// init interface
 	Application::instance()->init(scene);

@@ -11,4 +11,6 @@ target_sources(MyTinyTown PRIVATE
 "office-model.cc"
 "big-building-model.cc"
 "skyscraper-model.cc"
+"cottage-model.cc"
+"bush-model.cc"
 )

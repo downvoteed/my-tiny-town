@@ -6,9 +6,11 @@
 #include "grass-square-model.hh"
 #include "road-square-model.hh"
 #include "building-model.hh"
+#include "cottage-model.hh"
 #include "lilas-building-model.hh"
 #include "office-model.hh"
 #include "company-model .hh"
+#include "bush-model.hh"
 #include "big-building-model.hh"
 #include "house-model.hh"
 #include "stb/stb_image.h"
@@ -186,7 +188,7 @@ LeftPannelWindow::LeftPannelWindow(Scene& scene) : Window(scene)
 	item.texture = texture;
 	item.createModel = [](float x, float y) {
 		return new OfficeBuilding("Office", "assets/models/office.obj", "assets/textures/diff/office-diff.jpg",
-			glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
+			glm::vec3(x, 0.0f, y), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
 	};
 	galleryItems_.push_back(item);
 
@@ -207,7 +209,7 @@ LeftPannelWindow::LeftPannelWindow(Scene& scene) : Window(scene)
 	item.texture = texture;
 	item.createModel = [](float x, float y) {
 		return new BigBuilding("Big building", "assets/models/big-building.obj", "assets/textures/diff/big-building-diff.jpg",
-			glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
+			glm::vec3(x, 0.0f, y), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
 	};
 	galleryItems_.push_back(item);
 
@@ -228,7 +230,49 @@ LeftPannelWindow::LeftPannelWindow(Scene& scene) : Window(scene)
 	item.texture = texture;
 	item.createModel = [](float x, float y) {
 		return new Skyscraper("Skyscraper", "assets/models/skyscraper.obj", "assets/textures/diff/skyscraper-diff.jpg",
-			glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
+			glm::vec3(y, 0.0f, y), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
+	};
+	galleryItems_.push_back(item);
+
+	data = stbi_load("assets/gallery/cottage.png", &width, &height, &channels, 4);
+	if (data == nullptr)
+		std::cerr << "Failed to load image" << std::endl;
+
+	GL_CALL(glGenTextures(1, &texture));
+	GL_CALL(glBindTexture(GL_TEXTURE_2D, texture));
+	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+	GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data));
+	GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
+
+	stbi_image_free(data);
+
+	item;
+	item.texture = texture;
+	item.createModel = [](float x, float y) {
+		return new Cottage("Cottage", "assets/models/cottage.obj", "assets/textures/diff/cottage-diff.png",
+			glm::vec3(x, 0.0f, y), glm::vec3(0.03f, 0.03f, 0.03f), 0.0f);
+	};
+	galleryItems_.push_back(item);
+
+	data = stbi_load("assets/gallery/bush.png", &width, &height, &channels, 4);
+	if (data == nullptr)
+		std::cerr << "Failed to load image" << std::endl;
+
+	GL_CALL(glGenTextures(1, &texture));
+	GL_CALL(glBindTexture(GL_TEXTURE_2D, texture));
+	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+	GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data));
+	GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
+
+	stbi_image_free(data);
+
+	item;
+	item.texture = texture;
+	item.createModel = [](float x, float y) {
+		return new Bush("Bush", "assets/models/bush.obj", "assets/textures/diff/bush-diff.png",
+			glm::vec3(x, 0.0f, y), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
 	};
 	galleryItems_.push_back(item);
 }
