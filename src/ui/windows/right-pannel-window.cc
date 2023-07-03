@@ -6,11 +6,16 @@
 
 RightPannelWindow::RightPannelWindow(Scene& scene) : Window(scene) { }
 
-void RightPannelWindow::render() 
+void RightPannelWindow::render()
 {
+	auto& models = this->scene.getModels();
+	Model* currentModel = this->scene.getSelectedModel();
 
-	if (!this->scene.getSelectedModel())
-		return;
+	if (currentModel == nullptr)
+		// get objetID = 1
+		currentModel = models.find(1)->second;
+
+	if (currentModel == nullptr) { return; }
 
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(40.f / 255.f, 60.f / 255.f, 36.f / 255.f, 1.f));
 	ImGui::PushStyleColor(ImGuiCol_TitleBg, Application::SECONDARY_COLOR);
@@ -51,17 +56,13 @@ void RightPannelWindow::render()
 	std::string textureName = "No model selected";
 	float posX = 0, posY = 0, posZ = 0;
 	int id = 1;
-	if (this->scene.getSelectedModel())
-	{
-		Model* model = this->scene.getSelectedModel();
-		id = model->getID();
-		name = model->getName().c_str();
-		posX = model->getPosition().x;
-		posY = model->getPosition().y;
-		posZ = model->getPosition().z;
-		textureName = model->getTextureName();
-		
-	}
+	Model* model = currentModel;
+	id = model->getID();
+	name = model->getName().c_str();
+	posX = model->getPosition().x;
+	posY = model->getPosition().y;
+	posZ = model->getPosition().z;
+	textureName = model->getTextureName();
 
 	ImGui::Text("Name: %s (%d)" , name.c_str(), id);
 	ImGui::Text("Pos: (x: %.2f, y: %.2f, z: %.2f)", posX, posY, posZ);
@@ -94,30 +95,33 @@ void RightPannelWindow::render()
 	ImGui::SetCursorPosX(center);
 	ImGui::Text("Scale:");
 	ImGui::Text("x :");
-	float scaleFactorX = this->scene.getSelectedModel()->getSize().x / this->scene.getSelectedModel()->getInitialSize().x;
-	if (ImGui::SliderFloat("##x", &scaleFactorX, 0.1f, 5.0f)) {
-		glm::vec3 currentScale = this->scene.getSelectedModel()->getSize() / this->scene.getSelectedModel()->getInitialSize();
-		glm::vec3 newSize = this->scene.getSelectedModel()->getInitialSize() * glm::vec3(scaleFactorX, currentScale.y, currentScale.z);
-		this->scene.getSelectedModel()->setSize(newSize);
+	float scaleFactorX = model->getSize().x / model->getInitialSize().x;
+	if (ImGui::SliderFloat("##x", &scaleFactorX, 0.1f, 5.0f)) 
+	{
+		glm::vec3 currentScale = model->getSize() / model->getInitialSize();
+		glm::vec3 newSize = model->getInitialSize() * glm::vec3(scaleFactorX, currentScale.y, currentScale.z);
+		model->setSize(newSize);
 	}
 	ImGui::Text("y :");
-	float scaleFactorY = this->scene.getSelectedModel()->getSize().y / this->scene.getSelectedModel()->getInitialSize().y;
-	if (ImGui::SliderFloat("##y", &scaleFactorY, 0.1f, 5.0f)) {
-		glm::vec3 currentScale = this->scene.getSelectedModel()->getSize() / this->scene.getSelectedModel()->getInitialSize();
-		glm::vec3 newSize = this->scene.getSelectedModel()->getInitialSize() * glm::vec3(currentScale.x, scaleFactorY, currentScale.z);
-		this->scene.getSelectedModel()->setSize(newSize);
+	float scaleFactorY = model->getSize().y / model->getInitialSize().y;
+	if (ImGui::SliderFloat("##y", &scaleFactorY, 0.1f, 5.0f))
+	{
+		glm::vec3 currentScale = model->getSize() / model->getInitialSize();
+		glm::vec3 newSize = model->getInitialSize() * glm::vec3(currentScale.x, scaleFactorY, currentScale.z);
+		model->setSize(newSize);
 	}
-	ImGui::Text("z :");
-	float scaleFactorZ = this->scene.getSelectedModel()->getSize().z / this->scene.getSelectedModel()->getInitialSize().z;
-	if (ImGui::SliderFloat("##z", &scaleFactorZ, 0.1f, 5.0f)) {
-		glm::vec3 currentScale = this->scene.getSelectedModel()->getSize() / this->scene.getSelectedModel()->getInitialSize();
-		glm::vec3 newSize = this->scene.getSelectedModel()->getInitialSize() * glm::vec3(currentScale.x, currentScale.y, scaleFactorZ);
-		this->scene.getSelectedModel()->setSize(newSize);
+	if (model->getID() != 1)
+	{
+		ImGui::Text("z :");
+		float scaleFactorZ = model->getSize().z / model->getInitialSize().z;
+		if (ImGui::SliderFloat("##z", &scaleFactorZ, 0.1f, 5.0f))
+		{
+			glm::vec3 currentScale = model->getSize() / model->getInitialSize();
+			glm::vec3 newSize = model->getInitialSize() * glm::vec3(currentScale.x, currentScale.y, scaleFactorZ);
+			model->setSize(newSize);
+		}
 	}
 	ImGui::End();
-
-
-
 
 	ImGui::PopStyleColor();
 	ImGui::PopStyleColor();
