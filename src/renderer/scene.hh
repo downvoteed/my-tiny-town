@@ -18,6 +18,10 @@ public:
     */
     void addModel(size_t id, Model* model);
     /**
+     * @brief Remove a model from the scene
+     */
+    void removeModel(size_t id);
+    /**
     * @brief Draw all the models in the scene
 	*/
     void draw();

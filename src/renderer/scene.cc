@@ -23,6 +23,11 @@ void Scene::addModel(size_t id, Model* model)
 	this->models_.insert({ id, model });
 }
 
+void Scene::removeModel(size_t id)
+{
+	this->models_.erase(id);
+}
+
 void Scene::draw()
 {
 
@@ -96,6 +101,17 @@ void Scene::draw()
 
 		fbo.unbind();
 	}
+	// if key suppr is pressed
+	if (glfwGetKey(Application::instance()->getWindow(), GLFW_KEY_DELETE) == GLFW_PRESS)
+	{
+		if (this->selectedModel_ != nullptr)
+		{
+			this->removeModel(this->selectedModel_->getID());
+			this->selectedModel_ = nullptr;
+		}
+	}
+
+
 
 
 	this->skybox_->Draw();
