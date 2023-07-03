@@ -103,6 +103,7 @@ public:
 	virtual void setPosition(const glm::vec3& position)
 	{
 		this->modelMatrix_[3] = glm::vec4(position, 1.0f);
+		this->originalModelMatrix_[3] = glm::vec4(position, 1.0f);
 	}
 	/**
 	 * @brief set the size of the model.
@@ -112,6 +113,7 @@ public:
 		glm::vec3 scaleFactor = newSize / this->size_;
 		this->size_ = newSize;
 		this->modelMatrix_ = glm::scale(this->modelMatrix_, scaleFactor);
+		this->originalModelMatrix_ = glm::scale(this->originalModelMatrix_, scaleFactor);
 	}
 
 	/**
@@ -274,6 +276,16 @@ public:
 		return this->initialSize_;
 	}
 
+	glm::mat4 getOriginalModelMatrix() const
+	{
+		return this->originalModelMatrix_;
+	}
+
+	void setModelMatrix(glm::mat4& modelMatrix)
+	{
+		this->modelMatrix_ = modelMatrix;
+	}
+
 protected:
 	float rotation_;
 	glm::mat4 projectionMatrix_;
@@ -287,6 +299,7 @@ protected:
 	std::unique_ptr<Shader> outlineShader_;
 	glm::vec3 position_;
 	glm::vec3 size_;
+	glm::mat4 originalModelMatrix_;
 	glm::vec3 initialSize_;
 	glm::vec3 vertices_;
 	std::string textureName_;
@@ -302,6 +315,7 @@ private:
 		this->modelMatrix_ = glm::translate(this->modelMatrix_, position);
 		this->modelMatrix_ = glm::scale(this->modelMatrix_, size); // scale the plane
 		this->modelMatrix_ = glm::rotate(this->modelMatrix_, glm::radians(this->rotation_), glm::vec3(1.0f, 0.0f, 0.0f));
+		this->originalModelMatrix_ = this->modelMatrix_;
 		this->initialSize_ = size;
 		this->ID_ = ++current_ID;
 	}

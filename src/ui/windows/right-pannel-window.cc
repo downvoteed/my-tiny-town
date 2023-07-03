@@ -4,7 +4,68 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
 
-RightPannelWindow::RightPannelWindow(Scene& scene) : Window(scene) { }
+RightPannelWindow::RightPannelWindow(Scene& scene) : Window(scene) 
+{
+
+	unsigned char* data = nullptr;
+	int width = 0; int height = 0; int channels = 0;
+
+	// Image B
+	data = stbi_load("assets/ImageB.png", &width, &height, &channels, 4);
+	if (data == nullptr)
+		std::cerr << "Failed to load image" << std::endl;
+
+	GL_CALL(glGenTextures(1, &this->imageB));
+	GL_CALL(glBindTexture(GL_TEXTURE_2D, this->imageB));
+	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+	GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data));
+	GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
+
+	stbi_image_free(data);
+
+	// Image F
+	data = stbi_load("assets/ImageF.png", &width, &height, &channels, 4);
+	if (data == nullptr)
+		std::cerr << "Failed to load image" << std::endl;
+
+	GL_CALL(glGenTextures(1, &this->imageF));
+	GL_CALL(glBindTexture(GL_TEXTURE_2D, this->imageF));
+	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+	GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data));
+	GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
+
+	stbi_image_free(data);
+
+	// Image L
+	data = stbi_load("assets/ImageL.png", &width, &height, &channels, 4);
+	if (data == nullptr)
+		std::cerr << "Failed to load image" << std::endl;
+
+	GL_CALL(glGenTextures(1, &this->imageL));
+	GL_CALL(glBindTexture(GL_TEXTURE_2D, this->imageL));
+	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+	GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data));
+	GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
+
+	stbi_image_free(data);
+
+	// Image R
+	data = stbi_load("assets/ImageR.png", &width, &height, &channels, 4);
+	if (data == nullptr)
+		std::cerr << "Failed to load image" << std::endl;
+
+	GL_CALL(glGenTextures(1, &this->imageR));
+	GL_CALL(glBindTexture(GL_TEXTURE_2D, this->imageR));
+	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+	GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data));
+	GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
+
+	stbi_image_free(data);
+}
 
 void RightPannelWindow::render()
 {
@@ -69,28 +130,42 @@ void RightPannelWindow::render()
 	ImGui::Text("Pos: (x: %.2f, y: %.2f, z: %.2f)", posX, posY, posZ);
 	ImGui::Text("Texture: %s", textureName.c_str());
 
+	int width = 0; int height = 0; int channels = 0;
+	unsigned char* data = nullptr;
+	GLuint texture = 0;
+
 	if (model->getID() != 1)
 	{
+
 		ImGui::Text("Rotate:");
 
-		if (ImGui::Button("-180"))
+		ImVec2 imageSize = ImVec2(20, 20);
+
+		if (ImGui::ImageButton((void*)(intptr_t)this->imageF, imageSize, ImVec2(0, 1), ImVec2(1, 0)))
 		{
-			model->rotate(glm::radians(-180.f), glm::vec3(0, 1, 0));
+			glm::mat4 original = model->getOriginalModelMatrix();
+			model->setModelMatrix(original);
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("-90"))
+		if (ImGui::ImageButton((void*)(intptr_t)this->imageB, imageSize, ImVec2(0, 1), ImVec2(1, 0)))
 		{
-			model->rotate(glm::radians(-90.f), glm::vec3(0, 1, 0));
+			glm::mat4 original = model->getOriginalModelMatrix();
+			glm::mat4 newMatrix = glm::rotate(original, glm::radians(180.f), glm::vec3(0, 1, 0));
+			model->setModelMatrix(newMatrix);
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("90"))
+		if (ImGui::ImageButton((void*)(intptr_t)this->imageL, imageSize))
 		{
-			model->rotate(glm::radians(90.f), glm::vec3(0, 1, 0));
+			glm::mat4 original = model->getOriginalModelMatrix();
+			glm::mat4 newMatrix = glm::rotate(original, glm::radians(-90.f), glm::vec3(0, 1, 0));
+			model->setModelMatrix(newMatrix);
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("180"))
+		if (ImGui::ImageButton((void*)(intptr_t)this->imageR, imageSize))
 		{
-			model->rotate(glm::radians(180.f), glm::vec3(0, 1, 0));
+			glm::mat4 original = model->getOriginalModelMatrix();
+			glm::mat4 newMatrix = glm::rotate(original, glm::radians(90.f), glm::vec3(0, 1, 0));
+			model->setModelMatrix(newMatrix);
 		}
 
 	}
@@ -103,7 +178,7 @@ void RightPannelWindow::render()
 	ImGui::Text("Scale:");
 	ImGui::Text("x :");
 	float scaleFactorX = model->getSize().x / model->getInitialSize().x;
-	if (ImGui::SliderFloat("##x", &scaleFactorX, 0.1f, 5.0f)) 
+	if (ImGui::SliderFloat("##x", &scaleFactorX, 0.1f, 5.0f))
 	{
 		glm::vec3 currentScale = model->getSize() / model->getInitialSize();
 		glm::vec3 newSize = model->getInitialSize() * glm::vec3(scaleFactorX, currentScale.y, currentScale.z);

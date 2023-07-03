@@ -8,4 +8,10 @@ public:
 	RightPannelWindow(Scene& scene);
 	~RightPannelWindow() = default;
 	void render() override;
+
+private:
+	GLuint imageB;
+	GLuint imageF;
+	GLuint imageL;
+	GLuint imageR;
 };
