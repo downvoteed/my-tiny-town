@@ -26,6 +26,7 @@ void RightPannelWindow::render()
 	ImGui::PushStyleColor(ImGuiCol_Button, Application::SECONDARY_COLOR);
 	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Application::TERCIARY_COLOR);
 	ImGui::PushStyleColor(ImGuiCol_ButtonActive, Application::TERCIARY_COLOR);
+	ImGui::PushStyleColor(ImGuiCol_SliderGrab, Application::TERCIARY_COLOR);
 
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 5.0f);
@@ -90,6 +91,7 @@ void RightPannelWindow::render()
 	}
 	// center text
 
+	ImGui::PushStyleColor(ImGuiCol_FrameBg, Application::SECONDARY_COLOR);
 	ImGui::NewLine();
 	int center = (ImGui::GetWindowSize().x - ImGui::CalcTextSize("Scale:").x) / 2;
 	ImGui::SetCursorPosX(center);
@@ -121,8 +123,10 @@ void RightPannelWindow::render()
 			model->setSize(newSize);
 		}
 	}
+	ImGui::PopStyleColor();
 	ImGui::End();
 
+	ImGui::PopStyleColor();
 	ImGui::PopStyleColor();
 	ImGui::PopStyleColor();
 	ImGui::PopStyleColor();
