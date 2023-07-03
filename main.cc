@@ -10,7 +10,9 @@
 #include "grass-square-model.hh"
 #include "road-square-model.hh"
 #include "street-lamp-model.hh"
+#include "company-model .hh"
 #include "skybox.hh"
+#include "house-model.hh"
 
 int main()
 {
@@ -41,6 +43,14 @@ int main()
 	StreetLamp streetLamp("Street Lamp", "assets/models/Lamp.obj", "assets/textures/diff/street-lamp-diff.png",
 		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.1f, 0.1f, 0.1f), -90.0f);
 
+	CompanyBuilding companyBuilding("Company building", "assets/models/company-building.obj", "assets/textures/diff/company-building-diff.jpg",
+		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
+
+
+	House house("House", "assets/models/house.obj", "assets/textures/diff/house-diff.jpg",
+		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.03f, 0.03f, 0.03f), 0.0f);
+	
+
 
 	
 	scene.addModel(grass.getID(), &grass);
@@ -48,6 +58,8 @@ int main()
 	scene.addModel(grassSquare.getID(), &grassSquare);
 	scene.addModel(roadSquare.getID(), &roadSquare);
 	scene.addModel(streetLamp.getID(), &streetLamp);
+	scene.addModel(companyBuilding.getID(), &companyBuilding);
+	scene.addModel(house.getID(), &house);
 
 	// init interface
 	Application::instance()->init(scene);

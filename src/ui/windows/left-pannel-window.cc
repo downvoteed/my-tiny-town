@@ -5,6 +5,8 @@
 #include "grass-square-model.hh"
 #include "road-square-model.hh"
 #include "building-model.hh"
+#include "company-model .hh"
+#include "house-model.hh"
 #include "stb/stb_image.h"
 #include <iostream>
 
@@ -97,6 +99,48 @@ LeftPannelWindow::LeftPannelWindow(Scene& scene) : Window(scene)
 	item.createModel = [](float x, float y) {
 		return new Building("Building", "assets/models/b.obj", "assets/textures/diff/b.jpg", glm::vec3(x, 0.0f, y),
 			glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
+	};
+	galleryItems_.push_back(item);
+
+	data = stbi_load("assets/gallery/preview-company-building.png", &width, &height, &channels, 4);
+	if (data == nullptr)
+		std::cerr << "Failed to load image" << std::endl;
+
+	GL_CALL(glGenTextures(1, &texture));
+	GL_CALL(glBindTexture(GL_TEXTURE_2D, texture));
+	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+	GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data));
+	GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
+
+	stbi_image_free(data);
+
+	item;
+	item.texture = texture;
+	item.createModel = [](float x, float y) {
+		return new CompanyBuilding("Company building", "assets/models/company-building.obj", "assets/textures/diff/company-building-diff.jpg",
+			glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
+	};
+	galleryItems_.push_back(item);
+
+	data = stbi_load("assets/gallery/house.png", &width, &height, &channels, 4);
+	if (data == nullptr)
+		std::cerr << "Failed to load image" << std::endl;
+
+	GL_CALL(glGenTextures(1, &texture));
+	GL_CALL(glBindTexture(GL_TEXTURE_2D, texture));
+	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+	GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data));
+	GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
+
+	stbi_image_free(data);
+
+	item;
+	item.texture = texture;
+	item.createModel = [](float x, float y) {
+		return new House("House", "assets/models/house.obj", "assets/textures/diff/house-diff.jpg",
+			glm::vec3(x, 0.0f, y), glm::vec3(0.03f, 0.03f, 0.03f), 0.0f);
 	};
 	galleryItems_.push_back(item);
 }
