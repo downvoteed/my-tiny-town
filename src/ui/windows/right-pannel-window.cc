@@ -68,26 +68,31 @@ void RightPannelWindow::render()
 	ImGui::Text("Name: %s (%d)" , name.c_str(), id);
 	ImGui::Text("Pos: (x: %.2f, y: %.2f, z: %.2f)", posX, posY, posZ);
 	ImGui::Text("Texture: %s", textureName.c_str());
-	ImGui::Text("Rotate:");
-	
-	if (ImGui::Button("-180"))
+
+	if (model->getID() != 1)
 	{
-		this->scene.getSelectedModel()->rotate(glm::radians(-180.f), glm::vec3(0, 1, 0));
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("-90"))
-	{
-		this->scene.getSelectedModel()->rotate(glm::radians(-90.f), glm::vec3(0, 1, 0));
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("90"))
-	{
-		this->scene.getSelectedModel()->rotate(glm::radians(90.f), glm::vec3(0, 1, 0));
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("180"))
-	{
-		this->scene.getSelectedModel()->rotate(glm::radians(180.f), glm::vec3(0, 1, 0));
+		ImGui::Text("Rotate:");
+
+		if (ImGui::Button("-180"))
+		{
+			model->rotate(glm::radians(-180.f), glm::vec3(0, 1, 0));
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("-90"))
+		{
+			model->rotate(glm::radians(-90.f), glm::vec3(0, 1, 0));
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("90"))
+		{
+			model->rotate(glm::radians(90.f), glm::vec3(0, 1, 0));
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("180"))
+		{
+			model->rotate(glm::radians(180.f), glm::vec3(0, 1, 0));
+		}
+
 	}
 	// center text
 
