@@ -134,7 +134,7 @@ void Application::render(Scene& scene) const
 {
 	this->leftPannelWindow_->render();
 	this->rightPannelWindow_->render();
-	this->demoWindow_->render();
+	// this->demoWindow_->render();
 }
 
 int Application::getInitialViewportWidth() const

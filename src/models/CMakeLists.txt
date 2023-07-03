@@ -7,4 +7,8 @@ target_sources(MyTinyTown PRIVATE
 "company-model.cc"
 "models.cc"
 "house-model.cc"
+"lilas-building-model.cc"
+"office-model.cc"
+"big-building-model.cc"
+"skyscraper-model.cc"
 )

@@ -7,12 +7,17 @@
 #include "event-handler.hh"
 #include "grass-plane-model.hh"
 #include "building-model.hh"
+#include "skyscraper-model.hh"
 #include "grass-square-model.hh"
 #include "road-square-model.hh"
+#include "big-building-model.hh"
+#include "lilas-building-model.hh"
 #include "street-lamp-model.hh"
 #include "company-model .hh"
+#include "office-model.hh"
 #include "skybox.hh"
 #include "house-model.hh"
+
 
 int main()
 {
@@ -49,17 +54,32 @@ int main()
 
 	House house("House", "assets/models/house.obj", "assets/textures/diff/house-diff.jpg",
 		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.03f, 0.03f, 0.03f), 0.0f);
-	
 
+	LilasBuilding lilasBuilding("Les lilas", "assets/models/Les lilas.obj", "assets/textures/diff/lilas-diff.jpg",
+		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
+
+	OfficeBuilding officeBuilding("Office", "assets/models/office.obj", "assets/textures/diff/office-diff.jpg",
+		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
+
+	BigBuilding bigBuilding("Big building", "assets/models/big-building.obj", "assets/textures/diff/big-building-diff.jpg",
+		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
+
+	Skyscraper skyscraper("Skyscraper", "assets/models/skyscraper.obj", "assets/textures/diff/skyscraper-diff.jpg",
+		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
 
 	
 	scene.addModel(grass.getID(), &grass);
-	scene.addModel(building.getID(), &building);
-	scene.addModel(grassSquare.getID(), &grassSquare);
-	scene.addModel(roadSquare.getID(), &roadSquare);
-	scene.addModel(streetLamp.getID(), &streetLamp);
-	scene.addModel(companyBuilding.getID(), &companyBuilding);
-	scene.addModel(house.getID(), &house);
+	//scene.addModel(building.getID(), &building);
+	//scene.addModel(grassSquare.getID(), &grassSquare);
+	//scene.addModel(roadSquare.getID(), &roadSquare);
+	//scene.addModel(streetLamp.getID(), &streetLamp);
+	//scene.addModel(companyBuilding.getID(), &companyBuilding);
+	//scene.addModel(house.getID(), &house);
+	scene.addModel(lilasBuilding.getID(), &lilasBuilding);
+	scene.addModel(officeBuilding.getID(), &officeBuilding);
+	scene.addModel(bigBuilding.getID(), &bigBuilding);
+	scene.addModel(skyscraper.getID(), &skyscraper);
+
 
 	// init interface
 	Application::instance()->init(scene);

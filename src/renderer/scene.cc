@@ -155,6 +155,8 @@ Model* Scene::getSelectedModel()
 }
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
+	if (ImGui::GetIO().WantCaptureMouse)
+		return;
 	// Get the user pointer and assume it is a Scene instance
 	Scene* scene = static_cast<Scene*>(glfwGetWindowUserPointer(window));
 
