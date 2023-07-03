@@ -183,8 +183,8 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 
 			return;
 		}
-
-		glm::vec3 offset = dx * 0.06f * right - dy * 0.4f * forward;
+		// Use only the x and z axes for moving the selected model
+		glm::vec3 offset = dx * 0.06f * right - dy * 0.4f * glm::vec3(forward.x, 0.0f, forward.z);
 		selectedModel->setPosition(selectedModel->getPosition() + offset);
 	}
 	else if (!ImGui::GetIO().WantCaptureMouse && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
