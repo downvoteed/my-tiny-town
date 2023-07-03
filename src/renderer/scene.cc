@@ -102,7 +102,9 @@ void Scene::draw()
 		fbo.unbind();
 	}
 	// if key suppr is pressed
-	if (glfwGetKey(Application::instance()->getWindow(), GLFW_KEY_DELETE) == GLFW_PRESS)
+	
+	if (glfwGetKey(Application::instance()->getWindow(), GLFW_KEY_DELETE) == GLFW_PRESS
+		|| glfwGetKey(Application::instance()->getWindow(), GLFW_KEY_X) == GLFW_PRESS)
 	{
 		if (this->selectedModel_ != nullptr)
 		{
@@ -110,9 +112,6 @@ void Scene::draw()
 			this->selectedModel_ = nullptr;
 		}
 	}
-
-
-
 
 	this->skybox_->Draw();
 	for (const auto& [_, model] : this->models_)
