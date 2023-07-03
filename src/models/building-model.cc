@@ -13,8 +13,6 @@ Building::Building(std::string name, const std::string& modelPath, const std::st
 	// Load the texture
 	this->texture_ = std::make_unique<Texture>(texturePath);
 	this->textureName_ = texturePath.substr(texturePath.find_last_of("/\\") + 1);
-	this->modelMatrix_ = glm::rotate(this->modelMatrix_, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-
 
 	// Create the shader
 	this->shader_ = std::make_unique<Shader>("assets/shaders/lightning-vertex.glsl",

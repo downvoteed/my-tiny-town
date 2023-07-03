@@ -9,7 +9,7 @@
 
 static bool mouseButtonPressed = false;
 
-Scene::Scene() : camera_(35.0f, 1280.0f / 780.0f, 0.1f, 1000.0f), frameBuffer_()
+Scene::Scene() : camera_(35.0f, 1280.0f / 780.0f, 0.1f, 1000.0f), frameBuffer_(false)
 {
 	camera_.setYaw(-90.0f);
 	camera_.setPitch(0.f); // Make the camera look straight ahead
@@ -38,6 +38,10 @@ void Scene::draw()
 	{
 		FrameBuffer& fbo = this->getFrameBuffer();
 		fbo.bind();
+
+		// Clear the framebuffer before rendering to it
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		for (const auto& [_, model] : this->models_)
 		{
@@ -107,7 +111,7 @@ void Scene::draw()
 		}
 		else
 			model->draw(false);
-	}
+		}
 	mouseButtonPressed = mouseButtonCurrentlyPressed;
 }
 

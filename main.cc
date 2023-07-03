@@ -29,7 +29,7 @@ int main()
 		glm::vec3(40.f, 40.f, 40.f), 90.0f);
 
 	Building building("Building", "assets/models/b.obj", "assets/textures/diff/b.jpg", glm::vec3(-0.20, 0.0f, 3.0f),
-		glm::vec3(0.002f, 0.002f, 0.002f), 90.0f);
+		glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
 
 	GrassSquare grassSquare("Grass block","assets/models/grass-square.obj" ,
 		"assets/textures/diff/grass-square-diffuse.jpg", glm::vec3(0.0f, 0.0f, -3.0f),

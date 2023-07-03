@@ -12,8 +12,7 @@
         } \
     } while (0)
 
-
-FrameBuffer::FrameBuffer()
+FrameBuffer::FrameBuffer(bool useDepth)
 {
     // Generate and bind the framebuffer
     GL_CALL(glGenFramebuffers(1, &fbo_));
@@ -24,29 +23,48 @@ FrameBuffer::FrameBuffer()
     GL_CALL(glBindTexture(GL_TEXTURE_2D, texture_));
 
     // Set the texture parameters
-    // FIXME : not sure about dimensions
     GLFWwindow* window = Application::instance()->getWindow();
     int width, height;
-	GL_CALL(glfwGetFramebufferSize(window, &width, &height));
+    glfwGetFramebufferSize(window, &width, &height);
 
-	int currentWidth, currentHeight;
-	glfwGetFramebufferSize(Application::instance()->getWindow(), &currentWidth, &currentHeight);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, currentWidth, currentHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    if (useDepth)
+    {
+        // Create a depth texture
+        GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, 
+             width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL));
+        GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+        GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+        GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+        GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+        GLfloat borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
+        GL_CALL(glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor)); 
 
-    GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-    GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+        // Attach the depth texture to the framebuffer
+        GL_CALL(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, texture_, 0));
+        GL_CALL(glDrawBuffer(GL_NONE));
+        GL_CALL(glReadBuffer(GL_NONE));
+    }
+    else
+    {
+        // Create a color texture
+        GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL));
+        GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+        GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 
-    // Attach the texture to the framebuffer
-    GL_CALL(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_, 0));
+        // Attach the color texture to the framebuffer
+        GL_CALL(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_, 0));
+    }
 
-    glCheckFramebufferStatus(GL_FRAMEBUFFER);
-    if (! glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE)
-		std::cerr << "Error : Framebuffer is not complete" << std::endl;
+    // Check if the framebuffer is complete
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        std::cerr << "Error : Framebuffer is not complete" << std::endl;
 
     // Unbind the framebuffer and texture
     GL_CALL(glBindFramebuffer(GL_FRAMEBUFFER, 0));
     GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
 }
+
+
 
 FrameBuffer::~FrameBuffer()
 {

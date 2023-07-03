@@ -4,7 +4,8 @@
 class FrameBuffer 
 {
 public:
-    FrameBuffer();
+    FrameBuffer() = delete;
+    FrameBuffer(bool useDepth);
     ~FrameBuffer();
 	FrameBuffer(const FrameBuffer&) = delete;
 	FrameBuffer& operator=(const FrameBuffer&) = delete;
