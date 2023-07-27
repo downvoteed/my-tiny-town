@@ -1,0 +1,29 @@
+name: build windows 
+
+env:
+    BUILD_TYPE: Release
+
+on: push
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install 7zip
+      run: choco install 7zip.install
+      
+    - name: Install Mesa
+      shell: cmd
+      run: |
+        curl.exe -L --output mesa.7z --url https://github.com/pal1000/mesa-dist-win/releases/download/23.1.4/mesa3d-23.1.4-release-msvc.7z
+        "C:\Program Files\7-Zip\7z.exe" x mesa.7z
+        mklink opengl32.dll "x64\opengl32.dll"
+        mklink libglapi.dll "x64\libglapi.dll"
+
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
