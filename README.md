@@ -51,5 +51,5 @@ cmake --build build
     - Freeze on loading
 
 ## TODO
-
     - Shadows
+    - Refactor model class
