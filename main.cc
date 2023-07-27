@@ -37,43 +37,43 @@ int main()
 	GrassPlane grass("Grass plane", glm::vec3(0.0f, 0.0f, -3.0f),
 		glm::vec3(40.f, 40.f, 40.f), 90.0f);
 
-	Building building("Building", "assets/models/b.obj", "assets/textures/diff/b.jpg", glm::vec3(-0.20, 0.0f, 3.0f),
-		glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
+	//Building building("Building", "assets/models/b.obj", "assets/textures/diff/b.jpg", glm::vec3(-0.20, 0.0f, 3.0f),
+	//	glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
 
-	GrassSquare grassSquare("Grass block","assets/models/grass-square.obj" ,
-		"assets/textures/diff/grass-square-diffuse.jpg", glm::vec3(0.0f, 0.0f, -3.0f),
-		glm::vec3(0.01f, 0.01f, 0.01f), -90.0f);
+	//GrassSquare grassSquare("Grass block","assets/models/grass-square.obj" ,
+	//	"assets/textures/diff/grass-square-diffuse.jpg", glm::vec3(0.0f, 0.0f, -3.0f),
+	//	glm::vec3(0.01f, 0.01f, 0.01f), -90.0f);
 
-	RoadSquare roadSquare("Road block", "assets/models/road.obj", "assets/textures/diff/road-texture.png",
-		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.3f, 0.5f, 0.5f), -90.0f);
+	//RoadSquare roadSquare("Road block", "assets/models/road.obj", "assets/textures/diff/road-texture.png",
+	//	glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.3f, 0.5f, 0.5f), -90.0f);
 
-	StreetLamp streetLamp("Street Lamp", "assets/models/Lamp.obj", "assets/textures/diff/street-lamp-diff.png",
-		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.1f, 0.1f, 0.1f), -90.0f);
+	//StreetLamp streetLamp("Street Lamp", "assets/models/Lamp.obj", "assets/textures/diff/street-lamp-diff.png",
+	//	glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.1f, 0.1f, 0.1f), -90.0f);
 
-	CompanyBuilding companyBuilding("Company building", "assets/models/company-building.obj", "assets/textures/diff/company-building-diff.jpg",
-		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
+	//CompanyBuilding companyBuilding("Company building", "assets/models/company-building.obj", "assets/textures/diff/company-building-diff.jpg",
+	//	glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
 
 
-	House house("House", "assets/models/house.obj", "assets/textures/diff/house-diff.jpg",
-		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.03f, 0.03f, 0.03f), 0.0f);
+	//House house("House", "assets/models/house.obj", "assets/textures/diff/house-diff.jpg",
+	//	glm::vec3(5.0f, 0.0f, -3.0f), glm::vec3(0.03f, 0.03f, 0.03f), 0.0f);
 
 	LilasBuilding lilasBuilding("Les lilas", "assets/models/Les lilas.obj", "assets/textures/diff/lilas-diff.jpg",
-		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
+		glm::vec3(10.0f, 0.0f, -3.0f), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
 
 	OfficeBuilding officeBuilding("Office", "assets/models/office.obj", "assets/textures/diff/office-diff.jpg",
-		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
+		glm::vec3(13.18, 0.0f, -6.0f), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
 
 	BigBuilding bigBuilding("Big building", "assets/models/big-building.obj", "assets/textures/diff/big-building-diff.jpg",
-		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
+		glm::vec3(-5.0f, 0.0f, -9.0f), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
 
 	Skyscraper skyscraper("Skyscraper", "assets/models/skyscraper.obj", "assets/textures/diff/skyscraper-diff.jpg",
-		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
+		glm::vec3(-10.0f, 0.0f, -12.0f), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
 
 	Cottage cottage("Cottage", "assets/models/cottage.obj", "assets/textures/diff/cottage-diff.png",
-		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.03f, 0.03f, 0.03f), 0.0f);
+		glm::vec3(-15.0f, 0.0f, -15.0f), glm::vec3(0.03f, 0.03f, 0.03f), 0.0f);
 
 	Bush bush("Bush", "assets/models/bush.obj", "assets/textures/diff/bush-diff.png",
-		glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
+		glm::vec3(-12.0f, 0.0f, -18.0f), glm::vec3(0.002f, 0.002f, 0.002f), 0.0f);
 
 	
 	scene.addModel(grass.getID(), &grass);

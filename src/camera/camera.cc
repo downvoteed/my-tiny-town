@@ -7,8 +7,8 @@ Camera::Camera(float fov, float aspect, float near, float far)
         : position_(0.0f, 10.0f, 80.0f),
           front_(0.0f, 0.0f, -1.0f),
           up_(0.0f, 1.0f, 0.0f),
-          right_(1.0f, 0.0f, 0.0f), // new
-          worldUp_(0.0f, 1.0f, 0.0f), // new
+          right_(1.0f, 0.0f, 0.0f), 
+          worldUp_(0.0f, 1.0f, 0.0f), 
           fov_(fov),
           aspect_(aspect),
           near_(near),
