@@ -17,6 +17,8 @@ This project doesn't have any pretension, and it's only a way for me to learn ne
 - Glad
 - GLFW
 - assimp
+- Dear ImGui
+- STB Image
 
 ## Build
 
